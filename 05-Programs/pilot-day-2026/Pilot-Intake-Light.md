@@ -7,7 +7,7 @@
 
 ## Purpose
 
-A compressed version of the full Element intake ([Element-Intake-10-12.md](../summer-2026/Element-Intake-10-12.md)), covering **Tier 1 signals only** — Aptitude, Passion, and flow — plus project preference. It exists to:
+A compressed version of the full Element intake ([Element-Intake-10-12.md](../summer-2026/intake/Element-Intake-10-12.md)), covering **Tier 1 signals only** — Aptitude, Passion, and flow — plus project preference. It exists to:
 
 1. Guide project and role assignment before the pilot day
 2. Give the Guide a per-student baseline for the observation cards
@@ -67,7 +67,7 @@ Anything about your child's day, energy, or social style that would help an adul
 | **Passion signals (specific)** | |
 | **Flow evidence** | |
 | **Aptitude/Passion alignment** | Same domain · Different domains · Unclear |
-| **Project match** | YouTube Studio · Game Builder — with one-line rationale against the match profiles in [summer_project_library.md](../summer-2026/summer_project_library.md) |
+| **Project match** | YouTube Studio · Game Builder — with one-line rationale against the match profiles in [Summer-Project-Library.md](../summer-2026/design/Summer-Project-Library.md) |
 | **Role assignment** | Role + the signal that drove it (role-to-signal guidance from the library) |
 | **Prediction to test** | One sentence: the signal the Guide expects to see confirmed on pilot day |
 | **Watch-for** | Anything from Q5 that shapes how to read this student |
@@ -76,7 +76,7 @@ Anything about your child's day, energy, or social style that would help an adul
 - Q7 maps directly to roles: (a) Host/Presenter · (b) Director/Editor · (c) Game Designer · (d) World/Art Builder. Treat it as the child's self-report, to be weighed against — not above — the parent's behavioral evidence.
 - If parent answers are achievement-framed with no free-choice behavior (adult projection risk), flag it and weight Part 2 higher.
 - If Tier 1 signals are thin across the board, do not force a confident match — assign by Q7 preference and mark the card *"low-confidence baseline."* That student's pilot data is about what the intake missed.
-- The **Prediction to test** field is mandatory. The post-pilot intake validation (see [pilot_day_program.md](pilot_day_program.md), After the Day) depends on it.
+- The **Prediction to test** field is mandatory. The post-pilot intake validation (see [Pilot-Day-Program.md](Pilot-Day-Program.md), After the Day) depends on it.
 
 ---
 

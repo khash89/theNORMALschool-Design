@@ -15,12 +15,13 @@ a logical reading order: **design → evidence → application → outreach.**
 | [`02-Knowledge-Base/`](02-Knowledge-Base/) | Digests of the research and books the model is built on. See [`_index.md`](02-Knowledge-Base/_index.md) for which source backs which design decision. |
 | [`03-Student-Records/`](03-Student-Records/) | Per-student living documents (Student Hypothesis + Personal Pathway). Blank templates in [`_templates/`](03-Student-Records/_templates/). |
 | [`04-Marketing/`](04-Marketing/) | Outreach and content, e.g. The Element Instagram Reels scripts (EN/MN). |
-| [`05-Programs/`](05-Programs/) | Program runs, organised by cohort. Each sub-folder is one program (e.g. `summer-2026/`). |
-| [`06-Tools/`](06-Tools/) | Claude skills, web apps, and web systems built for the school. Each tool has its own sub-folder (e.g. `project-designer/`). |
+| [`05-Programs/`](05-Programs/) | Program runs, organised by cohort. Each sub-folder is one program and holds **everything** for that program — docs, tools, and any web apps. Larger programs are split by purpose — see [`summer-2026/_index.md`](05-Programs/summer-2026/_index.md) (`intake/`, `application-form/`, `design/`, `operations/`). |
+| [`06-Tools/`](06-Tools/) | Reusable, program-agnostic tools — Claude skills and shared systems. Each has its own sub-folder, e.g. [`project-designer/`](06-Tools/project-designer/). Program-specific tools (like the summer application form) live inside their program folder under `05-Programs/`, not here. |
 
 ## Conventions
 
-- **Filenames** use `Kebab-Case.md` (no spaces, em-dashes, or `Snake_Case`).
+- **Filenames** use `Kebab-Case.md` (no spaces, em-dashes, or `Snake_Case`). Code/asset files (`index.html`, `server.js`, fonts, images) keep their conventional lowercase names.
+- **Folders** use kebab-case or `Title-Case`, never spaces (e.g. `Sparkle-Squad-Poster/`, not `Sparkle Squad Poster/`).
 - **Student documents** are versioned in the filename (`Student-Hypothesis-v2.1.md`) and
   live in a per-student folder (`03-Student-Records/<Student-Name>/`).
 - **Document versions** are tracked in a Revision Log table at the bottom of each living

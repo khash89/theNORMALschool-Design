@@ -1,0 +1,298 @@
+# Summer Application — Design & Copy Specification
+*Exactly how the web form looks and what it says — every screen, control, and string*
+
+**Applies to:** [`app/index.html`](../app/index.html) (the built summer application form).
+**Companion to:** [Summer-Application-Data-Spec.md](../../intake/Summer-Application-Data-Spec.md) (what we collect & why). This document covers **presentation and wording**; that one covers data and purpose.
+**Brand source:** [`Brand-Guideline.md`](../../../../00-Vision/Brand-Guideline.md).
+
+> This is a documentation of the form as built. If a string here and the form ever disagree, the form is the source of truth — update this doc to match, or change both together.
+
+---
+
+## 1. Design system (tokens)
+
+### Colors
+| Token | Hex | Where it's used |
+|---|---|---|
+| Orange (hero/CTA) | `#ff751f` | Primary buttons, progress fill, selected chips/options, kickers, required `*`, success badge, focus ring |
+| Navy (headlines) | `#111111` | All H1/H2, field labels, input text |
+| Body | `#777777` | Paragraphs, body copy |
+| Muted | `#999999` | Hints, step counter, footer, placeholder-level captions |
+| Cream (section bg) | `#f5f2ed` | Page background, reassurance boxes |
+| Border | `#e8e3db` | Input borders, card border, chip/option borders, dividers |
+| UI text | `#555555` | Chip text (unselected), reassurance body, ghost button text |
+| White | `#ffffff` | Card background, input background, text on orange |
+| Error | `#e5484d` / `#c4373b` | Invalid input border / error message text |
+
+Focus ring: `0 0 0 3px rgba(255,117,31,0.12)` with `border-color: orange`.
+
+### Typography — Inter (only)
+| Role | Size | Weight | Notes |
+|---|---|---|---|
+| Hero H1 | `clamp(28px, 5.5vw, 44px)` | 850 | letter-spacing −0.04em, line-height 1.1 |
+| Step H2 | 26px | 850 | letter-spacing −0.03em |
+| Success H2 | 28px | 850 | |
+| Kicker / eyebrow | 11px | 600 | UPPERCASE, letter-spacing 0.18em, orange |
+| Field label | 11px | 600 | UPPERCASE, letter-spacing 0.1em, navy |
+| Body / paragraph | 15–16px | 400 | line-height 1.7, body gray |
+| Hint | 13px | 400 | muted, not uppercase |
+| Input text | 15px | 400 | navy |
+| Button | 14px | 700 | always ends in `→` (primary) |
+| Step counter | 11px | 600 | UPPERCASE, letter-spacing 0.1em, muted |
+
+### Spacing & shape
+- Max content width: **720px** (narrower than the 960px marketing width — a form reads better in a single tight column).
+- Card: white, 1px border `#e8e3db`, **20px radius**, shadow `rgba(0,0,0,0.06) 0 2px 12px`, padding 36×32.
+- Inputs: **10px radius**, padding 12×14. Buttons: **8px radius**, padding 12×22.
+- Field vertical rhythm: 22px between fields; 26px below each step header.
+
+### Components
+| Component | Resting state | Selected / active | Error |
+|---|---|---|---|
+| **Text / select / textarea** | white bg, `#e8e3db` border | orange border + focus ring | red border `#e5484d`, message shows below |
+| **Chip** (multi-select) | white, gray text, pill (999px radius) | orange bg, white text, weight 600 | group message shows if none picked |
+| **Option card** (single-select) | white, 12px radius, hollow radio dot | orange-tinted bg, orange border, filled dot | group message if none picked |
+| **Checkbox** | native, `accent-color` orange | checked | shared message under the group |
+| **Reassurance box** | cream bg, 12px radius, 14px UI-gray text | — | — |
+| **Progress bar** | gray track, orange fill, animates width 0.35s | — | — |
+
+---
+
+## 2. Page chrome
+
+### Header (sticky)
+- Background `rgba(255,255,255,0.97)` + `blur(10px)`, 1px bottom border.
+- Left — **wordmark:** `theNORMALschool` with **NORMAL** in weight 900 (rest 700), navy.
+- Right — tag: **`SUMMER PROGRAM · AGES 10–12`** (11px uppercase muted).
+
+### Hero (top of page, above the card)
+- Eyebrow: **`Summer 2026 Application`**
+- H1: **"Six days. One project your child actually cares about."**
+- Subhead: *"Tell us about your child so we can match them to a project they'll love — and a week where they'll surprise themselves. Takes about 12 minutes."*
+
+### Progress (between hero and card)
+- Orange fill bar = `currentStep / 8 × 100%`.
+- Left label = the current step's name; Right = **`Step N of 8`** (becomes `Complete` on the success screen).
+
+### Footer
+- *"theNORMALschool · Designed for Life · Your information is kept private and used only to plan your child's week."*
+
+### Navigation buttons (bottom of card)
+| Button | Label | Visibility |
+|---|---|---|
+| Back (ghost) | **`← Back`** | Hidden on step 1 |
+| Next (primary) | **`Continue →`** | Steps 1–7 |
+| Submit (primary) | **`Submit application →`** | Step 8 only |
+| (nav row) | hidden entirely | Success screen |
+
+---
+
+## 3. Layout & responsive
+- Single centered column, 720px max, 28px horizontal padding.
+- Two-up rows (`.row`) collapse to stacked single-column **below 560px** (e.g. DOB + gender, email + phone).
+- Option-card grid (`.opt-grid`, used for team/solo) is 2-up, collapses to 1-up below 560px.
+- Inputs are full-width and ≥44px tall for touch.
+- On every step change the page scrolls to top smoothly; on validation failure it scrolls to the first error.
+
+---
+
+## 4. Interaction & behavior
+
+| Behavior | Detail |
+|---|---|
+| **Multi-step** | 8 input steps + 1 success screen. Only one `.step` visible at a time; entry fades/slides in (0.3s). |
+| **Per-step validation** | `Continue` validates the current step only. If it fails, you stay on the step, fields/groups show errors, and the view scrolls to the first error. |
+| **Inline recovery** | Typing in an invalid field clears its error immediately; tapping a chip/option clears that group's error. |
+| **Age auto-calc** | On DOB change, computes age at the program reference date (2026-06-01) and prints **"Age at program start: N"** in orange. Outside 10–12 appends *"— note: program is designed for ages 10–12"** (a soft note, not a block). |
+| **Child-name personalization** | On reaching Step 6, the child's **preferred name** (or first name) is injected into the kicker, heading, and the success line. Falls back to "your child" / "you" if empty. |
+| **Submit** | Builds a structured payload + readable summary and triggers two downloads, then shows the success screen. |
+| **Downloads** | `summer-application_<child-name>.json` (grouped by spec sections A–H) and `summer-application_<child-name>_summary.txt` (human-readable). "Download again →" re-triggers both. |
+| **No backend** | Files download to the parent's device; copy directs them to email the file in. |
+
+---
+
+## 5. Voice & microcopy rules
+Carried from the brand guideline and applied throughout:
+- Always **"your child"** — never "student," "learner," "applicant" (in parent-facing copy).
+- **No edu-jargon** (no "holistic," "21st-century skills," "personalized learning," "Element," "MIAP," "aptitude"). Framework language never appears on screen.
+- Empathetic and direct, never legal-heavy or preachy. Reassurances are short and warm.
+- Primary CTAs end with **`→`**.
+- **Parent steps** (1–5, 7, 8) speak *about* the child. **Step 6** speaks *to* the child — second person, playful, "zero wrong answers."
+- Questions ask for **behavior, not labels** ("what do they actually do?" not "are they resilient?").
+- Required fields marked with an orange **`*`**. Error messages are specific and friendly, never scolding.
+
+---
+
+## 6. Full content inventory
+
+Legend: **R** = required · type in *italics* · `err:` = message shown when invalid.
+
+### Step 1 — "Your Child"
+- Kicker: **About your child** · H2: **Let's start with the basics** · Sub: *Just a few facts so we know who's joining us.*
+
+| Label | Type | R | Placeholder / hint · `err` |
+|---|---|---|---|
+| Child's full name | *text* | ✅ | `err:` Please enter your child's name. |
+| Preferred name / nickname | *text* | — | ph: What we'll call them |
+| Date of birth | *date* | ✅ | shows computed age line · `err:` Please enter a date of birth. |
+| Gender | *text* | — | ph: Optional — how they describe themselves |
+| Language(s) at home | *text* | ✅ | ph: e.g. English, Mongolian · `err:` Please tell us the home language. |
+| Current school & grade | *text* | ✅ | ph: School name, grade · `err:` Please enter school and grade. |
+| Session applying for | *select* | ✅ | Choose a session… / Session A — June 2026 / Session B — July 2026 / Session C — August 2026 / Not sure yet · `err:` Please choose a session. |
+
+### Step 2 — "Parent & Contact"
+- Kicker: **Parent & contact** · H2: **How we reach you** · Sub: *Your details for everything from confirmation to Saturday's showcase.*
+
+| Label | Type | R | Options / ph · `err` |
+|---|---|---|---|
+| Your full name | *text* | ✅ | `err:` Please enter your name. |
+| Relationship to child | *select* | ✅ | Choose… / Mother / Father / Guardian / Grandparent / Other · `err:` Please choose a relationship. |
+| Email | *email* | ✅ | `err:` Please enter a valid email. |
+| Mobile phone | *tel* | ✅ | `err:` Please enter a phone number. |
+| Emergency contact name | *text* | ✅ | `err:` Please enter an emergency contact. |
+| Emergency contact phone | *tel* | ✅ | `err:` Please enter a phone number. |
+| Authorized pickup person(s) | *text* | — | ph: Anyone else allowed to collect your child |
+| How did you hear about us? | *select* | — | Choose… / Instagram / A friend / family / School / teacher / Web search / Event / Other |
+
+### Step 3 — "What Lights Them Up"  *(Element Layer 1 — parent)*
+- Kicker: **What lights your child up** · H2: **The things that come easily — and the things they love** · Sub: *Be specific and concrete. Not "good at art" — but "draws machines and how they connect."*
+- Reassurance: *These two are different on purpose. **What comes easily** and **what they love** aren't always the same thing — and both matter. Tell us what you actually see, not what you hope.*
+
+| Label | Type | R | Hint · `err` |
+|---|---|---|---|
+| What comes unusually easily? | *textarea* | ✅ | 1–2 specific things your child picks up faster or does with more ease than you'd expect for their age. What exactly do they do, and how do you know it comes easily? · `err:` Please describe at least one thing. |
+| What do they return to without being asked? | *textarea* | ✅ | What does your child do voluntarily, repeatedly, with no reward and no prompting? When did you last see them do it? · `err:` Please describe at least one thing. |
+| When do they lose track of time? | *textarea* | ✅ | Is there an activity where they resist stopping, forget meals, or have to be called several times? · `err:` Please tell us about this. |
+| The free-afternoon check | *textarea* | — | On a free afternoon — nothing scheduled, screens not the default — what does your child actually end up doing? |
+
+### Step 4 — "Reading Your Child"  *(Element Layer 2 — parent)*
+- Kicker: **Reading your child** · H2: **A little more context** · Sub: *This helps us read your child accurately — and avoid misreading them.*
+
+| Label | Type | R | Hint / options · `err` |
+|---|---|---|---|
+| When something is hard, what do they actually do? | *textarea* | ✅ | When they get a poor result or hit something difficult — what happens? Give a recent example. · `err:` Please share a recent example. |
+| What has your child had real access to? | *chips* | — | hint: Tap everything they've had genuine hands-on access to. — Camera / video · Computer / coding · Art materials · Musical instruments · Sports / athletics · Kitchen / cooking · Building / tools · Animals / nature · Performing / stage |
+| Anything they've wanted to try but never had the chance to? | *text* | — | ph: Optional |
+| Where do you see real spark? | *chips* | ✅ | hint: Tap any area where you see genuine energy — it's fine to pick several. — Building / mechanical · Visual / art · Words / story · Numbers / patterns · Social / people · Performing · Physical / movement · Nature / science · `err:` Please select at least one. |
+| Who do they light up around? | *textarea* | — | Any group or person your child comes alive with — or an interest they pursue harder with certain people? |
+| Anything they've dropped, hidden, or been steered away from? | *textarea* | — | Something they used to love and stopped, or hide, or were told wasn't for them. What happened? |
+| When are they most alert — and most drained? | *text* | — | hint: Roughly when in a normal day is your child most engaged, and when do they run flat? · ph: e.g. Sluggish mornings, comes alive after 4pm |
+
+### Step 5 — "How They Work"  *(MIAP pre-diagnosis — parent)*
+- Kicker: **How they work** · H2: **A few more about how they tick** · Sub: *There are no right answers here — honest beats impressive every time.*
+
+| Label | Type | R | Hint · `err` |
+|---|---|---|---|
+| Genuinely into it vs. just going along | *textarea* | ✅ | Can you tell the difference between when your child is really into something and when they're just complying? Describe a moment of each. · `err:` Please share an example. |
+| How do they describe themselves? | *textarea* | — | In their own words, how does your child describe what they're good at or who they are? (If they wouldn't, just say so.) |
+| When they hit an obstacle and you're not there | *textarea* | ✅ | What happens when your child runs into a problem and no adult is around to help? · `err:` Please tell us what happens. |
+| Have they ever cared that something was useful to someone else? | *textarea* | — | Not just fun for them — actually useful to another person. An example, if there is one. |
+
+### Step 6 — "Just for You"  *(Personalization — the child's own voice)*
+- Kicker: **Now — over to `[child's name]`** · H2: **This part is just for `[child's name]`** · Sub: *Hey! These questions are for you — the kid joining us. There are zero wrong answers. Just say what's true.*
+- Reassurance: ***Parents:** let your child answer this part in their own words — you can type for them, but the answers should be theirs.*
+
+| Label | Type | R | Hint / options · `err` |
+|---|---|---|---|
+| What are you really into right now? | *chips* | ✅ | hint: Tap everything that's you. — Gaming · Drawing · Sports · Music · Coding · Animals · Cooking · Building stuff · Reading · Science · Dance · Film / video · Fashion · Cars · Space · `err:` Pick at least one! |
+| What do you do for fun on weekends or after school? | *textarea* | — | |
+| Something you made that you were proud of | *textarea* | ✅ | A video, a Minecraft build, a comic, a recipe, a fort — anything. What was the best part of making it? · `err:` Tell us about one thing you made! |
+| Favorite YouTube channel(s) or creators | *text* | — | |
+| Favorite game(s) | *text* | — | |
+| Favorite book, comic, or show | *text* | — | |
+| Someone who's really cool at what they do | *text* | — | ph: A creator, athlete, scientist, anyone |
+| If you could spend a whole week making ONE thing, what would it be? | *textarea* | — | |
+| Pick the one that sounds most fun | *radio* | ✅ | Be on camera, telling a story people actually watch · Film and edit a video until it's exactly right · Invent the rules of a game and decide how it works · Build a game's world, characters, and look · Cook something people line up to buy · Fix a real problem in your neighborhood · Build a tool that explains something cool · `err:` Pick the one that sounds most fun! |
+| What kind of stuff do you care about? | *chips* | — | Helping people · Animals · The planet · Fairness · Building things that work · Making people laugh · Winning / competing · How things work · Making beautiful things |
+| Do you like working with a team or on your own? | *radio (2-up grid)* | ✅ | With a team · On my own · Depends on the day · `err:` Pick one! |
+| When you work with other people, what part do you grab first? | *text* | — | |
+
+### Step 7 — "Wellbeing & Logistics"
+- Kicker: **So we can support your child well** · H2: **A few things that help us care for them** · Sub: *This stays with our team. The more specific you are, the better we can show up for your child.*
+
+| Label | Type | R | Hint / options · `err` |
+|---|---|---|---|
+| How does your child handle frustration, specifically? | *textarea* | ✅ | Not challenge in general — what does frustration actually look like for your child, and what helps? · `err:` Please tell us about this. |
+| Any conditions, sensitivities, or accommodations we should know about? | *textarea* | — | ph: Diagnosed conditions, sensory sensitivities, learning accommodations… |
+| Any significant recent life events? | *text* | — | ph: Loss, family change, school move — optional |
+| What does anxiety or feeling overwhelmed look like for them? | *textarea* | — | If it applies — so we recognize it early and respond well. |
+| Allergies, dietary restrictions, or medical notes | *textarea* | ✅ | Important for our Food Business project and snacks. Write "None" if none apply. · `err:` Please tell us, or write "None". |
+| Does your child know anyone else enrolling? | *text* | — | ph: Names, if any |
+| How do they handle disagreement with peers? | *text* | — | |
+| In a group, are they more comfortable… | *select* | — | Choose… / Leading / Contributing / Following / It varies |
+| Any peer conflicts we should avoid? | *text* | — | ph: Optional |
+| What do you hope your child gets from this week? | *textarea* | ✅ | `err:` We'd love to hear this. |
+| What have well-meaning adults gotten *wrong* about your child? | *textarea* | — | This genuinely helps us see them clearly. |
+| Does your child plan first, or dive in? | *select* | — | Choose… / Plans before starting / Dives in and figures it out / A mix of both |
+| Do they do better with… | *select* | — | Choose… / Clear structure / Open space / Somewhere in between |
+| T-shirt size | *select* | — | Choose… / Youth S / Youth M / Youth L / Adult S / Adult M |
+| Anything else you'd like us to know? | *textarea* | — | |
+
+### Step 8 — "Consent & Submit"
+- Kicker: **Almost done** · H2: **A couple of confirmations** · Sub: *Then you're all set.*
+
+| Control | Copy | R |
+|---|---|---|
+| checkbox | I confirm my child's answers above are in their own words. | ✅ |
+| checkbox | I give permission for my child's project to be tested with real users during the week (Wednesday feedback day). | ✅ |
+| checkbox | I consent to photos/video of the showcase being used for program records and marketing. | ✅ |
+| checkbox | I agree to the program terms and liability waiver. | ✅ |
+| (group `err`) | Please confirm all four to submit. | |
+| Parent signature (type your full name) | *text* | ✅ · `err:` Please type your full name. |
+
+- Reassurance: *When you submit, your application downloads as a file to your device. **Please email it to us at apply@thenormalschool.com** (or it'll be collected automatically once our portal is live).*
+
+### Success screen — "Submitted"
+- Orange circular **✓** badge.
+- H2: **Thank you — application ready!**
+- Line 1: *We've put together everything you told us about **`[child's name]`**. Your application file has downloaded.*
+- Line 2 (muted): *Please email the downloaded file to **apply@thenormalschool.com**. We'll be in touch within a few days.*
+- Button: **`Download again →`**
+
+---
+
+## 7. Validation message index
+Quick reference of every error string, in encounter order:
+
+| # | Field / group | Message |
+|---|---|---|
+| 1 | Child's full name | Please enter your child's name. |
+| 2 | Date of birth | Please enter a date of birth. |
+| 3 | Language(s) at home | Please tell us the home language. |
+| 4 | School & grade | Please enter school and grade. |
+| 5 | Session | Please choose a session. |
+| 6 | Parent name | Please enter your name. |
+| 7 | Relationship | Please choose a relationship. |
+| 8 | Email | Please enter a valid email. |
+| 9 | Mobile phone / Emergency phone | Please enter a phone number. |
+| 10 | Emergency contact name | Please enter an emergency contact. |
+| 11 | Aptitude / Passion | Please describe at least one thing. |
+| 12 | Flow | Please tell us about this. |
+| 13 | Attitude | Please share a recent example. |
+| 14 | Domain spark (chips) | Please select at least one. |
+| 15 | Motivation | Please share an example. |
+| 16 | Agency | Please tell us what happens. |
+| 17 | Interests (chips) | Pick at least one! |
+| 18 | Proud making | Tell us about one thing you made! |
+| 19 | Dream project (radio) | Pick the one that sounds most fun! |
+| 20 | Team vs solo (radio) | Pick one! |
+| 21 | Frustration | Please tell us about this. |
+| 22 | Medical/dietary | Please tell us, or write "None". |
+| 23 | Parent hopes | We'd love to hear this. |
+| 24 | Consent group | Please confirm all four to submit. |
+| 25 | Signature | Please type your full name. |
+
+Email validity (field 8) is checked with `^[^\s@]+@[^\s@]+\.[^\s@]+$`.
+
+---
+
+## 8. Placeholders & known TODOs
+- **`apply@thenormalschool.com`** (Step 8 reassurance + success screen) is a placeholder address — swap for the real intake email.
+- **Sessions** (Step 1 dropdown) are placeholder dates — confirm real session names.
+- **No backend:** submissions download locally; copy reflects that.
+- **Pending — not yet in the form:** [Summer-Application-Data-Spec.md](../../intake/Summer-Application-Data-Spec.md) v1.1 adds **child (preference-framed) versions of Section C and Section E**. Those child C/E questions are *not* rendered in the current form yet — they'll be added once the spec change is confirmed. When added, this document's Step 3 and Step 5 inventories (and likely a new placement for the child's C/E questions, e.g. folded into Step 6) must be updated to match.
+
+---
+
+*Document version 1.0 — theNORMALschool internal use only.*
+*Describes: app/index.html (form as built). Brand: 00-Vision/Brand-Guideline.md.*
