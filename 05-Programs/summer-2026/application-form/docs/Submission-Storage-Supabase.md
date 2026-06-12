@@ -11,10 +11,10 @@ How the application form saves submissions to a database you control, instead of
 On submit, the form POSTs the structured application to a Supabase (Postgres) table. The success screen confirms the application was received. If the server can't be reached — or before you've configured it — the form **falls back** to downloading the file locally and asks the parent to email it, so a submission is never lost.
 
 ### Security model (why this is safe to ship in a static page)
-- The browser only ever holds the **anon / public** key. That is fine **by design**: the table has **Row Level Security (RLS)** enabled with an **INSERT-only** policy.
-- The anon key can therefore **add** an application but **cannot read, edit, or delete** anyone's submission. There is no `SELECT` policy for the public role.
+- The browser only ever holds the **publishable** key (`sb_publishable_…`; formerly the "anon / public" key). That is fine **by design**: the table has **Row Level Security (RLS)** enabled with an **INSERT-only** policy.
+- The publishable key authenticates as the `anon` role, so it can **add** an application but **cannot read, edit, or delete** anyone's submission. There is no `SELECT` policy for that role.
 - The team reads submissions only from the **Supabase dashboard** (which authenticates as you and bypasses RLS) — or, later, from a password-protected admin page using a server-side key.
-- **Never** put the `service_role` key in `index.html`. It bypasses RLS. It belongs only on a server.
+- **Never** put the **secret** key (`sb_secret_…`; formerly `service_role`) in `index.html`. It bypasses RLS. It belongs only on a server.
 
 This data is sensitive (minors' medical, wellbeing, and safeguarding details). See **Privacy & retention** below.
 
@@ -57,12 +57,12 @@ create policy "anon can submit applications"
 ```
 
 ### 3. Wire up the form
-1. In the dashboard: **Project Settings → API**.
-2. Copy the **Project URL** and the **anon / public** key (the one labelled `anon` `public`, *not* `service_role`).
+1. **Project URL:** **Project Settings → Data API** → **Project URL**. It is `https://<project-ref>.supabase.co` — the `<project-ref>` is also the last segment of your dashboard address bar (`.../dashboard/project/<project-ref>`).
+2. **Key:** **Project Settings → API keys** → copy the **Publishable key** (`sb_publishable_…`). Do **not** use the **Secret key** (`sb_secret_…`). *(If you only see a "Legacy API keys" section, the `anon` key there works too.)*
 3. In [`app/index.html`](../app/index.html), fill in the config block:
    ```js
-   var SUPABASE_URL = 'https://abcd1234.supabase.co';
-   var SUPABASE_ANON_KEY = 'eyJhbGciOi...';   // the anon / public key
+   var SUPABASE_URL = 'https://abcd1234xyz.supabase.co';
+   var SUPABASE_KEY = 'sb_publishable_...';   // the publishable key — safe in the browser
    var SUPABASE_TABLE = 'applications';
    ```
 
