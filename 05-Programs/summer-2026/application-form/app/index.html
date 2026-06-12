@@ -42,7 +42,7 @@
     padding: 14px 28px;
   }
   .header-inner {
-    max-width: 960px; margin: 0 auto;
+    max-width: 1040px; margin: 0 auto;
     display: flex; align-items: center; justify-content: space-between;
   }
   .wordmark {
@@ -56,7 +56,47 @@
   }
 
   /* ---------- Layout ---------- */
-  .wrap { max-width: 720px; margin: 0 auto; padding: 40px 28px 80px; }
+  .page {
+    max-width: 1040px; margin: 0 auto;
+    display: flex; align-items: flex-start; gap: 36px;
+    padding: 40px 28px 80px;
+  }
+  .content { flex: 1 1 auto; min-width: 0; max-width: 720px; }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar { flex: 0 0 232px; position: sticky; top: 80px; }
+  .side-title {
+    font-weight: 600; font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--muted); margin: 0 0 14px 10px;
+  }
+  .side-nav { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+  .side-item {
+    display: flex; align-items: center; gap: 11px; width: 100%;
+    padding: 9px 10px; border: none; background: transparent;
+    border-radius: 10px; cursor: pointer; text-align: left;
+    font-family: inherit; font-size: 13.5px; font-weight: 500; line-height: 1.3;
+    color: var(--muted);
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .side-item .num {
+    flex: 0 0 22px; width: 22px; height: 22px; border-radius: 999px;
+    border: 1.5px solid var(--border); background: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: var(--muted);
+    transition: all 0.15s ease;
+  }
+  .side-item:not(:disabled):hover { background: rgba(17, 17, 17, 0.04); color: var(--navy); }
+  .side-item.done { color: var(--navy); }
+  .side-item.done .num { background: var(--orange); border-color: var(--orange); color: #fff; }
+  .side-item.current { color: var(--navy); font-weight: 700; background: rgba(255, 117, 31, 0.08); }
+  .side-item.current .num { border-color: var(--orange); color: var(--orange); }
+  .side-item:disabled { cursor: default; }
+
+  @media (max-width: 920px) {
+    .page { display: block; max-width: 720px; }
+    .sidebar { display: none; }
+    .content { max-width: none; }
+  }
 
   .hero { text-align: center; margin-bottom: 36px; }
   .hero .eyebrow {
@@ -127,6 +167,28 @@
   .substep::before {
     content: ''; flex: 0 0 16px; width: 16px; height: 3px;
     border-radius: 2px; background: var(--orange);
+  }
+
+  /* ---------- Voice input (dictation) ---------- */
+  .ta-wrap { position: relative; }
+  .ta-wrap textarea { padding-right: 48px; }
+  .mic {
+    position: absolute; top: 8px; right: 8px;
+    width: 34px; height: 34px; border-radius: 999px;
+    border: 1px solid var(--border); background: var(--white); color: var(--muted);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; padding: 0;
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+  }
+  .mic:hover { border-color: var(--orange); color: var(--orange); }
+  .mic svg { width: 16px; height: 16px; display: block; }
+  .mic.listening {
+    background: var(--orange); border-color: var(--orange); color: #fff;
+    animation: micpulse 1.3s ease-in-out infinite;
+  }
+  @keyframes micpulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 117, 31, 0.4); }
+    50% { box-shadow: 0 0 0 7px rgba(255, 117, 31, 0); }
   }
 
   /* ---------- Fields ---------- */
@@ -256,7 +318,13 @@
   </div>
 </header>
 
-<div class="wrap">
+<div class="page">
+  <aside class="sidebar">
+    <div class="side-title">Your application</div>
+    <ol class="side-nav" id="sideNav"></ol>
+  </aside>
+
+  <main class="content">
   <div class="hero">
     <div class="eyebrow">Summer 2026 Application</div>
     <h1>Six days. One project your child actually cares about.</h1>
@@ -284,7 +352,7 @@
 
         <div class="field">
           <label>Child's full name <span class="req">*</span></label>
-          <input type="text" name="childName" data-required />
+          <input type="text" name="childName" data-required placeholder="e.g. Ariunaa Batbayar" />
           <div class="err-msg">Please enter your child's name.</div>
         </div>
 
@@ -344,7 +412,7 @@
         <div class="row">
           <div class="field">
             <label>Your full name <span class="req">*</span></label>
-            <input type="text" name="parentName" data-required />
+            <input type="text" name="parentName" data-required placeholder="e.g. Sarangerel Dorj" />
             <div class="err-msg">Please enter your name.</div>
           </div>
           <div class="field">
@@ -361,12 +429,12 @@
         <div class="row">
           <div class="field">
             <label>Email <span class="req">*</span></label>
-            <input type="email" name="email" data-required />
+            <input type="email" name="email" data-required placeholder="you@example.com" />
             <div class="err-msg">Please enter a valid email.</div>
           </div>
           <div class="field">
             <label>Mobile phone <span class="req">*</span></label>
-            <input type="tel" name="phone" data-required />
+            <input type="tel" name="phone" data-required placeholder="e.g. 8811 2233" />
             <div class="err-msg">Please enter a phone number.</div>
           </div>
         </div>
@@ -374,12 +442,12 @@
         <div class="row">
           <div class="field">
             <label>Emergency contact name <span class="req">*</span></label>
-            <input type="text" name="emergencyName" data-required />
+            <input type="text" name="emergencyName" data-required placeholder="e.g. Bold Dorj (uncle)" />
             <div class="err-msg">Please enter an emergency contact.</div>
           </div>
           <div class="field">
             <label>Emergency contact phone <span class="req">*</span></label>
-            <input type="tel" name="emergencyPhone" data-required />
+            <input type="tel" name="emergencyPhone" data-required placeholder="e.g. 9911 4455" />
             <div class="err-msg">Please enter a phone number.</div>
           </div>
         </div>
@@ -403,8 +471,8 @@
       <!-- ===== STEP 3: ELEMENT LAYER 1 (Section C) ===== -->
       <section class="step" data-step="3" data-label="What Lights Them Up">
         <div class="step-head">
-          <div class="kicker">What lights your child up</div>
-          <h2>The things that come easily — and the things they love</h2>
+          <div class="kicker">What lights <span class="kid">your child</span> up</div>
+          <h2>The things that come easily — and the things <span class="kid">your child</span> loves</h2>
           <p>Be specific and concrete. Not "good at art" — but "draws machines and how they connect."</p>
         </div>
         <div class="reassure">
@@ -413,49 +481,49 @@
 
         <div class="field">
           <label>What comes unusually easily? <span class="req">*</span></label>
-          <div class="hint">1–2 specific things your child picks up faster or does with more ease than you'd expect for their age. What exactly do they do, and how do you know it comes easily?</div>
-          <textarea name="aptitude" data-required></textarea>
+          <div class="hint">1–2 specific things <span class="kid">your child</span> picks up faster or does with more ease than you'd expect for their age. What exactly do they do, and how do you know it comes easily?</div>
+          <textarea name="aptitude" data-required placeholder="e.g. Picks up new card games after one round; rebuilds Lego sets from memory without the instructions"></textarea>
           <div class="err-msg">Please describe at least one thing.</div>
         </div>
 
         <div class="field">
-          <label>What do they return to without being asked? <span class="req">*</span></label>
-          <div class="hint">What does your child do voluntarily, repeatedly, with no reward and no prompting? When did you last see them do it?</div>
-          <textarea name="passion" data-required></textarea>
+          <label>What does <span class="kid">your child</span> return to without being asked? <span class="req">*</span></label>
+          <div class="hint">What does <span class="kid">your child</span> do voluntarily, repeatedly, with no reward and no prompting? When did you last see them do it?</div>
+          <textarea name="passion" data-required placeholder="e.g. Draws comics most evenings — did it again last night without anyone suggesting it"></textarea>
           <div class="err-msg">Please describe at least one thing.</div>
         </div>
 
         <div class="field">
-          <label>When do they lose track of time? <span class="req">*</span></label>
-          <div class="hint">Is there an activity where they resist stopping, forget meals, or have to be called several times?</div>
-          <textarea name="flow" data-required></textarea>
+          <label>When does <span class="kid">your child</span> lose track of time? <span class="req">*</span></label>
+          <div class="hint">Is there an activity where <span class="kid">your child</span> resists stopping, forgets meals, or has to be called several times?</div>
+          <textarea name="flow" data-required placeholder="e.g. Building in Minecraft — we call three times before dinner lands"></textarea>
           <div class="err-msg">Please tell us about this.</div>
         </div>
 
         <div class="field">
           <label>The free-afternoon check</label>
-          <div class="hint">On a free afternoon — nothing scheduled, screens not the default — what does your child actually end up doing?</div>
-          <textarea name="freeChoice"></textarea>
+          <div class="hint">On a free afternoon — nothing scheduled, screens not the default — what does <span class="kid">your child</span> actually end up doing?</div>
+          <textarea name="freeChoice" placeholder="e.g. Ends up outside building a den, or curled up reading"></textarea>
         </div>
       </section>
 
       <!-- ===== STEP 4: ELEMENT LAYER 2 (Section D) ===== -->
       <section class="step" data-step="4" data-label="Reading Your Child">
         <div class="step-head">
-          <div class="kicker">Reading your child</div>
+          <div class="kicker">Reading <span class="kid">your child</span></div>
           <h2>A little more context</h2>
-          <p>This helps us read your child accurately — and avoid misreading them.</p>
+          <p>This helps us read <span class="kid">your child</span> accurately — and avoid misreading them.</p>
         </div>
 
         <div class="field">
-          <label>When something is hard, what do they actually do? <span class="req">*</span></label>
+          <label>When something is hard, what does <span class="kid">your child</span> actually do? <span class="req">*</span></label>
           <div class="hint">When they get a poor result or hit something difficult — what happens? Give a recent example.</div>
-          <textarea name="attitude" data-required></textarea>
+          <textarea name="attitude" data-required placeholder="e.g. Gets frustrated and walks away, but comes back and tries a new way after a break"></textarea>
           <div class="err-msg">Please share a recent example.</div>
         </div>
 
         <div class="field">
-          <div class="field-label">What has your child had real access to?</div>
+          <div class="field-label">What has <span class="kid">your child</span> had real access to?</div>
           <div class="hint">Tap everything they've had genuine hands-on access to.</div>
           <div class="chips" data-chips="opportunity">
             <span class="chip">Camera / video</span>
@@ -472,7 +540,7 @@
 
         <div class="field">
           <label>Anything they've wanted to try but never had the chance to?</label>
-          <input type="text" name="opportunityGap" placeholder="Optional" />
+          <input type="text" name="opportunityGap" placeholder="e.g. Always asks for a real camera — optional" />
         </div>
 
         <div class="field">
@@ -492,20 +560,20 @@
         </div>
 
         <div class="field">
-          <label>Who do they light up around?</label>
-          <div class="hint">Any group or person your child comes alive with — or an interest they pursue harder with certain people?</div>
-          <textarea name="tribe"></textarea>
+          <label>Who does <span class="kid">your child</span> light up around?</label>
+          <div class="hint">Any group or person <span class="kid">your child</span> comes alive with — or an interest they pursue harder with certain people?</div>
+          <textarea name="tribe" placeholder="e.g. Comes alive with the older cousins; talks non-stop about football with one friend"></textarea>
         </div>
 
         <div class="field">
           <label>Anything they've dropped, hidden, or been steered away from?</label>
           <div class="hint">Something they used to love and stopped, or hide, or were told wasn't for them. What happened?</div>
-          <textarea name="suppression"></textarea>
+          <textarea name="suppression" placeholder="e.g. Loved singing, went quiet about it after being teased at school"></textarea>
         </div>
 
         <div class="field">
-          <label>When are they most alert — and most drained?</label>
-          <div class="hint">Roughly when in a normal day is your child most engaged, and when do they run flat?</div>
+          <label>When is <span class="kid">your child</span> most alert — and most drained?</label>
+          <div class="hint">Roughly when in a normal day is <span class="kid">your child</span> most engaged, and when do they run flat?</div>
           <input type="text" name="energy" placeholder="e.g. Sluggish mornings, comes alive after 4pm" />
         </div>
       </section>
@@ -513,35 +581,35 @@
       <!-- ===== STEP 5: MIAP PRE-DIAGNOSIS (Section E) ===== -->
       <section class="step" data-step="5" data-label="How They Work">
         <div class="step-head">
-          <div class="kicker">How they work</div>
-          <h2>A few more about how they tick</h2>
+          <div class="kicker">How <span class="kid">your child</span> works</div>
+          <h2>A few more about how <span class="kid">your child</span> ticks</h2>
           <p>There are no right answers here — honest beats impressive every time.</p>
         </div>
 
         <div class="field">
           <label>Genuinely into it vs. just going along <span class="req">*</span></label>
-          <div class="hint">Can you tell the difference between when your child is really into something and when they're just complying? Describe a moment of each.</div>
-          <textarea name="miapMotivation" data-required></textarea>
+          <div class="hint">Can you tell the difference between when <span class="kid">your child</span> is really into something and when they're just complying? Describe a moment of each.</div>
+          <textarea name="miapMotivation" data-required placeholder="e.g. Eyes light up and time disappears when drawing; goes through the motions with homework"></textarea>
           <div class="err-msg">Please share an example.</div>
         </div>
 
         <div class="field">
-          <label>How do they describe themselves?</label>
-          <div class="hint">In their own words, how does your child describe what they're good at or who they are? (If they wouldn't, just say so.)</div>
-          <textarea name="miapIdentity"></textarea>
+          <label>How does <span class="kid">your child</span> describe themselves?</label>
+          <div class="hint">In their own words, how does <span class="kid">your child</span> describe what they're good at or who they are? (If they wouldn't, just say so.)</div>
+          <textarea name="miapIdentity" placeholder="e.g. &quot;I'm the artist&quot; — or wouldn't really say, gets shy about it"></textarea>
         </div>
 
         <div class="field">
-          <label>When they hit an obstacle and you're not there <span class="req">*</span></label>
-          <div class="hint">What happens when your child runs into a problem and no adult is around to help?</div>
-          <textarea name="miapAgency" data-required></textarea>
+          <label>When <span class="kid">your child</span> hits an obstacle and you're not there <span class="req">*</span></label>
+          <div class="hint">What happens when <span class="kid">your child</span> runs into a problem and no adult is around to help?</div>
+          <textarea name="miapAgency" data-required placeholder="e.g. Searches YouTube for how to fix it; or stops and waits until someone helps"></textarea>
           <div class="err-msg">Please tell us what happens.</div>
         </div>
 
         <div class="field">
-          <label>Have they ever cared that something was useful to someone else?</label>
+          <label>Has <span class="kid">your child</span> ever cared that something was useful to someone else?</label>
           <div class="hint">Not just fun for them — actually useful to another person. An example, if there is one.</div>
-          <textarea name="miapPurpose"></textarea>
+          <textarea name="miapPurpose" placeholder="e.g. Made a birthday card &quot;so Grandma would feel special&quot;"></textarea>
         </div>
       </section>
 
@@ -574,23 +642,23 @@
         <div class="field">
           <label>A new kid sits next to you and asks, "So what are you all about?"</label>
           <div class="hint">What would you tell them?</div>
-          <textarea name="childDescribe"></textarea>
+          <textarea name="childDescribe" placeholder="e.g. I'm really into drawing and football, and I love animals"></textarea>
         </div>
 
         <div class="field">
           <label>Is there something that feels easy for you — but other kids seem to find hard?</label>
           <div class="hint">What is it?</div>
-          <textarea name="childComesEasily"></textarea>
+          <textarea name="childComesEasily" placeholder="e.g. Figuring out how a game works without reading the rules"></textarea>
         </div>
 
         <div class="field">
           <label>What do you do just for fun — that nobody tells you to do?</label>
-          <textarea name="childFunFreely"></textarea>
+          <textarea name="childFunFreely" placeholder="e.g. Make up comics, build stuff, mess around with my football skills"></textarea>
         </div>
 
         <div class="field">
           <label>Is there something you do where you look up and a LOT of time has gone by?</label>
-          <textarea name="childLosesTime"></textarea>
+          <textarea name="childLosesTime" placeholder="e.g. When I'm drawing — suddenly it's dinner time"></textarea>
         </div>
 
         <div class="substep">When you make stuff</div>
@@ -598,24 +666,24 @@
         <div class="field">
           <label>Something you made that you were proud of <span class="req">*</span></label>
           <div class="hint">A video, a Minecraft build, a comic, a recipe, a fort — anything. What was the best part of making it?</div>
-          <textarea name="proudMaking" data-required></textarea>
+          <textarea name="proudMaking" data-required placeholder="e.g. A comic book I finished — the best part was drawing the bad guy"></textarea>
           <div class="err-msg">Tell us about one thing you made!</div>
         </div>
 
         <div class="field">
           <label>Something you started making or doing all on your own — just because you wanted to?</label>
-          <textarea name="childStarted"></textarea>
+          <textarea name="childStarted" placeholder="e.g. I started a little YouTube channel for my drawings"></textarea>
         </div>
 
         <div class="field">
           <label>When something you're making stops working, what do you usually do?</label>
-          <textarea name="childStuck"></textarea>
+          <textarea name="childStuck" placeholder="e.g. I try a different way, or look it up until I figure it out"></textarea>
         </div>
 
         <div class="field">
           <label>Have you ever made something to help someone else — or that someone else used?</label>
           <div class="hint">What was it?</div>
-          <textarea name="childHelped"></textarea>
+          <textarea name="childHelped" placeholder="e.g. I made a poster for my friend's lemonade stand"></textarea>
         </div>
 
         <div class="substep">Your favorites</div>
@@ -623,18 +691,18 @@
         <div class="row">
           <div class="field">
             <label>Favorite YouTube channel(s) or creators</label>
-            <input type="text" name="favYoutube" />
+            <input type="text" name="favYoutube" placeholder="e.g. MrBeast, DanTDM" />
           </div>
           <div class="field">
             <label>Favorite game(s)</label>
-            <input type="text" name="favGame" />
+            <input type="text" name="favGame" placeholder="e.g. Minecraft, Roblox" />
           </div>
         </div>
 
         <div class="row">
           <div class="field">
             <label>Favorite book, comic, or show</label>
-            <input type="text" name="favBook" />
+            <input type="text" name="favBook" placeholder="e.g. Dog Man, Bluey" />
           </div>
           <div class="field">
             <label>Someone who's really cool at what they do</label>
@@ -646,12 +714,12 @@
 
         <div class="field">
           <label>If today were totally free — no plans, screens not the default — what would you end up doing?</label>
-          <textarea name="childFreeDay"></textarea>
+          <textarea name="childFreeDay" placeholder="e.g. Build a fort, draw, go ride my bike with friends"></textarea>
         </div>
 
         <div class="field">
           <label>If you could spend a whole week making ONE thing, what would it be?</label>
-          <textarea name="makeAnything"></textarea>
+          <textarea name="makeAnything" placeholder="e.g. My own video game, or a giant cardboard city"></textarea>
         </div>
 
         <div class="field">
@@ -690,57 +758,57 @@
 
         <div class="field">
           <label>When you work with other people, what part do you grab first?</label>
-          <input type="text" name="teamRole" />
+          <input type="text" name="teamRole" placeholder="e.g. The drawing, the ideas, bossing the plan, the building" />
         </div>
       </section>
 
       <!-- ===== STEP 7: WELLBEING, SOCIAL & LOGISTICS (Section G) ===== -->
       <section class="step" data-step="7" data-label="Wellbeing & Logistics">
         <div class="step-head">
-          <div class="kicker">So we can support your child well</div>
+          <div class="kicker">So we can support <span class="kid">your child</span> well</div>
           <h2>A few things that help us care for them</h2>
-          <p>This stays with our team. The more specific you are, the better we can show up for your child.</p>
+          <p>This stays with our team. The more specific you are, the better we can show up for <span class="kid">your child</span>.</p>
         </div>
 
         <div class="field">
-          <label>How does your child handle frustration, specifically? <span class="req">*</span></label>
-          <div class="hint">Not challenge in general — what does frustration actually look like for your child, and what helps?</div>
-          <textarea name="frustration" data-required></textarea>
+          <label>How does <span class="kid">your child</span> handle frustration, specifically? <span class="req">*</span></label>
+          <div class="hint">Not challenge in general — what does frustration actually look like for <span class="kid">your child</span>, and what helps?</div>
+          <textarea name="frustration" data-required placeholder="e.g. Goes quiet and gives up; a short break and a calm question helps them restart"></textarea>
           <div class="err-msg">Please tell us about this.</div>
         </div>
 
         <div class="field">
           <label>Any conditions, sensitivities, or accommodations we should know about?</label>
-          <textarea name="accommodations" placeholder="Diagnosed conditions, sensory sensitivities, learning accommodations…"></textarea>
+          <textarea name="accommodations" placeholder="e.g. Mild ADHD; sensitive to loud rooms; needs instructions written down — or leave blank"></textarea>
         </div>
 
         <div class="field">
           <label>Any significant recent life events?</label>
-          <input type="text" name="lifeEvents" placeholder="Loss, family change, school move — optional" />
+          <input type="text" name="lifeEvents" placeholder="e.g. New sibling, moved schools last term — optional" />
         </div>
 
         <div class="field">
           <label>What does anxiety or feeling overwhelmed look like for them?</label>
           <div class="hint">If it applies — so we recognize it early and respond well.</div>
-          <textarea name="anxiety"></textarea>
+          <textarea name="anxiety" placeholder="e.g. Gets very quiet, picks at their sleeves, asks to leave the room"></textarea>
         </div>
 
         <div class="field">
           <label>Allergies, dietary restrictions, or medical notes <span class="req">*</span></label>
           <div class="hint">Important for our Food Business project and snacks. Write "None" if none apply.</div>
-          <textarea name="medical" data-required></textarea>
+          <textarea name="medical" data-required placeholder="e.g. Peanut allergy (carries an EpiPen); vegetarian — or write &quot;None&quot;"></textarea>
           <div class="err-msg">Please tell us, or write "None".</div>
         </div>
 
         <div class="field">
-          <label>Does your child know anyone else enrolling?</label>
-          <input type="text" name="knowsOthers" placeholder="Names, if any" />
+          <label>Does <span class="kid">your child</span> know anyone else enrolling?</label>
+          <input type="text" name="knowsOthers" placeholder="e.g. Best friend Tuya is also applying — names, if any" />
         </div>
 
         <div class="row">
           <div class="field">
             <label>How do they handle disagreement with peers?</label>
-            <input type="text" name="disagreement" />
+            <input type="text" name="disagreement" placeholder="e.g. Talks it out; or shuts down and walks off" />
           </div>
           <div class="field">
             <label>In a group, are they more comfortable…</label>
@@ -754,24 +822,24 @@
 
         <div class="field">
           <label>Any peer conflicts we should avoid?</label>
-          <input type="text" name="conflicts" placeholder="Optional" />
+          <input type="text" name="conflicts" placeholder="e.g. Fell out with a classmate recently — optional" />
         </div>
 
         <div class="field">
-          <label>What do you hope your child gets from this week? <span class="req">*</span></label>
-          <textarea name="hopes" data-required></textarea>
+          <label>What do you hope <span class="kid">your child</span> gets from this week? <span class="req">*</span></label>
+          <textarea name="hopes" data-required placeholder="e.g. To feel proud of something they built, and a bit more confident"></textarea>
           <div class="err-msg">We'd love to hear this.</div>
         </div>
 
         <div class="field">
-          <label>What have well-meaning adults gotten <em>wrong</em> about your child?</label>
+          <label>What have well-meaning adults gotten <em>wrong</em> about <span class="kid">your child</span>?</label>
           <div class="hint">This genuinely helps us see them clearly.</div>
-          <textarea name="adultsWrong"></textarea>
+          <textarea name="adultsWrong" placeholder="e.g. Teachers call them &quot;distracted&quot; — really they're bored when it's too easy"></textarea>
         </div>
 
         <div class="row">
           <div class="field">
-            <label>Does your child plan first, or dive in?</label>
+            <label>Does <span class="kid">your child</span> plan first, or dive in?</label>
             <select name="planStyle">
               <option value="">Choose…</option>
               <option>Plans before starting</option>
@@ -801,7 +869,7 @@
 
         <div class="field">
           <label>Anything else you'd like us to know?</label>
-          <textarea name="anythingElse"></textarea>
+          <textarea name="anythingElse" placeholder="Anything at all that would help us understand and support your child this week"></textarea>
         </div>
       </section>
 
@@ -815,12 +883,12 @@
 
         <label class="check">
           <input type="checkbox" name="ownWords" data-required-check />
-          <span>I confirm my child's answers above are in their own words.</span>
+          <span>I confirm <span class="kidposs">your child's</span> answers above are in their own words.</span>
         </label>
 
         <label class="check">
           <input type="checkbox" name="userTesting" data-required-check />
-          <span>I give permission for my child's project to be tested with real users during the week (Wednesday feedback day).</span>
+          <span>I give permission for <span class="kidposs">your child's</span> project to be tested with real users during the week (Wednesday feedback day).</span>
         </label>
 
         <label class="check">
@@ -836,7 +904,7 @@
 
         <div class="field" style="margin-top:20px;">
           <label>Parent signature (type your full name) <span class="req">*</span></label>
-          <input type="text" name="signature" data-required />
+          <input type="text" name="signature" data-required placeholder="Type your full name" />
           <div class="err-msg">Please type your full name.</div>
         </div>
 
@@ -849,11 +917,11 @@
       <section class="step" data-step="9" data-label="Submitted">
         <div class="success">
           <div class="mark">✓</div>
-          <h2>Thank you — application ready!</h2>
-          <p>We've put together everything you told us about <strong id="childName2">your child</strong>. Your application file has downloaded.</p>
-          <p style="font-size:14px;color:var(--muted);">Please email the downloaded file to <strong>apply@thenormalschool.com</strong>. We'll be in touch within a few days.</p>
+          <h2 id="successHead">Thank you — all done!</h2>
+          <p id="successLine1"><span id="sLead">We've received </span><strong id="childName2">your child</strong><span id="sTail">'s application.</span></p>
+          <p id="successLine2" style="font-size:14px;color:var(--muted);">We'll be in touch within a few days.</p>
           <div class="dl-row">
-            <button type="button" class="btn btn-primary" id="redownload">Download again →</button>
+            <button type="button" class="btn btn-ghost" id="redownload">Download a copy →</button>
           </div>
         </div>
       </section>
@@ -866,6 +934,7 @@
 
     </div>
   </form>
+  </main>
 </div>
 
 <footer>
@@ -874,6 +943,16 @@
 
 <script>
 (function () {
+  // ---------- Submission storage (Supabase) ----------
+  // Setup: create a free project at supabase.com, then run the SQL in
+  //   docs/Submission-Storage-Supabase.md to create the `applications` table + insert-only policy.
+  // Paste your Project URL and the *anon / public* key below. The anon key is safe to ship in the
+  // browser: Row Level Security limits it to INSERT only — it cannot read anyone's submission.
+  // Until these are filled in, the form falls back to downloading the file locally.
+  var SUPABASE_URL = 'https://YOUR-PROJECT.supabase.co';
+  var SUPABASE_ANON_KEY = 'YOUR-ANON-KEY';
+  var SUPABASE_TABLE = 'applications';
+
   var form = document.getElementById('appForm');
   var steps = Array.prototype.slice.call(form.querySelectorAll('.step'));
   var TOTAL = 8; // input steps (9 = success)
@@ -885,6 +964,52 @@
   var backBtn = document.getElementById('backBtn');
   var nextBtn = document.getElementById('nextBtn');
   var navBtns = document.getElementById('navBtns');
+
+  // ---------- Sidebar section navigation ----------
+  var sideNav = document.getElementById('sideNav');
+  var maxReached = 1;            // furthest step the user has validly reached
+  var sideItems = [];
+  steps.forEach(function (s) {
+    var idx = +s.dataset.step;
+    if (idx > TOTAL) return;     // skip the success screen
+    var li = document.createElement('li');
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'side-item';
+    btn.dataset.target = idx;
+    btn.innerHTML = '<span class="num">' + idx + '</span><span class="side-label"></span>';
+    btn.querySelector('.side-label').textContent = s.dataset.label;
+    btn.addEventListener('click', function () { goTo(idx); });
+    li.appendChild(btn);
+    sideNav.appendChild(li);
+    sideItems.push(btn);
+  });
+
+  function goTo(target) {
+    if (target === current || target > maxReached) return; // can't jump to a section you haven't reached
+    if (target > current) {                                // jumping forward — current step must still be valid
+      var el = steps.find(function (s) { return +s.dataset.step === current; });
+      if (el && !validateStep(el)) {
+        var firstErr = el.querySelector('.invalid, .err-msg.show');
+        if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+    }
+    show(target);
+  }
+
+  function updateSidebar() {
+    sideItems.forEach(function (btn) {
+      var idx = +btn.dataset.target;
+      var isCurrent = idx === current;
+      var done = idx < current || current > TOTAL;
+      var locked = idx > maxReached;
+      btn.classList.toggle('current', isCurrent);
+      btn.classList.toggle('done', done && !isCurrent);
+      btn.disabled = locked && !isCurrent;
+      btn.querySelector('.num').textContent = (done && !isCurrent) ? '✓' : idx;
+    });
+  }
 
   // ---------- Age calc ----------
   var dob = document.getElementById('dob');
@@ -927,15 +1052,28 @@
     if (err) err.classList.remove('show');
   }
 
-  // ---------- Personalize child's name into Step 6 ----------
-  function syncChildName() {
+  // ---------- Personalize the child's name throughout ----------
+  function kidDisplayName() {
     var n = (form.childName.value || '').trim();
     var preferred = (form.preferredName.value || '').trim();
-    var display = preferred || (n ? n.split(' ')[0] : '');
+    return preferred || (n ? n.split(' ')[0] : '');
+  }
+  function syncChildName() {
+    var display = kidDisplayName();
+    // Step 6 — child-facing, second person
     document.getElementById('childName1').textContent = display || 'you';
     document.getElementById('childKicker').textContent = display || 'your child';
     document.getElementById('childName2').textContent = display || 'your child';
+    // Parent-facing copy — the nickname (or a graceful fallback) everywhere else
+    var nm = display || 'your child';
+    var poss = display ? display + '’s' : 'your child’s';
+    form.querySelectorAll('.kid').forEach(function (el) { el.textContent = nm; });
+    form.querySelectorAll('.kidposs').forEach(function (el) { el.textContent = poss; });
   }
+  // Keep names live if the parent edits them and comes back
+  ['childName', 'preferredName'].forEach(function (nm) {
+    if (form.elements[nm]) form.elements[nm].addEventListener('input', syncChildName);
+  });
 
   // ---------- Validation ----------
   function validateStep(stepEl) {
@@ -1000,6 +1138,8 @@
   function show(step) {
     steps.forEach(function (s) { s.classList.toggle('active', +s.dataset.step === step); });
     current = step;
+    if (step <= TOTAL) maxReached = Math.max(maxReached, step);
+    updateSidebar();
 
     if (step > TOTAL) {
       // success screen
@@ -1020,7 +1160,7 @@
     backBtn.classList.toggle('hidden', step === 1);
     nextBtn.textContent = (step === TOTAL) ? 'Submit application →' : 'Continue →';
 
-    if (step === 6) syncChildName();
+    syncChildName();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -1287,13 +1427,136 @@
     }, 300);
   }
 
+  function isConfigured() {
+    return SUPABASE_URL.indexOf('YOUR-PROJECT') === -1 &&
+           SUPABASE_ANON_KEY.indexOf('YOUR-ANON-KEY') === -1;
+  }
+
+  // POST the application to Supabase. Resolves true on success, false on any failure
+  // (network, not-configured, server error) so the caller can fall back to a local download.
+  function sendToServer(payload) {
+    if (!isConfigured()) return Promise.resolve(false);
+    var record = {
+      child_name: payload.A_childBasicInfo.childName,
+      session: payload.A_childBasicInfo.session,
+      parent_email: payload.B_parentInfo.email,
+      payload: payload
+    };
+    return fetch(SUPABASE_URL + '/rest/v1/' + SUPABASE_TABLE, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(record)
+    }).then(function (r) { return r.ok; }).catch(function () { return false; });
+  }
+
+  function setSubmitState(state) {
+    var head = document.getElementById('successHead');
+    var lead = document.getElementById('sLead');
+    var tail = document.getElementById('sTail');
+    var line2 = document.getElementById('successLine2');
+    if (state === 'sending') {
+      head.textContent = 'Thank you — almost there…';
+      lead.textContent = 'Sending ';
+      tail.textContent = '’s application…';
+      line2.textContent = 'Just a moment while we save it.';
+    } else if (state === 'online') {
+      head.textContent = 'Thank you — all done!';
+      lead.textContent = 'We’ve received ';
+      tail.textContent = '’s application. ✓';
+      line2.textContent = 'It’s safely saved with our team — we’ll be in touch within a few days.';
+    } else { // fallback — couldn't reach the server
+      head.textContent = 'Thank you — application ready!';
+      lead.textContent = 'We’ve saved ';
+      tail.textContent = '’s application to your device.';
+      line2.innerHTML = 'We couldn’t reach our server just now, so please email the downloaded file to <strong>apply@thenormalschool.com</strong>. We’ll be in touch within a few days.';
+    }
+  }
+
   function submitForm() {
     lastPayload = buildPayload();
-    doDownloads();
     show(TOTAL + 1);
+    setSubmitState('sending');
+    sendToServer(lastPayload).then(function (ok) {
+      if (ok) {
+        setSubmitState('online');
+      } else {
+        setSubmitState('fallback');
+        doDownloads();
+      }
+    });
   }
 
   document.getElementById('redownload').addEventListener('click', doDownloads);
+
+  // ---------- Voice input (dictation) on every textarea ----------
+  (function () {
+    var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) return; // browser has no Web Speech API — silently skip, typing still works
+
+    var MIC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>';
+
+    var rec = null, activeTa = null, activeBtn = null, baseText = '';
+
+    function stop() {
+      if (activeBtn) activeBtn.classList.remove('listening');
+      rec = null; activeTa = null; activeBtn = null; baseText = '';
+    }
+
+    function start(ta, btn) {
+      rec = new SR();
+      rec.lang = navigator.language || 'en-US';
+      rec.interimResults = true;
+      rec.continuous = true;
+      activeTa = ta; activeBtn = btn;
+      baseText = ta.value;
+      btn.classList.add('listening');
+      btn.title = 'Tap to stop';
+      ta.focus();
+      rec.onresult = function (e) {
+        var txt = '';
+        for (var i = 0; i < e.results.length; i++) { txt += e.results[i][0].transcript; }
+        var sep = baseText && !/\s$/.test(baseText) ? ' ' : '';
+        ta.value = baseText + sep + txt;
+        ta.dispatchEvent(new Event('input', { bubbles: true }));
+      };
+      rec.onerror = stop;
+      rec.onend = stop;
+      try { rec.start(); } catch (err) { stop(); }
+    }
+
+    form.querySelectorAll('textarea').forEach(function (ta) {
+      var wrap = document.createElement('div');
+      wrap.className = 'ta-wrap';
+      ta.parentNode.insertBefore(wrap, ta);
+      wrap.appendChild(ta);
+
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'mic';
+      btn.title = 'Tap to talk';
+      btn.setAttribute('aria-label', 'Dictate your answer with your voice');
+      btn.innerHTML = MIC;
+      wrap.appendChild(btn);
+
+      btn.addEventListener('click', function () {
+        if (rec) {                       // something is already recording
+          var wasThis = activeBtn === btn;
+          var old = rec;
+          old.onend = null; old.onerror = null; // detach so its async end can't clobber a new session
+          old.stop();
+          stop();                        // clear state + drop the listening glow from the old button
+          if (!wasThis) start(ta, btn);  // tapping a different field switches dictation to it
+          return;
+        }
+        start(ta, btn);
+      });
+    });
+  })();
 
   // init
   show(1);
