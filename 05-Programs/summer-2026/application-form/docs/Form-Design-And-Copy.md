@@ -55,6 +55,7 @@ Focus ring: `0 0 0 3px rgba(255,117,31,0.12)` with `border-color: orange`.
 | **Checkbox** | native, `accent-color` orange | checked | shared message under the group |
 | **Reassurance box** | cream bg, 12px radius, 14px UI-gray text | — | — |
 | **Sub-section header** (`.substep`, Step 6 clusters) | navy 800 15px label preceded by a short orange accent bar | — | — |
+| **Mic / voice button** (`.mic`, every textarea) | 34px circle, top-right inside the textarea, muted outline + mic glyph | orange fill, white glyph, pulsing ring while dictating | — |
 | **Progress bar** | gray track, orange fill, animates width 0.35s | — | — |
 
 ---
@@ -71,9 +72,16 @@ Focus ring: `0 0 0 3px rgba(255,117,31,0.12)` with `border-color: orange`.
 - H1: **"Six days. One project your child actually cares about."**
 - Subhead: *"Tell us about your child so we can match them to a project they'll love — and a week where they'll surprise themselves. Takes about 12 minutes."*
 
+### Sidebar (left, desktop only)
+- A sticky left column (`.sidebar`, 232px) titled **`Your application`**, listing all 8 sections by name (built from each step's `data-label`).
+- Each item shows a status pill: **done** = orange filled circle with a ✓, **current** = orange-ringed number on a soft orange highlight, **upcoming** = muted number, disabled.
+- **Clickable only up to the furthest section reached.** Tapping a completed/earlier section jumps straight to it; jumping *forward* to an already-reached section first re-validates the current step (same gate as `Continue`); upcoming sections are non-interactive until unlocked.
+- **Hidden below 920px** — the layout collapses to the single 720px column and the progress bar becomes the sole indicator.
+
 ### Progress (between hero and card)
 - Orange fill bar = `currentStep / 8 × 100%`.
 - Left label = the current step's name; Right = **`Step N of 8`** (becomes `Complete` on the success screen).
+- Shown at all widths; it's the primary progress indicator on mobile (where the sidebar is hidden) and complements the sidebar on desktop.
 
 ### Footer
 - *"theNORMALschool · Designed for Life · Your information is kept private and used only to plan your child's week."*
@@ -89,7 +97,9 @@ Focus ring: `0 0 0 3px rgba(255,117,31,0.12)` with `border-color: orange`.
 ---
 
 ## 3. Layout & responsive
-- Single centered column, 720px max, 28px horizontal padding.
+- Two-column on desktop: a sticky **232px sidebar** + the **720px content column** (hero, progress, form card), centered as a group within a 1040px `.page`. The sticky header aligns to the same 1040px width.
+- **Below 920px** the sidebar is hidden and the content column reverts to a single centered 720px column.
+- Within the content column, 28px horizontal padding.
 - Two-up rows (`.row`) collapse to stacked single-column **below 560px** (e.g. DOB + gender, email + phone).
 - Option-card grid (`.opt-grid`, used for team/solo) is 2-up, collapses to 1-up below 560px.
 - Inputs are full-width and ≥44px tall for touch.
@@ -105,16 +115,18 @@ Focus ring: `0 0 0 3px rgba(255,117,31,0.12)` with `border-color: orange`.
 | **Per-step validation** | `Continue` validates the current step only. If it fails, you stay on the step, fields/groups show errors, and the view scrolls to the first error. |
 | **Inline recovery** | Typing in an invalid field clears its error immediately; tapping a chip/option clears that group's error. |
 | **Age auto-calc** | On DOB change, computes age at the program reference date (2026-06-01) and prints **"Age at program start: N"** in orange. Outside 10–12 appends *"— note: program is designed for ages 10–12"** (a soft note, not a block). |
-| **Child-name personalization** | On reaching Step 6, the child's **preferred name** (or first name) is injected into the kicker, heading, and the success line. Falls back to "your child" / "you" if empty. |
+| **Child-name personalization** | The child's **preferred name** (or first name from "full name") is injected **throughout** the form, not just Step 6. Parent-facing copy uses `.kid` spans (the name as subject/object) and `.kidposs` spans (the possessive, e.g. *Aru's*); Step 6 uses the second-person id-spans (`childName1` / `childKicker` / `childName2`). The name is recomputed on **every** step change and live as the parent types the name fields. Graceful fallback to "your child" / "your child's" / "you" when empty, so verbs around a `.kid` span are written singular and read correctly either way. |
+| **Voice input (dictation)** | Every `textarea` gets a mic button (injected by JS). Tapping it starts Web Speech API dictation (`SpeechRecognition` / `webkitSpeechRecognition`); recognized text is **appended** to whatever is already typed, and the field's validation error clears as it fills. Tapping again (or tapping another field's mic) stops/switches. If the browser lacks the API, no button is shown and typing works as normal. Recognition language defaults to the browser's `navigator.language`. |
 | **Submit** | Builds a structured payload + readable summary and triggers two downloads, then shows the success screen. |
 | **Downloads** | `summer-application_<child-name>.json` (grouped by spec sections A–H; sections C and E each nest `parent` + `child` sub-objects with a cross-read `note`) and `summer-application_<child-name>_summary.txt` (human-readable, parent and child reports printed side by side under each of Element Layer 1 and MIAP). "Download again →" re-triggers both. |
-| **No backend** | Files download to the parent's device; copy directs them to email the file in. |
+| **Submission storage** | On submit the form POSTs the application to a **Supabase** table (insert-only via RLS — see [`Submission-Storage-Supabase.md`](Submission-Storage-Supabase.md)) and the success screen confirms receipt. If Supabase isn't configured, or the POST fails, it **falls back** to downloading the JSON + summary locally and asks the parent to email it — so a submission is never lost. The success copy changes per state (*sending* → *received ✓* → *saved to your device / email it*). |
 
 ---
 
 ## 5. Voice & microcopy rules
 Carried from the brand guideline and applied throughout:
-- Always **"your child"** — never "student," "learner," "applicant" (in parent-facing copy).
+- **Use the child's name, not a category.** Once the name is entered (Step 1), parent-facing copy says **"Aru"** (the nickname), not "your child," "student," "learner," or "applicant." "your child" is only the fallback before a name exists. Pronouns (they/them/their) are kept where a second name mention would read repetitively.
+- Add a concrete **example placeholder** to every free-text field — `e.g. …` for parent fields, first-person kid examples in Step 6 — so parents/children see the kind of answer we want without it reading as a required format.
 - **No edu-jargon** (no "holistic," "21st-century skills," "personalized learning," "Element," "MIAP," "aptitude"). Framework language never appears on screen.
 - Empathetic and direct, never legal-heavy or preachy. Reassurances are short and warm.
 - Primary CTAs end with **`→`**.
@@ -127,6 +139,10 @@ Carried from the brand guideline and applied throughout:
 ## 6. Full content inventory
 
 Legend: **R** = required · type in *italics* · `err:` = message shown when invalid.
+
+> Two cross-cutting rules apply to the strings below and are **not** re-listed per row:
+> 1. **Name injection** — labels/hints written with "your child" / "your child's" carry a `.kid` / `.kidposs` span and render with the child's nickname once it's known (Step 3 onward). The wording here shows the empty-state fallback.
+> 2. **Placeholders** — every text input and textarea has an example placeholder (`e.g. …`). A representative set is shown; the form is the source of truth for exact placeholder strings.
 
 ### Step 1 — "Your Child"
 - Kicker: **About your child** · H2: **Let's start with the basics** · Sub: *Just a few facts so we know who's joining us.*
@@ -315,12 +331,17 @@ Email validity (field 8) is checked with `^[^\s@]+@[^\s@]+\.[^\s@]+$`.
 ---
 
 ## 8. Placeholders & known TODOs
-- **`apply@thenormalschool.com`** (Step 8 reassurance + success screen) is a placeholder address — swap for the real intake email.
+- **`apply@thenormalschool.com`** (Step 8 reassurance + fallback success copy) is a placeholder address — swap for the real intake email.
 - **Sessions** (Step 1 dropdown) are placeholder dates — confirm real session names.
-- **No backend:** submissions download locally; copy reflects that.
+- **Supabase not yet configured:** the `SUPABASE_URL` / `SUPABASE_ANON_KEY` in `index.html` are placeholders, so the form currently uses the local-download fallback. Fill them in per [`Submission-Storage-Supabase.md`](Submission-Storage-Supabase.md) to store submissions online.
+- **Dictation language:** voice input defaults to the browser's `navigator.language`. For Mongolian-speaking families on a browser set to English this will mis-transcribe — consider deriving the recognizer language from the "language(s) at home" field, or adding an explicit language toggle.
+- **Voice input is best-effort:** the Web Speech API is unavailable in some browsers (notably Firefox) and requires a one-time mic permission; the mic button is simply hidden where unsupported.
 
 ---
 
-*Document version 1.1 — theNORMALschool internal use only.*
+*Document version 1.4 — theNORMALschool internal use only.*
+*v1.4 — Submissions now POST to **Supabase** (insert-only RLS) with a local-download fallback; success copy reflects sending/received/fallback state. Setup in [`Submission-Storage-Supabase.md`](Submission-Storage-Supabase.md).*
+*v1.3 — Added a sticky left **sidebar** (desktop) for section navigation: jump back to any completed section, forward only to reached sections; hidden below 920px. Two-column layout introduced.*
+*v1.2 — Name injected throughout (not just Step 6) via `.kid` / `.kidposs` spans; example placeholders added to every text/textarea; voice-input mic button added to every textarea (Web Speech API).*
 *v1.1 — Step 6 expanded to carry the child (preference-framed) versions of Section C and Section E from data-spec v1.1, organised into four `.substep` clusters; JSON for C and E now nests parent + child. Steps 3 & 5 (parent C/E) unchanged.*
 *Describes: app/index.html (form as built). Brand: 00-Vision/Brand-Guideline.md.*
