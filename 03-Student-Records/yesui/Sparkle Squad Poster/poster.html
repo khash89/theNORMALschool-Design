@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family:'Outfit'; src:url('fonts/Outfit-Bold.ttf'); font-weight:700; }
+  @font-face { font-family:'Outfit'; src:url('fonts/Outfit-Regular.ttf'); font-weight:400; }
+  @font-face { font-family:'Work'; src:url('fonts/WorkSans-Regular.ttf'); font-weight:400; }
+  @font-face { font-family:'Work'; src:url('fonts/WorkSans-Bold.ttf'); font-weight:700; }
+  @font-face { font-family:'Smooch'; src:url('fonts/SmoochSans-Medium.ttf'); }
+  @font-face { font-family:'Hand'; src:url('fonts/NothingYouCouldDo-Regular.ttf'); }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#ece7f1; }
+  .poster {
+    position:relative; overflow:hidden;
+    width:1200px; height:1740px;
+    background:
+      radial-gradient(620px 520px at -8% -6%, rgba(255,138,170,.20), transparent 60%),
+      radial-gradient(620px 520px at 108% -4%, rgba(120,200,255,.20), transparent 60%),
+      radial-gradient(640px 560px at -6% 104%, rgba(150,225,180,.20), transparent 60%),
+      radial-gradient(640px 560px at 106% 106%, rgba(190,150,255,.20), transparent 60%),
+      #fffdfb;
+    font-family:'Work',sans-serif; color:#3a3450;
+  }
+  .frame {
+    position:absolute; inset:26px; border-radius:46px;
+    border:3px solid rgba(255,255,255,.9);
+    box-shadow:0 0 0 3px rgba(120,90,180,.10), inset 0 0 0 10px rgba(255,255,255,.55);
+  }
+  .pad { position:absolute; inset:26px; padding:54px 64px 40px; display:flex; flex-direction:column; }
+
+  /* confetti */
+  .confetti { position:absolute; opacity:.85; }
+
+  /* ---------- HEADER ---------- */
+  .kicker {
+    font-family:'Hand',cursive; font-size:34px; color:#ff7aa8;
+    text-align:center; letter-spacing:.5px; margin-bottom:2px;
+  }
+  .title {
+    font-family:'Outfit',sans-serif; font-weight:700; text-align:center;
+    font-size:84px; line-height:.96; letter-spacing:-1px;
+    background:linear-gradient(95deg,#ff5d8f 0%,#ff8a4c 22%,#ffd23f 42%,#41d18e 60%,#3bb6e8 78%,#9b6cff 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter:drop-shadow(0 3px 0 rgba(255,255,255,.9));
+  }
+  .title .l2 { font-size:84px; }
+  .ribbon {
+    margin:20px auto 0; max-width:760px; text-align:center;
+    background:linear-gradient(90deg,rgba(255,221,235,.9),rgba(224,240,255,.9));
+    border:2px dashed #ffb3ce; border-radius:999px; padding:13px 30px;
+    font-family:'Outfit',sans-serif; font-weight:700; font-size:21px; color:#7b5aa6;
+  }
+  .ribbon .q { font-family:'Work'; font-weight:400; font-style:italic; color:#6a6385; }
+
+  /* ---------- TIMELINE ---------- */
+  .timeline { position:relative; margin-top:30px; flex:1; }
+  .rail {
+    position:absolute; left:67px; top:30px; bottom:18px; width:8px; border-radius:8px;
+    background:linear-gradient(#ff5d8f,#ff8a4c,#ffd23f,#41d18e,#3bb6e8,#9b6cff);
+    opacity:.45;
+  }
+  .row { position:relative; display:flex; align-items:center; height:152px; }
+  .medallion {
+    position:relative; z-index:2; flex:0 0 134px; width:134px; height:134px; border-radius:50%;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    color:#fff; box-shadow:0 10px 22px rgba(80,50,120,.18), inset 0 -7px 14px rgba(0,0,0,.10), inset 0 5px 10px rgba(255,255,255,.45);
+    border:5px solid #fff;
+  }
+  .medallion .emo { font-size:50px; line-height:1; filter:drop-shadow(0 2px 2px rgba(0,0,0,.18)); }
+  .medallion .time { font-family:'Outfit'; font-weight:700; font-size:17px; margin-top:3px; letter-spacing:.3px; }
+  .card {
+    flex:1; margin-left:28px; background:#fff; border-radius:28px; padding:20px 26px;
+    box-shadow:0 12px 26px rgba(90,60,140,.10); border:2px solid #f1ebfb;
+    display:flex; align-items:center; gap:20px;
+  }
+  .card .num {
+    font-family:'Outfit'; font-weight:700; font-size:22px; width:42px; height:42px; flex:0 0 42px;
+    border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff;
+  }
+  .card .body { flex:1; }
+  .card h2 { font-family:'Outfit'; font-weight:700; font-size:27px; line-height:1.05; margin-bottom:5px; }
+  .card p  { font-family:'Work'; font-weight:400; font-size:17.5px; color:#6a6385; line-height:1.28; }
+  .card p b { font-weight:700; color:#534b6e; }
+  .check {
+    flex:0 0 66px; width:66px; height:66px; border-radius:18px; border:3px dashed;
+    display:flex; align-items:center; justify-content:center; font-size:30px;
+    background:rgba(255,255,255,.6);
+  }
+  .check .star { opacity:.32; }
+
+  /* ---------- FOOTER ---------- */
+  .footer { margin-top:26px; display:flex; align-items:center; gap:26px; }
+  .loves { flex:1; background:#fff; border-radius:26px; padding:18px 24px; border:2px solid #f1ebfb;
+           box-shadow:0 10px 22px rgba(90,60,140,.08); }
+  .loves .lbl { font-family:'Hand',cursive; font-size:27px; color:#ff7aa8; margin-bottom:8px; }
+  .loves .chips { display:flex; flex-wrap:wrap; gap:9px; }
+  .chip { font-family:'Outfit'; font-weight:700; font-size:15.5px; color:#6a5a8e;
+          background:linear-gradient(180deg,#fff,#fbf4ff); border:2px solid #efe4fb;
+          border-radius:999px; padding:7px 14px; }
+  .badge {
+    flex:0 0 250px; text-align:center; color:#fff; border-radius:26px; padding:20px 14px;
+    background:linear-gradient(135deg,#9b6cff,#ff5d8f 55%,#ff8a4c);
+    box-shadow:0 12px 26px rgba(140,80,180,.28); position:relative;
+  }
+  .badge .seal { font-size:40px; }
+  .badge .t1 { font-family:'Hand',cursive; font-size:22px; opacity:.95; margin-top:-2px; }
+  .badge .t2 { font-family:'Outfit'; font-weight:700; font-size:23px; line-height:1.02; margin-top:4px; }
+  .badge .line { margin:10px auto 4px; width:60%; border-bottom:2px dashed rgba(255,255,255,.8); }
+  .badge .t3 { font-family:'Work'; font-size:12.5px; opacity:.9; }
+</style>
+</head>
+<body>
+ <div class="poster">
+  <div class="frame"></div>
+
+  <!-- sparse confetti, edges only -->
+  <div class="confetti" style="left:40px;  top:150px; font-size:26px;">✦</div>
+  <div class="confetti" style="right:48px; top:120px; font-size:22px;">✦</div>
+  <div class="confetti" style="left:30px;  top:560px; font-size:18px;">●</div>
+  <div class="confetti" style="right:34px; top:680px; font-size:20px;">✦</div>
+  <div class="confetti" style="left:24px;  top:980px; font-size:22px;">✦</div>
+  <div class="confetti" style="right:26px; top:1180px;font-size:18px;">●</div>
+  <div class="confetti" style="left:38px;  top:1420px;font-size:20px;">✦</div>
+  <div class="confetti" style="right:40px; top:1500px;font-size:24px;">✦</div>
+
+  <div class="pad">
+    <div class="kicker">Yesui's sparkly afternoon plan ✦ 12:00 – 6:00 pm ✦</div>
+    <div class="title">The Sparkle Squad<br><span class="l2">Celebration Day</span></div>
+    <div class="ribbon">My Mission: <span class="q">“team up with my brothers &amp; show Mom &amp; Dad everything I made!”</span></div>
+
+    <div class="timeline">
+      <div class="rail"></div>
+
+      <div class="row">
+        <div class="medallion" style="background:linear-gradient(160deg,#ff7d9e,#ff4d7e);">
+          <div class="emo">📋</div><div class="time">12:00</div>
+        </div>
+        <div class="card">
+          <div class="num" style="background:#ff4d7e;">1</div>
+          <div class="body"><h2>Mission Briefing &amp; Team Roles</h2>
+          <p>I'm <b>Chief Designer!</b> I make Big Brother (12) my <b>Co-Captain</b> &amp; give Little Brother (3) a sparkle job. 👑</p></div>
+          <div class="check" style="border-color:#ff9bb6; color:#ff4d7e;"><span class="star">★</span></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="medallion" style="background:linear-gradient(160deg,#ff8fc7,#ff5db0);">
+          <div class="emo">🍓</div><div class="time">12:45</div>
+        </div>
+        <div class="card">
+          <div class="num" style="background:#ff5db0;">2</div>
+          <div class="body"><h2>Sparkle Chef Kitchen</h2>
+          <p>We cook lunch <b>as a team</b> — Little Bro sprinkles, Big Bro helps me chop. 🌈</p></div>
+          <div class="check" style="border-color:#ffaad8; color:#ff5db0;"><span class="star">★</span></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="medallion" style="background:linear-gradient(160deg,#ffb05a,#ff8a3c);">
+          <div class="emo">💎</div><div class="time">1:45</div>
+        </div>
+        <div class="card">
+          <div class="num" style="background:#ff8a3c;">3</div>
+          <div class="body"><h2>Glitter Friendship Bracelets</h2>
+          <p>I make a <b>bracelet for everyone</b> &amp; teach Little Bro to thread the big beads. 💎</p></div>
+          <div class="check" style="border-color:#ffcb99; color:#ff8a3c;"><span class="star">★</span></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="medallion" style="background:linear-gradient(160deg,#ffd95a,#f7c52e);">
+          <div class="emo">🛠️</div><div class="time">2:45</div>
+        </div>
+        <div class="card">
+          <div class="num" style="background:#e6b21f;">4</div>
+          <div class="body"><h2>Build the Sparkle Sports Course</h2>
+          <p>Big Bro is my <b>building partner</b>; Little Bro gets his own safe toddler zone! 🛠️</p></div>
+          <div class="check" style="border-color:#ffe49a; color:#e0a91a;"><span class="star">★</span></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="medallion" style="background:linear-gradient(160deg,#5fd6a0,#2bb877);">
+          <div class="emo">🏅</div><div class="time">3:45</div>
+        </div>
+        <div class="card">
+          <div class="num" style="background:#2bb877;">5</div>
+          <div class="body"><h2>Family Sports Games</h2>
+          <p>I <b>coach everyone</b> through gymnastics 🤸, soccer ⚽ &amp; running 🏃‍♀️ — and time the race!</p></div>
+          <div class="check" style="border-color:#a6e8c9; color:#2bb877;"><span class="star">★</span></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="medallion" style="background:linear-gradient(160deg,#4cc5ef,#2b9fe0);">
+          <div class="emo">🎨</div><div class="time">4:45</div>
+        </div>
+        <div class="card">
+          <div class="num" style="background:#2b9fe0;">6</div>
+          <div class="body"><h2>Make My Big Showcase</h2>
+          <p>I gather my <b>photos, bracelets &amp; medals</b> and practice what I'll tell Mom &amp; Dad. 🎨</p></div>
+          <div class="check" style="border-color:#a6dcf4; color:#2b9fe0;"><span class="star">★</span></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="medallion" style="background:linear-gradient(160deg,#b388ff,#9b6cff);">
+          <div class="emo">🎉</div><div class="time">5:30</div>
+        </div>
+        <div class="card">
+          <div class="num" style="background:#9b6cff;">7</div>
+          <div class="body"><h2>Showtime for Mom &amp; Dad!</h2>
+          <p>I <b>present everything I made</b>, give bracelet gifts, show a sports move &amp; take a bow! 🎉</p></div>
+          <div class="check" style="border-color:#d6c2ff; color:#9b6cff;"><span class="star">★</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="loves">
+        <div class="lbl">my sparkle crew 💖</div>
+        <div class="chips">
+          <span class="chip">👑 Yesui — Director</span>
+          <span class="chip">🧢 Big Brother (12) — Co-Captain</span>
+          <span class="chip">🌟 Little Brother (3) — Sparkle Helper</span>
+          <span class="chip">👏 Mom &amp; Dad — VIP Guests</span>
+        </div>
+      </div>
+      <div class="badge">
+        <div class="seal">🏆</div>
+        <div class="t1">proudly directed by</div>
+        <div class="t2" style="font-family:'Hand',cursive; font-size:40px; line-height:1.05; margin-top:2px;">Yesui</div>
+        <div class="line"></div>
+        <div class="t3">✦ Chief Celebration Designer ✦</div>
+      </div>
+    </div>
+  </div>
+ </div>
+</body>
+</html>

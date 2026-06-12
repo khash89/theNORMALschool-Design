@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Summer Program Application — theNORMALschool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;850;900&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --orange: #ff751f;
+    --navy: #111111;
+    --body: #777777;
+    --muted: #999999;
+    --cream: #f5f2ed;
+    --border: #e8e3db;
+    --ui: #555555;
+    --white: #ffffff;
+    --shadow: rgba(0, 0, 0, 0.06) 0px 2px 12px;
+    --radius-card: 20px;
+    --radius-btn: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    background: var(--cream);
+    color: var(--body);
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- Header ---------- */
+  header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #f0ece6;
+    padding: 14px 28px;
+  }
+  .header-inner {
+    max-width: 960px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .wordmark {
+    font-weight: 700; font-size: 18px; color: var(--navy);
+    letter-spacing: -0.02em; text-decoration: none;
+  }
+  .wordmark b { font-weight: 900; }
+  .header-tag {
+    font-weight: 600; font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.18em; color: var(--muted);
+  }
+
+  /* ---------- Layout ---------- */
+  .wrap { max-width: 720px; margin: 0 auto; padding: 40px 28px 80px; }
+
+  .hero { text-align: center; margin-bottom: 36px; }
+  .hero .eyebrow {
+    font-weight: 600; font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.18em; color: var(--orange); margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-weight: 850; color: var(--navy);
+    font-size: clamp(28px, 5.5vw, 44px);
+    letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 14px;
+  }
+  .hero p { max-width: 520px; margin: 0 auto; }
+
+  /* ---------- Progress ---------- */
+  .progress { margin-bottom: 28px; }
+  .progress-bar {
+    height: 6px; background: var(--border); border-radius: 999px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; background: var(--orange); width: 12.5%;
+    border-radius: 999px; transition: width 0.35s ease;
+  }
+  .progress-meta {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-top: 10px;
+  }
+  .progress-meta .step-label {
+    font-weight: 700; font-size: 13px; color: var(--navy);
+  }
+  .progress-meta .step-count {
+    font-weight: 600; font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--muted);
+  }
+
+  /* ---------- Card / Step ---------- */
+  .card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius-card); box-shadow: var(--shadow);
+    padding: 36px 32px;
+  }
+  .step { display: none; }
+  .step.active { display: block; animation: fade 0.3s ease; }
+  @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  .step-head { margin-bottom: 26px; }
+  .step-head .kicker {
+    font-weight: 600; font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.18em; color: var(--orange); margin-bottom: 8px;
+  }
+  .step-head h2 {
+    font-weight: 850; color: var(--navy); font-size: 26px;
+    letter-spacing: -0.03em; line-height: 1.12; margin-bottom: 8px;
+  }
+  .step-head p { font-size: 15px; }
+
+  .reassure {
+    background: var(--cream); border-radius: 12px; padding: 14px 16px;
+    font-size: 14px; margin-bottom: 24px; color: var(--ui);
+  }
+  .reassure b { color: var(--navy); font-weight: 600; }
+
+  /* ---------- Fields ---------- */
+  .field { margin-bottom: 22px; }
+  .field > label, .field > .field-label {
+    display: block; font-weight: 600; font-size: 11px;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--navy); margin-bottom: 8px;
+  }
+  .field .hint {
+    font-size: 13px; color: var(--muted); font-weight: 400;
+    text-transform: none; letter-spacing: 0; margin-top: 2px; margin-bottom: 8px;
+    line-height: 1.5;
+  }
+  .req { color: var(--orange); }
+
+  input[type="text"], input[type="email"], input[type="tel"],
+  input[type="date"], select, textarea {
+    width: 100%; font-family: inherit; font-size: 15px; color: var(--navy);
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 14px; line-height: 1.5;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  textarea { resize: vertical; min-height: 90px; }
+  input:focus, select:focus, textarea:focus {
+    outline: none; border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(255, 117, 31, 0.12);
+  }
+  input.invalid, select.invalid, textarea.invalid { border-color: #e5484d; }
+  .err-msg { color: #c4373b; font-size: 13px; margin-top: 6px; display: none; }
+  .err-msg.show { display: block; }
+
+  .row { display: flex; gap: 16px; }
+  .row .field { flex: 1; }
+  @media (max-width: 560px) { .row { flex-direction: column; gap: 0; } }
+
+  .auto-age {
+    font-weight: 700; color: var(--orange); font-size: 14px; margin-top: 6px;
+  }
+
+  /* ---------- Chips (multi-select) ---------- */
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    border: 1px solid var(--border); background: var(--white);
+    border-radius: 999px; padding: 8px 15px; font-size: 14px; font-weight: 500;
+    color: var(--ui); cursor: pointer; user-select: none;
+    transition: all 0.15s ease;
+  }
+  .chip:hover { border-color: var(--orange); color: var(--navy); }
+  .chip.on {
+    background: var(--orange); border-color: var(--orange);
+    color: var(--white); font-weight: 600;
+  }
+
+  /* ---------- Option cards (single-select) ---------- */
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .opt {
+    display: flex; align-items: flex-start; gap: 12px;
+    border: 1px solid var(--border); background: var(--white);
+    border-radius: 12px; padding: 14px 16px; cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .opt:hover { border-color: var(--orange); }
+  .opt.on { border-color: var(--orange); background: rgba(255, 117, 31, 0.05); }
+  .opt .dot {
+    flex: 0 0 18px; width: 18px; height: 18px; border-radius: 999px;
+    border: 2px solid var(--border); margin-top: 3px; position: relative;
+    transition: border-color 0.15s ease;
+  }
+  .opt.on .dot { border-color: var(--orange); }
+  .opt.on .dot::after {
+    content: ''; position: absolute; inset: 3px; border-radius: 999px;
+    background: var(--orange);
+  }
+  .opt .opt-text { font-size: 15px; color: var(--navy); font-weight: 500; }
+
+  .opt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 560px) { .opt-grid { grid-template-columns: 1fr; } }
+
+  /* ---------- Checkbox ---------- */
+  .check {
+    display: flex; align-items: flex-start; gap: 12px; cursor: pointer;
+    font-size: 14px; color: var(--ui); margin-bottom: 14px; line-height: 1.5;
+  }
+  .check input { margin-top: 4px; width: 18px; height: 18px; accent-color: var(--orange); flex: 0 0 auto; }
+
+  /* ---------- Nav buttons ---------- */
+  .nav-btns {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 32px; gap: 12px;
+  }
+  .btn {
+    font-family: inherit; font-weight: 700; font-size: 14px;
+    border-radius: var(--radius-btn); padding: 12px 22px; cursor: pointer;
+    border: 1px solid transparent; transition: opacity 0.15s ease, background 0.15s ease;
+  }
+  .btn-primary { background: var(--orange); color: var(--white); }
+  .btn-primary:hover { opacity: 0.9; }
+  .btn-ghost { background: transparent; color: var(--ui); border-color: var(--border); }
+  .btn-ghost:hover { border-color: var(--ui); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn.hidden { visibility: hidden; }
+
+  /* ---------- Success ---------- */
+  .success { text-align: center; padding: 20px 0; }
+  .success .mark {
+    width: 64px; height: 64px; border-radius: 999px; background: var(--orange);
+    color: white; font-size: 32px; display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+  }
+  .success h2 { font-weight: 850; color: var(--navy); font-size: 28px; letter-spacing: -0.03em; margin-bottom: 12px; }
+  .success p { max-width: 460px; margin: 0 auto 10px; }
+  .dl-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 22px; }
+
+  footer {
+    text-align: center; font-size: 12px; color: var(--muted);
+    padding: 24px; max-width: 720px; margin: 0 auto;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="#" class="wordmark">the<b>NORMAL</b>school</a>
+    <span class="header-tag">Summer Program · Ages 10–12</span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="eyebrow">Summer 2026 Application</div>
+    <h1>Six days. One project your child actually cares about.</h1>
+    <p>Tell us about your child so we can match them to a project they'll love — and a week where they'll surprise themselves. Takes about 12 minutes.</p>
+  </div>
+
+  <div class="progress">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-meta">
+      <span class="step-label" id="stepLabel">Your Child</span>
+      <span class="step-count" id="stepCount">Step 1 of 8</span>
+    </div>
+  </div>
+
+  <form id="appForm" novalidate>
+    <div class="card">
+
+      <!-- ===== STEP 1: CHILD BASIC INFO (Section A) ===== -->
+      <section class="step active" data-step="1" data-label="Your Child">
+        <div class="step-head">
+          <div class="kicker">About your child</div>
+          <h2>Let's start with the basics</h2>
+          <p>Just a few facts so we know who's joining us.</p>
+        </div>
+
+        <div class="field">
+          <label>Child's full name <span class="req">*</span></label>
+          <input type="text" name="childName" data-required />
+          <div class="err-msg">Please enter your child's name.</div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label>Preferred name / nickname</label>
+            <input type="text" name="preferredName" placeholder="What we'll call them" />
+          </div>
+          <div class="field">
+            <label>Date of birth <span class="req">*</span></label>
+            <input type="date" name="dob" id="dob" data-required />
+            <div class="auto-age" id="ageOut"></div>
+            <div class="err-msg">Please enter a date of birth.</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label>Gender</label>
+            <input type="text" name="gender" placeholder="Optional — how they describe themselves" />
+          </div>
+          <div class="field">
+            <label>Language(s) at home <span class="req">*</span></label>
+            <input type="text" name="homeLanguage" data-required placeholder="e.g. English, Mongolian" />
+            <div class="err-msg">Please tell us the home language.</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label>Current school &amp; grade <span class="req">*</span></label>
+            <input type="text" name="school" data-required placeholder="School name, grade" />
+            <div class="err-msg">Please enter school and grade.</div>
+          </div>
+          <div class="field">
+            <label>Session applying for <span class="req">*</span></label>
+            <select name="session" data-required>
+              <option value="">Choose a session…</option>
+              <option>Session A — June 2026</option>
+              <option>Session B — July 2026</option>
+              <option>Session C — August 2026</option>
+              <option>Not sure yet</option>
+            </select>
+            <div class="err-msg">Please choose a session.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== STEP 2: PARENT INFO (Section B) ===== -->
+      <section class="step" data-step="2" data-label="Parent & Contact">
+        <div class="step-head">
+          <div class="kicker">Parent &amp; contact</div>
+          <h2>How we reach you</h2>
+          <p>Your details for everything from confirmation to Saturday's showcase.</p>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label>Your full name <span class="req">*</span></label>
+            <input type="text" name="parentName" data-required />
+            <div class="err-msg">Please enter your name.</div>
+          </div>
+          <div class="field">
+            <label>Relationship to child <span class="req">*</span></label>
+            <select name="relationship" data-required>
+              <option value="">Choose…</option>
+              <option>Mother</option><option>Father</option>
+              <option>Guardian</option><option>Grandparent</option><option>Other</option>
+            </select>
+            <div class="err-msg">Please choose a relationship.</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label>Email <span class="req">*</span></label>
+            <input type="email" name="email" data-required />
+            <div class="err-msg">Please enter a valid email.</div>
+          </div>
+          <div class="field">
+            <label>Mobile phone <span class="req">*</span></label>
+            <input type="tel" name="phone" data-required />
+            <div class="err-msg">Please enter a phone number.</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label>Emergency contact name <span class="req">*</span></label>
+            <input type="text" name="emergencyName" data-required />
+            <div class="err-msg">Please enter an emergency contact.</div>
+          </div>
+          <div class="field">
+            <label>Emergency contact phone <span class="req">*</span></label>
+            <input type="tel" name="emergencyPhone" data-required />
+            <div class="err-msg">Please enter a phone number.</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Authorized pickup person(s)</label>
+          <input type="text" name="pickup" placeholder="Anyone else allowed to collect your child" />
+        </div>
+
+        <div class="field">
+          <label>How did you hear about us?</label>
+          <select name="referral">
+            <option value="">Choose…</option>
+            <option>Instagram</option><option>A friend / family</option>
+            <option>School / teacher</option><option>Web search</option>
+            <option>Event</option><option>Other</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- ===== STEP 3: ELEMENT LAYER 1 (Section C) ===== -->
+      <section class="step" data-step="3" data-label="What Lights Them Up">
+        <div class="step-head">
+          <div class="kicker">What lights your child up</div>
+          <h2>The things that come easily — and the things they love</h2>
+          <p>Be specific and concrete. Not "good at art" — but "draws machines and how they connect."</p>
+        </div>
+        <div class="reassure">
+          These two are different on purpose. <b>What comes easily</b> and <b>what they love</b> aren't always the same thing — and both matter. Tell us what you actually see, not what you hope.
+        </div>
+
+        <div class="field">
+          <label>What comes unusually easily? <span class="req">*</span></label>
+          <div class="hint">1–2 specific things your child picks up faster or does with more ease than you'd expect for their age. What exactly do they do, and how do you know it comes easily?</div>
+          <textarea name="aptitude" data-required></textarea>
+          <div class="err-msg">Please describe at least one thing.</div>
+        </div>
+
+        <div class="field">
+          <label>What do they return to without being asked? <span class="req">*</span></label>
+          <div class="hint">What does your child do voluntarily, repeatedly, with no reward and no prompting? When did you last see them do it?</div>
+          <textarea name="passion" data-required></textarea>
+          <div class="err-msg">Please describe at least one thing.</div>
+        </div>
+
+        <div class="field">
+          <label>When do they lose track of time? <span class="req">*</span></label>
+          <div class="hint">Is there an activity where they resist stopping, forget meals, or have to be called several times?</div>
+          <textarea name="flow" data-required></textarea>
+          <div class="err-msg">Please tell us about this.</div>
+        </div>
+
+        <div class="field">
+          <label>The free-afternoon check</label>
+          <div class="hint">On a free afternoon — nothing scheduled, screens not the default — what does your child actually end up doing?</div>
+          <textarea name="freeChoice"></textarea>
+        </div>
+      </section>
+
+      <!-- ===== STEP 4: ELEMENT LAYER 2 (Section D) ===== -->
+      <section class="step" data-step="4" data-label="Reading Your Child">
+        <div class="step-head">
+          <div class="kicker">Reading your child</div>
+          <h2>A little more context</h2>
+          <p>This helps us read your child accurately — and avoid misreading them.</p>
+        </div>
+
+        <div class="field">
+          <label>When something is hard, what do they actually do? <span class="req">*</span></label>
+          <div class="hint">When they get a poor result or hit something difficult — what happens? Give a recent example.</div>
+          <textarea name="attitude" data-required></textarea>
+          <div class="err-msg">Please share a recent example.</div>
+        </div>
+
+        <div class="field">
+          <div class="field-label">What has your child had real access to?</div>
+          <div class="hint">Tap everything they've had genuine hands-on access to.</div>
+          <div class="chips" data-chips="opportunity">
+            <span class="chip">Camera / video</span>
+            <span class="chip">Computer / coding</span>
+            <span class="chip">Art materials</span>
+            <span class="chip">Musical instruments</span>
+            <span class="chip">Sports / athletics</span>
+            <span class="chip">Kitchen / cooking</span>
+            <span class="chip">Building / tools</span>
+            <span class="chip">Animals / nature</span>
+            <span class="chip">Performing / stage</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Anything they've wanted to try but never had the chance to?</label>
+          <input type="text" name="opportunityGap" placeholder="Optional" />
+        </div>
+
+        <div class="field">
+          <div class="field-label">Where do you see real spark? <span class="req">*</span></div>
+          <div class="hint">Tap any area where you see genuine energy — it's fine to pick several.</div>
+          <div class="chips" data-chips="breadth" data-required>
+            <span class="chip">Building / mechanical</span>
+            <span class="chip">Visual / art</span>
+            <span class="chip">Words / story</span>
+            <span class="chip">Numbers / patterns</span>
+            <span class="chip">Social / people</span>
+            <span class="chip">Performing</span>
+            <span class="chip">Physical / movement</span>
+            <span class="chip">Nature / science</span>
+          </div>
+          <div class="err-msg">Please select at least one.</div>
+        </div>
+
+        <div class="field">
+          <label>Who do they light up around?</label>
+          <div class="hint">Any group or person your child comes alive with — or an interest they pursue harder with certain people?</div>
+          <textarea name="tribe"></textarea>
+        </div>
+
+        <div class="field">
+          <label>Anything they've dropped, hidden, or been steered away from?</label>
+          <div class="hint">Something they used to love and stopped, or hide, or were told wasn't for them. What happened?</div>
+          <textarea name="suppression"></textarea>
+        </div>
+
+        <div class="field">
+          <label>When are they most alert — and most drained?</label>
+          <div class="hint">Roughly when in a normal day is your child most engaged, and when do they run flat?</div>
+          <input type="text" name="energy" placeholder="e.g. Sluggish mornings, comes alive after 4pm" />
+        </div>
+      </section>
+
+      <!-- ===== STEP 5: MIAP PRE-DIAGNOSIS (Section E) ===== -->
+      <section class="step" data-step="5" data-label="How They Work">
+        <div class="step-head">
+          <div class="kicker">How they work</div>
+          <h2>A few more about how they tick</h2>
+          <p>There are no right answers here — honest beats impressive every time.</p>
+        </div>
+
+        <div class="field">
+          <label>Genuinely into it vs. just going along <span class="req">*</span></label>
+          <div class="hint">Can you tell the difference between when your child is really into something and when they're just complying? Describe a moment of each.</div>
+          <textarea name="miapMotivation" data-required></textarea>
+          <div class="err-msg">Please share an example.</div>
+        </div>
+
+        <div class="field">
+          <label>How do they describe themselves?</label>
+          <div class="hint">In their own words, how does your child describe what they're good at or who they are? (If they wouldn't, just say so.)</div>
+          <textarea name="miapIdentity"></textarea>
+        </div>
+
+        <div class="field">
+          <label>When they hit an obstacle and you're not there <span class="req">*</span></label>
+          <div class="hint">What happens when your child runs into a problem and no adult is around to help?</div>
+          <textarea name="miapAgency" data-required></textarea>
+          <div class="err-msg">Please tell us what happens.</div>
+        </div>
+
+        <div class="field">
+          <label>Have they ever cared that something was useful to someone else?</label>
+          <div class="hint">Not just fun for them — actually useful to another person. An example, if there is one.</div>
+          <textarea name="miapPurpose"></textarea>
+        </div>
+      </section>
+
+      <!-- ===== STEP 6: PERSONALIZATION — CHILD'S SECTION (Section F) ===== -->
+      <section class="step" data-step="6" data-label="Just for You">
+        <div class="step-head">
+          <div class="kicker">Now — over to <span id="childKicker">your child</span></div>
+          <h2>This part is just for <span id="childName1">you</span></h2>
+          <p>Hey! These questions are for you — the kid joining us. There are zero wrong answers. Just say what's true.</p>
+        </div>
+        <div class="reassure">
+          <b>Parents:</b> let your child answer this part in their own words — you can type for them, but the answers should be theirs.
+        </div>
+
+        <div class="field">
+          <div class="field-label">What are you really into right now? <span class="req">*</span></div>
+          <div class="hint">Tap everything that's you.</div>
+          <div class="chips" data-chips="interests" data-required>
+            <span class="chip">Gaming</span><span class="chip">Drawing</span><span class="chip">Sports</span>
+            <span class="chip">Music</span><span class="chip">Coding</span><span class="chip">Animals</span>
+            <span class="chip">Cooking</span><span class="chip">Building stuff</span><span class="chip">Reading</span>
+            <span class="chip">Science</span><span class="chip">Dance</span><span class="chip">Film / video</span>
+            <span class="chip">Fashion</span><span class="chip">Cars</span><span class="chip">Space</span>
+          </div>
+          <div class="err-msg">Pick at least one!</div>
+        </div>
+
+        <div class="field">
+          <label>What do you do for fun on weekends or after school?</label>
+          <textarea name="funTime"></textarea>
+        </div>
+
+        <div class="field">
+          <label>Something you made that you were proud of <span class="req">*</span></label>
+          <div class="hint">A video, a Minecraft build, a comic, a recipe, a fort — anything. What was the best part of making it?</div>
+          <textarea name="proudMaking" data-required></textarea>
+          <div class="err-msg">Tell us about one thing you made!</div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label>Favorite YouTube channel(s) or creators</label>
+            <input type="text" name="favYoutube" />
+          </div>
+          <div class="field">
+            <label>Favorite game(s)</label>
+            <input type="text" name="favGame" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label>Favorite book, comic, or show</label>
+            <input type="text" name="favBook" />
+          </div>
+          <div class="field">
+            <label>Someone who's really cool at what they do</label>
+            <input type="text" name="hero" placeholder="A creator, athlete, scientist, anyone" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label>If you could spend a whole week making ONE thing, what would it be?</label>
+          <textarea name="makeAnything"></textarea>
+        </div>
+
+        <div class="field">
+          <div class="field-label">Pick the one that sounds most fun <span class="req">*</span></div>
+          <div class="options" data-radio="dreamProject" data-required>
+            <label class="opt"><span class="dot"></span><span class="opt-text">Be on camera, telling a story people actually watch</span></label>
+            <label class="opt"><span class="dot"></span><span class="opt-text">Film and edit a video until it's exactly right</span></label>
+            <label class="opt"><span class="dot"></span><span class="opt-text">Invent the rules of a game and decide how it works</span></label>
+            <label class="opt"><span class="dot"></span><span class="opt-text">Build a game's world, characters, and look</span></label>
+            <label class="opt"><span class="dot"></span><span class="opt-text">Cook something people line up to buy</span></label>
+            <label class="opt"><span class="dot"></span><span class="opt-text">Fix a real problem in your neighborhood</span></label>
+            <label class="opt"><span class="dot"></span><span class="opt-text">Build a tool that explains something cool</span></label>
+          </div>
+          <div class="err-msg">Pick the one that sounds most fun!</div>
+        </div>
+
+        <div class="field">
+          <div class="field-label">What kind of stuff do you care about?</div>
+          <div class="chips" data-chips="values">
+            <span class="chip">Helping people</span><span class="chip">Animals</span><span class="chip">The planet</span>
+            <span class="chip">Fairness</span><span class="chip">Building things that work</span>
+            <span class="chip">Making people laugh</span><span class="chip">Winning / competing</span>
+            <span class="chip">How things work</span><span class="chip">Making beautiful things</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="field-label">Do you like working with a team or on your own? <span class="req">*</span></div>
+          <div class="options opt-grid" data-radio="teamSolo" data-required>
+            <label class="opt"><span class="dot"></span><span class="opt-text">With a team</span></label>
+            <label class="opt"><span class="dot"></span><span class="opt-text">On my own</span></label>
+            <label class="opt"><span class="dot"></span><span class="opt-text">Depends on the day</span></label>
+          </div>
+          <div class="err-msg">Pick one!</div>
+        </div>
+
+        <div class="field">
+          <label>When you work with other people, what part do you grab first?</label>
+          <input type="text" name="teamRole" />
+        </div>
+      </section>
+
+      <!-- ===== STEP 7: WELLBEING, SOCIAL & LOGISTICS (Section G) ===== -->
+      <section class="step" data-step="7" data-label="Wellbeing & Logistics">
+        <div class="step-head">
+          <div class="kicker">So we can support your child well</div>
+          <h2>A few things that help us care for them</h2>
+          <p>This stays with our team. The more specific you are, the better we can show up for your child.</p>
+        </div>
+
+        <div class="field">
+          <label>How does your child handle frustration, specifically? <span class="req">*</span></label>
+          <div class="hint">Not challenge in general — what does frustration actually look like for your child, and what helps?</div>
+          <textarea name="frustration" data-required></textarea>
+          <div class="err-msg">Please tell us about this.</div>
+        </div>
+
+        <div class="field">
+          <label>Any conditions, sensitivities, or accommodations we should know about?</label>
+          <textarea name="accommodations" placeholder="Diagnosed conditions, sensory sensitivities, learning accommodations…"></textarea>
+        </div>
+
+        <div class="field">
+          <label>Any significant recent life events?</label>
+          <input type="text" name="lifeEvents" placeholder="Loss, family change, school move — optional" />
+        </div>
+
+        <div class="field">
+          <label>What does anxiety or feeling overwhelmed look like for them?</label>
+          <div class="hint">If it applies — so we recognize it early and respond well.</div>
+          <textarea name="anxiety"></textarea>
+        </div>
+
+        <div class="field">
+          <label>Allergies, dietary restrictions, or medical notes <span class="req">*</span></label>
+          <div class="hint">Important for our Food Business project and snacks. Write "None" if none apply.</div>
+          <textarea name="medical" data-required></textarea>
+          <div class="err-msg">Please tell us, or write "None".</div>
+        </div>
+
+        <div class="field">
+          <label>Does your child know anyone else enrolling?</label>
+          <input type="text" name="knowsOthers" placeholder="Names, if any" />
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label>How do they handle disagreement with peers?</label>
+            <input type="text" name="disagreement" />
+          </div>
+          <div class="field">
+            <label>In a group, are they more comfortable…</label>
+            <select name="groupRole">
+              <option value="">Choose…</option>
+              <option>Leading</option><option>Contributing</option><option>Following</option>
+              <option>It varies</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Any peer conflicts we should avoid?</label>
+          <input type="text" name="conflicts" placeholder="Optional" />
+        </div>
+
+        <div class="field">
+          <label>What do you hope your child gets from this week? <span class="req">*</span></label>
+          <textarea name="hopes" data-required></textarea>
+          <div class="err-msg">We'd love to hear this.</div>
+        </div>
+
+        <div class="field">
+          <label>What have well-meaning adults gotten <em>wrong</em> about your child?</label>
+          <div class="hint">This genuinely helps us see them clearly.</div>
+          <textarea name="adultsWrong"></textarea>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label>Does your child plan first, or dive in?</label>
+            <select name="planStyle">
+              <option value="">Choose…</option>
+              <option>Plans before starting</option>
+              <option>Dives in and figures it out</option>
+              <option>A mix of both</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Do they do better with…</label>
+            <select name="structureStyle">
+              <option value="">Choose…</option>
+              <option>Clear structure</option>
+              <option>Open space</option>
+              <option>Somewhere in between</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>T-shirt size</label>
+          <select name="shirt">
+            <option value="">Choose…</option>
+            <option>Youth S</option><option>Youth M</option><option>Youth L</option>
+            <option>Adult S</option><option>Adult M</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Anything else you'd like us to know?</label>
+          <textarea name="anythingElse"></textarea>
+        </div>
+      </section>
+
+      <!-- ===== STEP 8: CONSENT (Section H) ===== -->
+      <section class="step" data-step="8" data-label="Consent & Submit">
+        <div class="step-head">
+          <div class="kicker">Almost done</div>
+          <h2>A couple of confirmations</h2>
+          <p>Then you're all set.</p>
+        </div>
+
+        <label class="check">
+          <input type="checkbox" name="ownWords" data-required-check />
+          <span>I confirm my child's answers above are in their own words.</span>
+        </label>
+
+        <label class="check">
+          <input type="checkbox" name="userTesting" data-required-check />
+          <span>I give permission for my child's project to be tested with real users during the week (Wednesday feedback day).</span>
+        </label>
+
+        <label class="check">
+          <input type="checkbox" name="mediaConsent" data-required-check />
+          <span>I consent to photos/video of the showcase being used for program records and marketing.</span>
+        </label>
+
+        <label class="check">
+          <input type="checkbox" name="terms" data-required-check />
+          <span>I agree to the program terms and liability waiver.</span>
+        </label>
+        <div class="err-msg" id="consentErr">Please confirm all four to submit.</div>
+
+        <div class="field" style="margin-top:20px;">
+          <label>Parent signature (type your full name) <span class="req">*</span></label>
+          <input type="text" name="signature" data-required />
+          <div class="err-msg">Please type your full name.</div>
+        </div>
+
+        <div class="reassure" style="margin-bottom:0;">
+          When you submit, your application downloads as a file to your device. <b>Please email it to us at apply@thenormalschool.com</b> (or it'll be collected automatically once our portal is live).
+        </div>
+      </section>
+
+      <!-- ===== SUCCESS ===== -->
+      <section class="step" data-step="9" data-label="Submitted">
+        <div class="success">
+          <div class="mark">✓</div>
+          <h2>Thank you — application ready!</h2>
+          <p>We've put together everything you told us about <strong id="childName2">your child</strong>. Your application file has downloaded.</p>
+          <p style="font-size:14px;color:var(--muted);">Please email the downloaded file to <strong>apply@thenormalschool.com</strong>. We'll be in touch within a few days.</p>
+          <div class="dl-row">
+            <button type="button" class="btn btn-primary" id="redownload">Download again →</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== NAV ===== -->
+      <div class="nav-btns" id="navBtns">
+        <button type="button" class="btn btn-ghost hidden" id="backBtn">← Back</button>
+        <button type="button" class="btn btn-primary" id="nextBtn">Continue →</button>
+      </div>
+
+    </div>
+  </form>
+</div>
+
+<footer>
+  theNORMALschool · Designed for Life · Your information is kept private and used only to plan your child's week.
+</footer>
+
+<script>
+(function () {
+  var form = document.getElementById('appForm');
+  var steps = Array.prototype.slice.call(form.querySelectorAll('.step'));
+  var TOTAL = 8; // input steps (9 = success)
+  var current = 1;
+
+  var fill = document.getElementById('progressFill');
+  var stepLabel = document.getElementById('stepLabel');
+  var stepCount = document.getElementById('stepCount');
+  var backBtn = document.getElementById('backBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var navBtns = document.getElementById('navBtns');
+
+  // ---------- Age calc ----------
+  var dob = document.getElementById('dob');
+  var ageOut = document.getElementById('ageOut');
+  dob.addEventListener('change', function () {
+    if (!dob.value) { ageOut.textContent = ''; return; }
+    var d = new Date(dob.value);
+    var ref = new Date('2026-06-01'); // program reference
+    var age = ref.getFullYear() - d.getFullYear();
+    var m = ref.getMonth() - d.getMonth();
+    if (m < 0 || (m === 0 && ref.getDate() < d.getDate())) age--;
+    if (isNaN(age)) { ageOut.textContent = ''; return; }
+    var note = (age < 10 || age > 12) ? ' — note: program is designed for ages 10–12' : '';
+    ageOut.textContent = 'Age at program start: ' + age + note;
+  });
+
+  // ---------- Chips ----------
+  form.querySelectorAll('[data-chips]').forEach(function (group) {
+    group.querySelectorAll('.chip').forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        chip.classList.toggle('on');
+        clearGroupError(group);
+      });
+    });
+  });
+
+  // ---------- Radio options ----------
+  form.querySelectorAll('[data-radio]').forEach(function (group) {
+    group.querySelectorAll('.opt').forEach(function (opt) {
+      opt.addEventListener('click', function () {
+        group.querySelectorAll('.opt').forEach(function (o) { o.classList.remove('on'); });
+        opt.classList.add('on');
+        clearGroupError(group);
+      });
+    });
+  });
+
+  function clearGroupError(group) {
+    var err = group.parentElement.querySelector('.err-msg');
+    if (err) err.classList.remove('show');
+  }
+
+  // ---------- Personalize child's name into Step 6 ----------
+  function syncChildName() {
+    var n = (form.childName.value || '').trim();
+    var preferred = (form.preferredName.value || '').trim();
+    var display = preferred || (n ? n.split(' ')[0] : '');
+    document.getElementById('childName1').textContent = display || 'you';
+    document.getElementById('childKicker').textContent = display || 'your child';
+    document.getElementById('childName2').textContent = display || 'your child';
+  }
+
+  // ---------- Validation ----------
+  function validateStep(stepEl) {
+    var ok = true;
+
+    // text/select/textarea required
+    stepEl.querySelectorAll('[data-required]').forEach(function (input) {
+      if (input.tagName === 'DIV') return; // chip & radio groups handled in their own loops below
+      var val = (input.value || '').trim();
+      var valid = val.length > 0;
+      if (input.type === 'email' && valid) {
+        valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+      }
+      toggleErr(input, valid);
+      if (!valid) ok = false;
+    });
+
+    // required chip groups
+    stepEl.querySelectorAll('[data-chips][data-required]').forEach(function (group) {
+      var picked = group.querySelectorAll('.chip.on').length > 0;
+      var err = group.parentElement.querySelector('.err-msg');
+      if (err) err.classList.toggle('show', !picked);
+      if (!picked) ok = false;
+    });
+
+    // required radio groups
+    stepEl.querySelectorAll('[data-radio][data-required]').forEach(function (group) {
+      var picked = group.querySelectorAll('.opt.on').length > 0;
+      var err = group.parentElement.querySelector('.err-msg');
+      if (err) err.classList.toggle('show', !picked);
+      if (!picked) ok = false;
+    });
+
+    // required checkboxes (consent)
+    var checks = stepEl.querySelectorAll('[data-required-check]');
+    if (checks.length) {
+      var allChecked = Array.prototype.every.call(checks, function (c) { return c.checked; });
+      var cErr = document.getElementById('consentErr');
+      if (cErr) cErr.classList.toggle('show', !allChecked);
+      if (!allChecked) ok = false;
+    }
+
+    return ok;
+  }
+
+  function toggleErr(input, valid) {
+    input.classList.toggle('invalid', !valid);
+    var field = input.closest('.field');
+    if (!field) return;
+    var err = field.querySelector('.err-msg');
+    if (err) err.classList.toggle('show', !valid);
+  }
+
+  // clear errors as the user types
+  form.addEventListener('input', function (e) {
+    if (e.target.classList && e.target.classList.contains('invalid')) {
+      toggleErr(e.target, true);
+    }
+  });
+
+  // ---------- Navigation ----------
+  function show(step) {
+    steps.forEach(function (s) { s.classList.toggle('active', +s.dataset.step === step); });
+    current = step;
+
+    if (step > TOTAL) {
+      // success screen
+      navBtns.style.display = 'none';
+      fill.style.width = '100%';
+      stepLabel.textContent = 'Submitted';
+      stepCount.textContent = 'Complete';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    navBtns.style.display = 'flex';
+    fill.style.width = (step / TOTAL * 100) + '%';
+    var el = steps.find(function (s) { return +s.dataset.step === step; });
+    stepLabel.textContent = el.dataset.label;
+    stepCount.textContent = 'Step ' + step + ' of ' + TOTAL;
+
+    backBtn.classList.toggle('hidden', step === 1);
+    nextBtn.textContent = (step === TOTAL) ? 'Submit application →' : 'Continue →';
+
+    if (step === 6) syncChildName();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  nextBtn.addEventListener('click', function () {
+    var el = steps.find(function (s) { return +s.dataset.step === current; });
+    if (!validateStep(el)) {
+      var firstErr = el.querySelector('.invalid, .err-msg.show');
+      if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    if (current === TOTAL) {
+      submitForm();
+    } else {
+      show(current + 1);
+    }
+  });
+
+  backBtn.addEventListener('click', function () {
+    if (current > 1) show(current - 1);
+  });
+
+  // ---------- Collect + download ----------
+  var lastPayload = null;
+
+  function chipValues(name) {
+    var group = form.querySelector('[data-chips="' + name + '"]');
+    if (!group) return [];
+    return Array.prototype.map.call(group.querySelectorAll('.chip.on'), function (c) {
+      return c.textContent.trim();
+    });
+  }
+  function radioValue(name) {
+    var group = form.querySelector('[data-radio="' + name + '"]');
+    if (!group) return '';
+    var on = group.querySelector('.opt.on');
+    return on ? on.querySelector('.opt-text').textContent.trim() : '';
+  }
+  function v(name) {
+    var el = form.elements[name];
+    if (!el) return '';
+    if (el.type === 'checkbox') return el.checked;
+    return (el.value || '').trim();
+  }
+
+  function buildPayload() {
+    return {
+      meta: {
+        program: 'theNORMALschool Summer Program 2026',
+        ageBand: '10-12',
+        submittedAt: new Date().toISOString(),
+        specVersion: 'Summer-Application-Data-Spec v1.0'
+      },
+      A_childBasicInfo: {
+        childName: v('childName'),
+        preferredName: v('preferredName'),
+        dob: v('dob'),
+        gender: v('gender'),
+        homeLanguage: v('homeLanguage'),
+        school: v('school'),
+        session: v('session')
+      },
+      B_parentInfo: {
+        parentName: v('parentName'),
+        relationship: v('relationship'),
+        email: v('email'),
+        phone: v('phone'),
+        emergencyName: v('emergencyName'),
+        emergencyPhone: v('emergencyPhone'),
+        pickup: v('pickup'),
+        referral: v('referral')
+      },
+      C_elementLayer1: {
+        aptitude: v('aptitude'),
+        passion: v('passion'),
+        flow: v('flow'),
+        freeChoice: v('freeChoice')
+      },
+      D_elementLayer2: {
+        attitude: v('attitude'),
+        opportunityAccess: chipValues('opportunity'),
+        opportunityGap: v('opportunityGap'),
+        domainBreadth: chipValues('breadth'),
+        tribe: v('tribe'),
+        suppression: v('suppression'),
+        energy: v('energy')
+      },
+      E_miapPreDiagnosis: {
+        motivation: v('miapMotivation'),
+        identity: v('miapIdentity'),
+        agency: v('miapAgency'),
+        purpose: v('miapPurpose'),
+        note: 'PROVISIONAL pre-diagnosis from parent report. Confirm/revise by Monday observation. Never a score.'
+      },
+      F_personalization: {
+        interests: chipValues('interests'),
+        funTime: v('funTime'),
+        proudMaking: v('proudMaking'),
+        favYoutube: v('favYoutube'),
+        favGame: v('favGame'),
+        favBook: v('favBook'),
+        hero: v('hero'),
+        makeAnything: v('makeAnything'),
+        dreamProject: radioValue('dreamProject'),
+        values: chipValues('values'),
+        teamSolo: radioValue('teamSolo'),
+        teamRole: v('teamRole')
+      },
+      G_wellbeingSocialLogistics: {
+        frustration: v('frustration'),
+        accommodations: v('accommodations'),
+        lifeEvents: v('lifeEvents'),
+        anxiety: v('anxiety'),
+        medical: v('medical'),
+        knowsOthers: v('knowsOthers'),
+        disagreement: v('disagreement'),
+        groupRole: v('groupRole'),
+        conflicts: v('conflicts'),
+        hopes: v('hopes'),
+        adultsWrong: v('adultsWrong'),
+        planStyle: v('planStyle'),
+        structureStyle: v('structureStyle'),
+        shirt: v('shirt'),
+        anythingElse: v('anythingElse')
+      },
+      H_consent: {
+        ownWords: v('ownWords'),
+        userTesting: v('userTesting'),
+        mediaConsent: v('mediaConsent'),
+        terms: v('terms'),
+        signature: v('signature')
+      }
+    };
+  }
+
+  function buildSummary(p) {
+    var L = [];
+    function line(k, val) { L.push('  ' + k + ': ' + (val && val.length ? val : '—')); }
+    function arr(a) { return (a && a.length) ? a.join(', ') : '—'; }
+    var name = p.A_childBasicInfo.preferredName || p.A_childBasicInfo.childName;
+
+    L.push('theNORMALschool — SUMMER PROGRAM APPLICATION');
+    L.push('Submitted: ' + p.meta.submittedAt);
+    L.push('============================================================');
+    L.push('');
+    L.push('CHILD: ' + p.A_childBasicInfo.childName + ' (' + name + ')');
+    line('DOB', p.A_childBasicInfo.dob);
+    line('Home language', p.A_childBasicInfo.homeLanguage);
+    line('School/grade', p.A_childBasicInfo.school);
+    line('Session', p.A_childBasicInfo.session);
+    L.push('');
+    L.push('PARENT: ' + p.B_parentInfo.parentName + ' (' + p.B_parentInfo.relationship + ')');
+    line('Email', p.B_parentInfo.email);
+    line('Phone', p.B_parentInfo.phone);
+    line('Emergency', p.B_parentInfo.emergencyName + ' / ' + p.B_parentInfo.emergencyPhone);
+    L.push('');
+    L.push('--- ELEMENT INTAKE · LAYER 1 (Irreplaceable) ---');
+    line('Aptitude', p.C_elementLayer1.aptitude);
+    line('Passion', p.C_elementLayer1.passion);
+    line('Flow', p.C_elementLayer1.flow);
+    line('Free-choice', p.C_elementLayer1.freeChoice);
+    L.push('');
+    L.push('--- ELEMENT INTAKE · LAYER 2 (Development & Context) ---');
+    line('Attitude / difficulty', p.D_elementLayer2.attitude);
+    line('Opportunity access', arr(p.D_elementLayer2.opportunityAccess));
+    line('Opportunity gap', p.D_elementLayer2.opportunityGap);
+    line('Domain breadth', arr(p.D_elementLayer2.domainBreadth));
+    line('Tribe', p.D_elementLayer2.tribe);
+    line('Suppression', p.D_elementLayer2.suppression);
+    line('Energy pattern', p.D_elementLayer2.energy);
+    L.push('');
+    L.push('--- MIAP PRE-DIAGNOSIS (provisional — confirm Monday) ---');
+    line('Motivation', p.E_miapPreDiagnosis.motivation);
+    line('Identity', p.E_miapPreDiagnosis.identity);
+    line('Agency', p.E_miapPreDiagnosis.agency);
+    line('Purpose', p.E_miapPreDiagnosis.purpose);
+    L.push('');
+    L.push('--- PERSONALIZATION (child\'s voice) ---');
+    line('Interests', arr(p.F_personalization.interests));
+    line('Fun time', p.F_personalization.funTime);
+    line('Proud making', p.F_personalization.proudMaking);
+    line('Fav YouTube', p.F_personalization.favYoutube);
+    line('Fav game', p.F_personalization.favGame);
+    line('Fav book/show', p.F_personalization.favBook);
+    line('Admires', p.F_personalization.hero);
+    line('Would make', p.F_personalization.makeAnything);
+    line('Dream project pick', p.F_personalization.dreamProject);
+    line('Values', arr(p.F_personalization.values));
+    line('Team vs solo', p.F_personalization.teamSolo);
+    line('Grabs first in a team', p.F_personalization.teamRole);
+    L.push('');
+    L.push('--- WELLBEING, SOCIAL & LOGISTICS ---');
+    line('Frustration', p.G_wellbeingSocialLogistics.frustration);
+    line('Accommodations', p.G_wellbeingSocialLogistics.accommodations);
+    line('Recent life events', p.G_wellbeingSocialLogistics.lifeEvents);
+    line('Anxiety looks like', p.G_wellbeingSocialLogistics.anxiety);
+    line('Medical/dietary', p.G_wellbeingSocialLogistics.medical);
+    line('Knows others', p.G_wellbeingSocialLogistics.knowsOthers);
+    line('Disagreement', p.G_wellbeingSocialLogistics.disagreement);
+    line('Group role', p.G_wellbeingSocialLogistics.groupRole);
+    line('Conflicts to avoid', p.G_wellbeingSocialLogistics.conflicts);
+    line('Parent hopes', p.G_wellbeingSocialLogistics.hopes);
+    line('Adults got wrong', p.G_wellbeingSocialLogistics.adultsWrong);
+    line('Plan style', p.G_wellbeingSocialLogistics.planStyle);
+    line('Structure style', p.G_wellbeingSocialLogistics.structureStyle);
+    line('Shirt', p.G_wellbeingSocialLogistics.shirt);
+    line('Anything else', p.G_wellbeingSocialLogistics.anythingElse);
+    L.push('');
+    L.push('--- CONSENT ---');
+    line('Own words confirmed', p.H_consent.ownWords ? 'Yes' : 'No');
+    line('User-testing consent', p.H_consent.userTesting ? 'Yes' : 'No');
+    line('Media consent', p.H_consent.mediaConsent ? 'Yes' : 'No');
+    line('Terms agreed', p.H_consent.terms ? 'Yes' : 'No');
+    line('Signature', p.H_consent.signature);
+    return L.join('\n');
+  }
+
+  function slug(s) {
+    return (s || 'applicant').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  }
+
+  function download(filename, content, type) {
+    var blob = new Blob([content], { type: type });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+
+  function doDownloads() {
+    if (!lastPayload) return;
+    var base = 'summer-application_' + slug(lastPayload.A_childBasicInfo.childName);
+    download(base + '.json', JSON.stringify(lastPayload, null, 2), 'application/json');
+    setTimeout(function () {
+      download(base + '_summary.txt', buildSummary(lastPayload), 'text/plain');
+    }, 300);
+  }
+
+  function submitForm() {
+    lastPayload = buildPayload();
+    doDownloads();
+    show(TOTAL + 1);
+  }
+
+  document.getElementById('redownload').addEventListener('click', doDownloads);
+
+  // init
+  show(1);
+})();
+</script>
+</body>
+</html>
