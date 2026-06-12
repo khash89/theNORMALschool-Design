@@ -381,23 +381,24 @@
           </div>
         </div>
 
-        <div class="row">
-          <div class="field">
-            <label>Current school &amp; grade <span class="req">*</span></label>
-            <input type="text" name="school" data-required placeholder="School name, grade" />
-            <div class="err-msg">Please enter school and grade.</div>
+        <div class="field">
+          <label>Current school &amp; grade <span class="req">*</span></label>
+          <input type="text" name="school" data-required placeholder="School name, grade" />
+          <div class="err-msg">Please enter school and grade.</div>
+        </div>
+
+        <div class="field">
+          <div class="field-label">Which week(s) would you like? <span class="req">*</span></div>
+          <div class="hint">Pick all the weeks that work for you — you can choose more than one.</div>
+          <div class="chips" data-chips="session" data-required>
+            <span class="chip">Week #1 · Jun 29 – Jul 3</span>
+            <span class="chip">Week #2 · Jul 7 – Jul 11</span>
+            <span class="chip">Week #3 · Jul 14 – Jul 18</span>
+            <span class="chip">Week #4 · Jul 21 – Jul 25</span>
+            <span class="chip">Week #5 · Jul 28 – Aug 1</span>
+            <span class="chip">Week #6 · Aug 4 – Aug 7</span>
           </div>
-          <div class="field">
-            <label>Session applying for <span class="req">*</span></label>
-            <select name="session" data-required>
-              <option value="">Choose a session…</option>
-              <option>Session A — June 2026</option>
-              <option>Session B — July 2026</option>
-              <option>Session C — August 2026</option>
-              <option>Not sure yet</option>
-            </select>
-            <div class="err-msg">Please choose a session.</div>
-          </div>
+          <div class="err-msg">Please pick at least one week.</div>
         </div>
       </section>
 
@@ -909,7 +910,7 @@
         </div>
 
         <div class="reassure" style="margin-bottom:0;">
-          When you submit, your application downloads as a file to your device. <b>Please email it to us at apply@thenormalschool.com</b> (or it'll be collected automatically once our portal is live).
+          When you submit, your child's application goes straight to our team — we'll be in touch within a few days. <b>Questions? Email us at apply@thenormal.school.</b>
         </div>
       </section>
 
@@ -1224,7 +1225,7 @@
         gender: v('gender'),
         homeLanguage: v('homeLanguage'),
         school: v('school'),
-        session: v('session')
+        session: chipValues('session')
       },
       B_parentInfo: {
         parentName: v('parentName'),
@@ -1329,7 +1330,7 @@
     line('DOB', p.A_childBasicInfo.dob);
     line('Home language', p.A_childBasicInfo.homeLanguage);
     line('School/grade', p.A_childBasicInfo.school);
-    line('Session', p.A_childBasicInfo.session);
+    line('Weeks requested', arr(p.A_childBasicInfo.session));
     L.push('');
     L.push('PARENT: ' + p.B_parentInfo.parentName + ' (' + p.B_parentInfo.relationship + ')');
     line('Email', p.B_parentInfo.email);
@@ -1442,7 +1443,7 @@
     if (!isConfigured()) return Promise.resolve(false);
     var record = {
       child_name: payload.A_childBasicInfo.childName,
-      session: payload.A_childBasicInfo.session,
+      session: (payload.A_childBasicInfo.session || []).join(', '),
       parent_email: payload.B_parentInfo.email,
       payload: payload
     };
@@ -1477,7 +1478,7 @@
       head.textContent = 'Thank you — application ready!';
       lead.textContent = 'We’ve saved ';
       tail.textContent = '’s application to your device.';
-      line2.innerHTML = 'We couldn’t reach our server just now, so please email the downloaded file to <strong>apply@thenormalschool.com</strong>. We’ll be in touch within a few days.';
+      line2.innerHTML = 'We couldn’t reach our server just now, so please email the downloaded file to <strong>apply@thenormal.school</strong>. We’ll be in touch within a few days.';
     }
   }
 

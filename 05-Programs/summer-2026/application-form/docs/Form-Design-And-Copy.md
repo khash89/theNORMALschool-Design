@@ -155,7 +155,7 @@ Legend: **R** = required · type in *italics* · `err:` = message shown when inv
 | Gender | *text* | — | ph: Optional — how they describe themselves |
 | Language(s) at home | *text* | ✅ | ph: e.g. English, Mongolian · `err:` Please tell us the home language. |
 | Current school & grade | *text* | ✅ | ph: School name, grade · `err:` Please enter school and grade. |
-| Session applying for | *select* | ✅ | Choose a session… / Session A — June 2026 / Session B — July 2026 / Session C — August 2026 / Not sure yet · `err:` Please choose a session. |
+| Which week(s) would you like? | *chips (multi-select)* | ✅ | hint: Pick all the weeks that work for you — you can choose more than one. — Week #1 · Jun 29 – Jul 3 / Week #2 · Jul 7 – Jul 11 / Week #3 · Jul 14 – Jul 18 / Week #4 · Jul 21 – Jul 25 / Week #5 · Jul 28 – Aug 1 / Week #6 · Aug 4 – Aug 7 · `err:` Please pick at least one week. |
 
 ### Step 2 — "Parent & Contact"
 - Kicker: **Parent & contact** · H2: **How we reach you** · Sub: *Your details for everything from confirmation to Saturday's showcase.*
@@ -284,14 +284,15 @@ Legend: **R** = required · type in *italics* · `err:` = message shown when inv
 | (group `err`) | Please confirm all four to submit. | |
 | Parent signature (type your full name) | *text* | ✅ · `err:` Please type your full name. |
 
-- Reassurance: *When you submit, your application downloads as a file to your device. **Please email it to us at apply@thenormalschool.com** (or it'll be collected automatically once our portal is live).*
+- Reassurance: *When you submit, your child's application goes straight to our team — we'll be in touch within a few days. **Questions? Email us at apply@thenormal.school.***
 
 ### Success screen — "Submitted"
 - Orange circular **✓** badge.
-- H2: **Thank you — application ready!**
-- Line 1: *We've put together everything you told us about **`[child's name]`**. Your application file has downloaded.*
-- Line 2 (muted): *Please email the downloaded file to **apply@thenormalschool.com**. We'll be in touch within a few days.*
-- Button: **`Download again →`**
+- Copy is **state-dependent** (see the *Submission storage* behavior in §4), driven by `setSubmitState()`:
+  - **sending:** H2 *Thank you — almost there…* · *Sending `[name]`'s application…* · *Just a moment while we save it.*
+  - **online (saved):** H2 *Thank you — all done!* · *We've received `[name]`'s application. ✓* · *It's safely saved with our team — we'll be in touch within a few days.*
+  - **fallback (server unreachable):** H2 *Thank you — application ready!* · *We've saved `[name]`'s application to your device.* · *We couldn't reach our server just now, so please email the downloaded file to **apply@thenormal.school**. We'll be in touch within a few days.*
+- Button: **`Download a copy →`** (ghost) — re-triggers the JSON + summary download.
 
 ---
 
@@ -304,7 +305,7 @@ Quick reference of every error string, in encounter order:
 | 2 | Date of birth | Please enter a date of birth. |
 | 3 | Language(s) at home | Please tell us the home language. |
 | 4 | School & grade | Please enter school and grade. |
-| 5 | Session | Please choose a session. |
+| 5 | Weeks (chips) | Please pick at least one week. |
 | 6 | Parent name | Please enter your name. |
 | 7 | Relationship | Please choose a relationship. |
 | 8 | Email | Please enter a valid email. |
@@ -331,15 +332,16 @@ Email validity (field 8) is checked with `^[^\s@]+@[^\s@]+\.[^\s@]+$`.
 ---
 
 ## 8. Placeholders & known TODOs
-- **`apply@thenormalschool.com`** (Step 8 reassurance + fallback success copy) is a placeholder address — swap for the real intake email.
-- **Sessions** (Step 1 dropdown) are placeholder dates — confirm real session names.
+- **Intake email** is `apply@thenormal.school` (Step 8 reassurance + fallback success copy).
+- **Sessions** (Step 1 week chips) are the six 2026 weeks: Jun 29–Jul 3, Jul 7–11, Jul 14–18, Jul 21–25, Jul 28–Aug 1, Aug 4–7. Parents may pick more than one.
 - **Supabase not yet configured:** the `SUPABASE_URL` / `SUPABASE_ANON_KEY` in `index.html` are placeholders, so the form currently uses the local-download fallback. Fill them in per [`Submission-Storage-Supabase.md`](Submission-Storage-Supabase.md) to store submissions online.
 - **Dictation language:** voice input defaults to the browser's `navigator.language`. For Mongolian-speaking families on a browser set to English this will mis-transcribe — consider deriving the recognizer language from the "language(s) at home" field, or adding an explicit language toggle.
 - **Voice input is best-effort:** the Web Speech API is unavailable in some browsers (notably Firefox) and requires a one-time mic permission; the mic button is simply hidden where unsupported.
 
 ---
 
-*Document version 1.4 — theNORMALschool internal use only.*
+*Document version 1.5 — theNORMALschool internal use only.*
+*v1.5 — Step 1 "session" is now a **multi-select week picker** (six 2026 weeks, chips, ≥1 required); JSON `A_childBasicInfo.session` is an array (joined to a string for the Supabase `session` column). Intake email set to `apply@thenormal.school`; Step 8 + success copy updated to reflect online submission.*
 *v1.4 — Submissions now POST to **Supabase** (insert-only RLS) with a local-download fallback; success copy reflects sending/received/fallback state. Setup in [`Submission-Storage-Supabase.md`](Submission-Storage-Supabase.md).*
 *v1.3 — Added a sticky left **sidebar** (desktop) for section navigation: jump back to any completed section, forward only to reached sections; hidden below 920px. Two-column layout introduced.*
 *v1.2 — Name injected throughout (not just Step 6) via `.kid` / `.kidposs` spans; example placeholders added to every text/textarea; voice-input mic button added to every textarea (Web Speech API).*
