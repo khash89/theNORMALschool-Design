@@ -946,11 +946,15 @@
   // ---------- Submission storage (Supabase) ----------
   // Setup: create a free project at supabase.com, then run the SQL in
   //   docs/Submission-Storage-Supabase.md to create the `applications` table + insert-only policy.
-  // Paste your Project URL and the *anon / public* key below. The anon key is safe to ship in the
-  // browser: Row Level Security limits it to INSERT only — it cannot read anyone's submission.
+  // Paste below:
+  //   SUPABASE_URL  — your Project URL: https://<project-ref>.supabase.co
+  //                   (Project Settings -> Data API, or the ref in your dashboard address bar)
+  //   SUPABASE_KEY  — the *publishable* key (sb_publishable_...), formerly called the "anon" key.
+  //                   It is safe in the browser: Row Level Security limits it to INSERT only, so it
+  //                   cannot read anyone's submission. NEVER paste the *secret* key (sb_secret_...).
   // Until these are filled in, the form falls back to downloading the file locally.
-  var SUPABASE_URL = 'https://YOUR-PROJECT.supabase.co';
-  var SUPABASE_ANON_KEY = 'YOUR-ANON-KEY';
+  var SUPABASE_URL = 'https://luzfinklnwcboeolysrr.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_QN5JVuDz6WBna9l8No8F1g_sExsvEg0';
   var SUPABASE_TABLE = 'applications';
 
   var form = document.getElementById('appForm');
@@ -1429,7 +1433,7 @@
 
   function isConfigured() {
     return SUPABASE_URL.indexOf('YOUR-PROJECT') === -1 &&
-           SUPABASE_ANON_KEY.indexOf('YOUR-ANON-KEY') === -1;
+           SUPABASE_KEY.indexOf('YOUR-PUBLISHABLE-KEY') === -1;
   }
 
   // POST the application to Supabase. Resolves true on success, false on any failure
@@ -1446,8 +1450,8 @@
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'apikey': SUPABASE_ANON_KEY,
-        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
         'Prefer': 'return=minimal'
       },
       body: JSON.stringify(record)
