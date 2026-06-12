@@ -54,6 +54,7 @@ Focus ring: `0 0 0 3px rgba(255,117,31,0.12)` with `border-color: orange`.
 | **Option card** (single-select) | white, 12px radius, hollow radio dot | orange-tinted bg, orange border, filled dot | group message if none picked |
 | **Checkbox** | native, `accent-color` orange | checked | shared message under the group |
 | **Reassurance box** | cream bg, 12px radius, 14px UI-gray text | — | — |
+| **Sub-section header** (`.substep`, Step 6 clusters) | navy 800 15px label preceded by a short orange accent bar | — | — |
 | **Progress bar** | gray track, orange fill, animates width 0.35s | — | — |
 
 ---
@@ -106,7 +107,7 @@ Focus ring: `0 0 0 3px rgba(255,117,31,0.12)` with `border-color: orange`.
 | **Age auto-calc** | On DOB change, computes age at the program reference date (2026-06-01) and prints **"Age at program start: N"** in orange. Outside 10–12 appends *"— note: program is designed for ages 10–12"** (a soft note, not a block). |
 | **Child-name personalization** | On reaching Step 6, the child's **preferred name** (or first name) is injected into the kicker, heading, and the success line. Falls back to "your child" / "you" if empty. |
 | **Submit** | Builds a structured payload + readable summary and triggers two downloads, then shows the success screen. |
-| **Downloads** | `summer-application_<child-name>.json` (grouped by spec sections A–H) and `summer-application_<child-name>_summary.txt` (human-readable). "Download again →" re-triggers both. |
+| **Downloads** | `summer-application_<child-name>.json` (grouped by spec sections A–H; sections C and E each nest `parent` + `child` sub-objects with a cross-read `note`) and `summer-application_<child-name>_summary.txt` (human-readable, parent and child reports printed side by side under each of Element Layer 1 and MIAP). "Download again →" re-triggers both. |
 | **No backend** | Files download to the parent's device; copy directs them to email the file in. |
 
 ---
@@ -188,24 +189,51 @@ Legend: **R** = required · type in *italics* · `err:` = message shown when inv
 | When they hit an obstacle and you're not there | *textarea* | ✅ | What happens when your child runs into a problem and no adult is around to help? · `err:` Please tell us what happens. |
 | Have they ever cared that something was useful to someone else? | *textarea* | — | Not just fun for them — actually useful to another person. An example, if there is one. |
 
-### Step 6 — "Just for You"  *(Personalization — the child's own voice)*
+### Step 6 — "Just for You"  *(the child's voice — Personalization F + child Element cross-check C(child) + child MIAP cross-read E(child))*
 - Kicker: **Now — over to `[child's name]`** · H2: **This part is just for `[child's name]`** · Sub: *Hey! These questions are for you — the kid joining us. There are zero wrong answers. Just say what's true.*
 - Reassurance: ***Parents:** let your child answer this part in their own words — you can type for them, but the answers should be theirs.*
+- This is the **only child-facing step**, so the spec's child versions of Section C (Element) and Section E (MIAP) live here too — framed purely as preference and experience, never as a test, never using framework words. The step is broken into four `.substep` clusters: **What you're into · When you make stuff · Your favorites · If it were up to you.**
+- All C(child) and E(child) questions are **optional** (the parent's C1–C3 and E in Steps 3 & 5 remain the required core). Per the spec's overlap rule, where a child Element question duplicated an F question, the Element phrasing wins and the question is asked **once** — the old F.1 "what do you do for fun on weekends" is now the C2c "what do you do just for fun that nobody tells you to do."
+- The **`Spec`** column traces each control back to [Summer-Application-Data-Spec.md](../../intake/Summer-Application-Data-Spec.md) §C/E/F.
 
-| Label | Type | R | Hint / options · `err` |
-|---|---|---|---|
-| What are you really into right now? | *chips* | ✅ | hint: Tap everything that's you. — Gaming · Drawing · Sports · Music · Coding · Animals · Cooking · Building stuff · Reading · Science · Dance · Film / video · Fashion · Cars · Space · `err:` Pick at least one! |
-| What do you do for fun on weekends or after school? | *textarea* | — | |
-| Something you made that you were proud of | *textarea* | ✅ | A video, a Minecraft build, a comic, a recipe, a fort — anything. What was the best part of making it? · `err:` Tell us about one thing you made! |
-| Favorite YouTube channel(s) or creators | *text* | — | |
-| Favorite game(s) | *text* | — | |
-| Favorite book, comic, or show | *text* | — | |
-| Someone who's really cool at what they do | *text* | — | ph: A creator, athlete, scientist, anyone |
-| If you could spend a whole week making ONE thing, what would it be? | *textarea* | — | |
-| Pick the one that sounds most fun | *radio* | ✅ | Be on camera, telling a story people actually watch · Film and edit a video until it's exactly right · Invent the rules of a game and decide how it works · Build a game's world, characters, and look · Cook something people line up to buy · Fix a real problem in your neighborhood · Build a tool that explains something cool · `err:` Pick the one that sounds most fun! |
-| What kind of stuff do you care about? | *chips* | — | Helping people · Animals · The planet · Fairness · Building things that work · Making people laugh · Winning / competing · How things work · Making beautiful things |
-| Do you like working with a team or on your own? | *radio (2-up grid)* | ✅ | With a team · On my own · Depends on the day · `err:` Pick one! |
-| When you work with other people, what part do you grab first? | *text* | — | |
+**Cluster · What you're into**
+
+| Label | Type | R | Hint / options · `err` | Spec |
+|---|---|---|---|---|
+| What are you really into right now? | *chips* | ✅ | hint: Tap everything that's you. — Gaming · Drawing · Sports · Music · Coding · Animals · Cooking · Building stuff · Reading · Science · Dance · Film / video · Fashion · Cars · Space · `err:` Pick at least one! | F.1 |
+| A new kid sits next to you and asks, "So what are you all about?" | *textarea* | — | hint: What would you tell them? | E(child) Identity |
+| Is there something that feels easy for you — but other kids seem to find hard? | *textarea* | — | hint: What is it? | C(child) C1c |
+| What do you do just for fun — that nobody tells you to do? | *textarea* | — | | C(child) C2c |
+| Is there something you do where you look up and a LOT of time has gone by? | *textarea* | — | | C(child) C3c |
+
+**Cluster · When you make stuff**
+
+| Label | Type | R | Hint / options · `err` | Spec |
+|---|---|---|---|---|
+| Something you made that you were proud of | *textarea* | ✅ | A video, a Minecraft build, a comic, a recipe, a fort — anything. What was the best part of making it? · `err:` Tell us about one thing you made! | F.1 |
+| Something you started making or doing all on your own — just because you wanted to? | *textarea* | — | | E(child) Motivation |
+| When something you're making stops working, what do you usually do? | *textarea* | — | | E(child) Agency |
+| Have you ever made something to help someone else — or that someone else used? | *textarea* | — | hint: What was it? | E(child) Purpose |
+
+**Cluster · Your favorites**
+
+| Label | Type | R | Hint / options · `err` | Spec |
+|---|---|---|---|---|
+| Favorite YouTube channel(s) or creators | *text* | — | | F.2 |
+| Favorite game(s) | *text* | — | | F.2 |
+| Favorite book, comic, or show | *text* | — | | F.2 |
+| Someone who's really cool at what they do | *text* | — | ph: A creator, athlete, scientist, anyone | F.2 |
+
+**Cluster · If it were up to you**
+
+| Label | Type | R | Hint / options · `err` | Spec |
+|---|---|---|---|---|
+| If today were totally free — no plans, screens not the default — what would you end up doing? | *textarea* | — | | C(child) C4c |
+| If you could spend a whole week making ONE thing, what would it be? | *textarea* | — | | F.3 |
+| Pick the one that sounds most fun | *radio* | ✅ | Be on camera, telling a story people actually watch · Film and edit a video until it's exactly right · Invent the rules of a game and decide how it works · Build a game's world, characters, and look · Cook something people line up to buy · Fix a real problem in your neighborhood · Build a tool that explains something cool · `err:` Pick the one that sounds most fun! | F.3 |
+| What kind of stuff do you care about? | *chips* | — | Helping people · Animals · The planet · Fairness · Building things that work · Making people laugh · Winning / competing · How things work · Making beautiful things | F.4 |
+| Do you like working with a team or on your own? | *radio (2-up grid)* | ✅ | With a team · On my own · Depends on the day · `err:` Pick one! | F.4 |
+| When you work with other people, what part do you grab first? | *text* | — | | F.4 |
 
 ### Step 7 — "Wellbeing & Logistics"
 - Kicker: **So we can support your child well** · H2: **A few things that help us care for them** · Sub: *This stays with our team. The more specific you are, the better we can show up for your child.*
@@ -290,9 +318,9 @@ Email validity (field 8) is checked with `^[^\s@]+@[^\s@]+\.[^\s@]+$`.
 - **`apply@thenormalschool.com`** (Step 8 reassurance + success screen) is a placeholder address — swap for the real intake email.
 - **Sessions** (Step 1 dropdown) are placeholder dates — confirm real session names.
 - **No backend:** submissions download locally; copy reflects that.
-- **Pending — not yet in the form:** [Summer-Application-Data-Spec.md](../../intake/Summer-Application-Data-Spec.md) v1.1 adds **child (preference-framed) versions of Section C and Section E**. Those child C/E questions are *not* rendered in the current form yet — they'll be added once the spec change is confirmed. When added, this document's Step 3 and Step 5 inventories (and likely a new placement for the child's C/E questions, e.g. folded into Step 6) must be updated to match.
 
 ---
 
-*Document version 1.0 — theNORMALschool internal use only.*
+*Document version 1.1 — theNORMALschool internal use only.*
+*v1.1 — Step 6 expanded to carry the child (preference-framed) versions of Section C and Section E from data-spec v1.1, organised into four `.substep` clusters; JSON for C and E now nests parent + child. Steps 3 & 5 (parent C/E) unchanged.*
 *Describes: app/index.html (form as built). Brand: 00-Vision/Brand-Guideline.md.*

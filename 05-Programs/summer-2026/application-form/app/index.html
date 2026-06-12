@@ -118,6 +118,17 @@
   }
   .reassure b { color: var(--navy); font-weight: 600; }
 
+  /* ---------- In-step sub-section (Step 6 clusters) ---------- */
+  .substep {
+    display: flex; align-items: center; gap: 9px;
+    font-weight: 800; font-size: 15px; color: var(--navy);
+    letter-spacing: -0.01em; margin: 32px 0 16px;
+  }
+  .substep::before {
+    content: ''; flex: 0 0 16px; width: 16px; height: 3px;
+    border-radius: 2px; background: var(--orange);
+  }
+
   /* ---------- Fields ---------- */
   .field { margin-bottom: 22px; }
   .field > label, .field > .field-label {
@@ -534,7 +545,7 @@
         </div>
       </section>
 
-      <!-- ===== STEP 6: PERSONALIZATION — CHILD'S SECTION (Section F) ===== -->
+      <!-- ===== STEP 6: CHILD'S SECTION — Personalization (F) + child Element cross-check (C-child) + child MIAP cross-read (E-child) ===== -->
       <section class="step" data-step="6" data-label="Just for You">
         <div class="step-head">
           <div class="kicker">Now — over to <span id="childKicker">your child</span></div>
@@ -544,6 +555,8 @@
         <div class="reassure">
           <b>Parents:</b> let your child answer this part in their own words — you can type for them, but the answers should be theirs.
         </div>
+
+        <div class="substep">What you're into</div>
 
         <div class="field">
           <div class="field-label">What are you really into right now? <span class="req">*</span></div>
@@ -559,9 +572,28 @@
         </div>
 
         <div class="field">
-          <label>What do you do for fun on weekends or after school?</label>
-          <textarea name="funTime"></textarea>
+          <label>A new kid sits next to you and asks, "So what are you all about?"</label>
+          <div class="hint">What would you tell them?</div>
+          <textarea name="childDescribe"></textarea>
         </div>
+
+        <div class="field">
+          <label>Is there something that feels easy for you — but other kids seem to find hard?</label>
+          <div class="hint">What is it?</div>
+          <textarea name="childComesEasily"></textarea>
+        </div>
+
+        <div class="field">
+          <label>What do you do just for fun — that nobody tells you to do?</label>
+          <textarea name="childFunFreely"></textarea>
+        </div>
+
+        <div class="field">
+          <label>Is there something you do where you look up and a LOT of time has gone by?</label>
+          <textarea name="childLosesTime"></textarea>
+        </div>
+
+        <div class="substep">When you make stuff</div>
 
         <div class="field">
           <label>Something you made that you were proud of <span class="req">*</span></label>
@@ -569,6 +601,24 @@
           <textarea name="proudMaking" data-required></textarea>
           <div class="err-msg">Tell us about one thing you made!</div>
         </div>
+
+        <div class="field">
+          <label>Something you started making or doing all on your own — just because you wanted to?</label>
+          <textarea name="childStarted"></textarea>
+        </div>
+
+        <div class="field">
+          <label>When something you're making stops working, what do you usually do?</label>
+          <textarea name="childStuck"></textarea>
+        </div>
+
+        <div class="field">
+          <label>Have you ever made something to help someone else — or that someone else used?</label>
+          <div class="hint">What was it?</div>
+          <textarea name="childHelped"></textarea>
+        </div>
+
+        <div class="substep">Your favorites</div>
 
         <div class="row">
           <div class="field">
@@ -590,6 +640,13 @@
             <label>Someone who's really cool at what they do</label>
             <input type="text" name="hero" placeholder="A creator, athlete, scientist, anyone" />
           </div>
+        </div>
+
+        <div class="substep">If it were up to you</div>
+
+        <div class="field">
+          <label>If today were totally free — no plans, screens not the default — what would you end up doing?</label>
+          <textarea name="childFreeDay"></textarea>
         </div>
 
         <div class="field">
@@ -1014,7 +1071,7 @@
         program: 'theNORMALschool Summer Program 2026',
         ageBand: '10-12',
         submittedAt: new Date().toISOString(),
-        specVersion: 'Summer-Application-Data-Spec v1.0'
+        specVersion: 'Summer-Application-Data-Spec v1.1'
       },
       A_childBasicInfo: {
         childName: v('childName'),
@@ -1036,10 +1093,19 @@
         referral: v('referral')
       },
       C_elementLayer1: {
-        aptitude: v('aptitude'),
-        passion: v('passion'),
-        flow: v('flow'),
-        freeChoice: v('freeChoice')
+        parent: {
+          aptitude: v('aptitude'),
+          passion: v('passion'),
+          flow: v('flow'),
+          freeChoice: v('freeChoice')
+        },
+        child: {
+          comesEasily: v('childComesEasily'),
+          funFreely: v('childFunFreely'),
+          losesTime: v('childLosesTime'),
+          freeDay: v('childFreeDay')
+        },
+        note: 'Parent report is the required core. Child answers are a preference-framed cross-check, never the primary source. Agreement hardens the signal; divergence (parent reports what the child never mentions) is an adult-projection flag.'
       },
       D_elementLayer2: {
         attitude: v('attitude'),
@@ -1051,15 +1117,22 @@
         energy: v('energy')
       },
       E_miapPreDiagnosis: {
-        motivation: v('miapMotivation'),
-        identity: v('miapIdentity'),
-        agency: v('miapAgency'),
-        purpose: v('miapPurpose'),
-        note: 'PROVISIONAL pre-diagnosis from parent report. Confirm/revise by Monday observation. Never a score.'
+        parent: {
+          motivation: v('miapMotivation'),
+          identity: v('miapIdentity'),
+          agency: v('miapAgency'),
+          purpose: v('miapPurpose')
+        },
+        child: {
+          motivation: v('childStarted'),
+          identity: v('childDescribe'),
+          agency: v('childStuck'),
+          purpose: v('childHelped')
+        },
+        note: 'PROVISIONAL pre-diagnosis from parent report + child cross-read. Agreement strengthens it; divergence is flagged for Monday. Confirm/revise by in-week observation. Never a score.'
       },
       F_personalization: {
         interests: chipValues('interests'),
-        funTime: v('funTime'),
         proudMaking: v('proudMaking'),
         favYoutube: v('favYoutube'),
         favGame: v('favGame'),
@@ -1120,10 +1193,16 @@
     line('Emergency', p.B_parentInfo.emergencyName + ' / ' + p.B_parentInfo.emergencyPhone);
     L.push('');
     L.push('--- ELEMENT INTAKE · LAYER 1 (Irreplaceable) ---');
-    line('Aptitude', p.C_elementLayer1.aptitude);
-    line('Passion', p.C_elementLayer1.passion);
-    line('Flow', p.C_elementLayer1.flow);
-    line('Free-choice', p.C_elementLayer1.freeChoice);
+    L.push('  [Parent report — required core]');
+    line('Aptitude', p.C_elementLayer1.parent.aptitude);
+    line('Passion', p.C_elementLayer1.parent.passion);
+    line('Flow', p.C_elementLayer1.parent.flow);
+    line('Free-choice', p.C_elementLayer1.parent.freeChoice);
+    L.push('  [Child cross-check — preference-framed, not primary]');
+    line('Comes easily', p.C_elementLayer1.child.comesEasily);
+    line('Does for fun (unprompted)', p.C_elementLayer1.child.funFreely);
+    line('Loses time in', p.C_elementLayer1.child.losesTime);
+    line('Free day', p.C_elementLayer1.child.freeDay);
     L.push('');
     L.push('--- ELEMENT INTAKE · LAYER 2 (Development & Context) ---');
     line('Attitude / difficulty', p.D_elementLayer2.attitude);
@@ -1135,14 +1214,19 @@
     line('Energy pattern', p.D_elementLayer2.energy);
     L.push('');
     L.push('--- MIAP PRE-DIAGNOSIS (provisional — confirm Monday) ---');
-    line('Motivation', p.E_miapPreDiagnosis.motivation);
-    line('Identity', p.E_miapPreDiagnosis.identity);
-    line('Agency', p.E_miapPreDiagnosis.agency);
-    line('Purpose', p.E_miapPreDiagnosis.purpose);
+    L.push('  [Parent report]');
+    line('Motivation', p.E_miapPreDiagnosis.parent.motivation);
+    line('Identity', p.E_miapPreDiagnosis.parent.identity);
+    line('Agency', p.E_miapPreDiagnosis.parent.agency);
+    line('Purpose', p.E_miapPreDiagnosis.parent.purpose);
+    L.push('  [Child cross-read — preference-framed]');
+    line('Motivation', p.E_miapPreDiagnosis.child.motivation);
+    line('Identity', p.E_miapPreDiagnosis.child.identity);
+    line('Agency', p.E_miapPreDiagnosis.child.agency);
+    line('Purpose', p.E_miapPreDiagnosis.child.purpose);
     L.push('');
     L.push('--- PERSONALIZATION (child\'s voice) ---');
     line('Interests', arr(p.F_personalization.interests));
-    line('Fun time', p.F_personalization.funTime);
     line('Proud making', p.F_personalization.proudMaking);
     line('Fav YouTube', p.F_personalization.favYoutube);
     line('Fav game', p.F_personalization.favGame);
