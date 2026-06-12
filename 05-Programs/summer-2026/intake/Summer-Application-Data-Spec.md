@@ -15,8 +15,8 @@ It consolidates three existing internal documents into one collection instrument
 | Source document | What it contributes |
 |---|---|
 | [`Element-Intake-10-12.md`](Element-Intake-10-12.md) | The Element signal tiers (Aptitude, Passion, Flow, Attitude, Opportunity…) and the MIAP observation layer |
-| [`summer_program_process_map.md`](summer_program_process_map.md) | The five screening categories (factual, making history, wellbeing, social, expectations) and how each maps to a program decision |
-| [`pilot_intake_light.md`](pilot_intake_light.md) | The parent/child question framing and the rule that the child's questions read as *preferences, not assessment* |
+| [`Summer-Program-Process-Map.md`](../operations/Summer-Program-Process-Map.md) | The five screening categories (factual, making history, wellbeing, social, expectations) and how each maps to a program decision |
+| [`Pilot-Intake-Light.md`](../../pilot-day-2026/Pilot-Intake-Light.md) | The parent/child question framing and the rule that the child's questions read as *preferences, not assessment* |
 
 ---
 
@@ -24,7 +24,7 @@ It consolidates three existing internal documents into one collection instrument
 
 These are non-negotiable and are the reason the form is structured the way it is.
 
-1. **All pre-program data is provisional.** Nothing on this form is observed — it is *reported* by a parent or child. Monday is the first real data point ([`summer_program_process_map.md` §Data Authentication](summer_program_process_map.md)). The form collects **hypotheses to test**, not facts.
+1. **All pre-program data is provisional.** Nothing on this form is observed — it is *reported* by a parent or child. Monday is the first real data point ([`Summer-Program-Process-Map.md` §Data Authentication](../operations/Summer-Program-Process-Map.md)). The form collects **hypotheses to test**, not facts.
 2. **Aptitude and Passion are separate signals — never merged.** They get their own fields. "Good at art" is not an answer; "draws machines and how they connect" is.
 3. **Ask for behavior, not labels.** Every signal question asks *what the child does and how you know* — not "is your child creative?"
 4. **Identification stays invisible to the child.** The child's section is framed as preferences and "what would you make" — never as a test, never using framework words (Element, MIAP, aptitude).
@@ -126,7 +126,7 @@ These are non-negotiable and are the reason the form is structured the way it is
 ---
 
 ### Section E — MIAP Pre-Diagnosis Signals
-*Source: `summer_program_process_map.md` §1.4 + `MIAP_Design_Conditions.md` diagnostic table. **Provisional** driver signals, behaviorally framed. Answered by **both parent and child**; confirmed/revised only by in-week observation.*
+*Source: `Summer-Program-Process-Map.md` §1.4 + `MIAP-Design-Conditions.md` diagnostic table. **Provisional** driver signals, behaviorally framed. Answered by **both parent and child**; confirmed/revised only by in-week observation.*
 
 > **Why this can live on an intake form:** MIAP must never be *scored* from self-report. But the process map explicitly draws a **pre-diagnosis** from screening data to plan which conditions to embed before Monday. These questions collect exactly that — flagged provisional, confirmed by observation.
 
@@ -239,7 +239,7 @@ These are non-negotiable and are the reason the form is structured the way it is
 ---
 
 ## 5. Field reliability & risk reference
-*Carried from `summer_program_process_map.md` — tells the Guide how much to trust each field before Monday.*
+*Carried from `Summer-Program-Process-Map.md` — tells the Guide how much to trust each field before Monday.*
 
 | Field group | Reliability | Risk if wrong |
 |---|---|---|
@@ -302,4 +302,4 @@ APPLICATION FORM (this spec — reported, provisional)
 
 *Document version 1.1 — theNORMALschool internal use only.*
 *v1.1 — added child (preference-framed) versions of Section C and Section E, with parent↔child cross-read rules.*
-*Derived from: Element-Intake-10-12.md · summer_program_process_map.md (v2.0) · pilot_intake_light.md · MIAP_Design_Conditions.md*
+*Derived from: Element-Intake-10-12.md · Summer-Program-Process-Map.md (v2.0) · Pilot-Intake-Light.md · MIAP-Design-Conditions.md*

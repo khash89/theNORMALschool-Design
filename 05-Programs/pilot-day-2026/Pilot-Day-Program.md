@@ -14,7 +14,7 @@
 - **Cohort:** 2 teams · 2–3 members each (4–6 students total)
 - **Ages:** 10–12
 - **Project menu:** 2 one-day-scoped options — The YouTube Studio (Storytelling) · The Game Builder (Web App Building)
-- **Project selection:** Before the day, guided by the light intake (see [pilot_intake_light.md](pilot_intake_light.md))
+- **Project selection:** Before the day, guided by the light intake (see [Pilot-Intake-Light.md](Pilot-Intake-Light.md))
 - **Ending:** Internal share-out — teams present to each other and the Guide. No external audience.
 - **Pricing:** Free — pilot participants are invited families
 
@@ -55,7 +55,7 @@ The day is one full compressed loop of the summer model: commit → learn → bu
 ## Project Menu — One-Day Cuts
 *Two options, one per type. Each team picks one before the day. Both teams may pick the same project.*
 
-Both are compressed cuts of the summer library briefs ([summer_project_library.md](../summer-2026/summer_project_library.md)). The fixed core shrinks; the personalization layer and diagnostic logic carry over intact.
+Both are compressed cuts of the summer library briefs ([Summer-Project-Library.md](../summer-2026/design/Summer-Project-Library.md)). The fixed core shrinks; the personalization layer and diagnostic logic carry over intact.
 
 ### Fixed Core
 
@@ -71,7 +71,7 @@ Both are compressed cuts of the summer library briefs ([summer_project_library.m
 
 ### Personalization Layer
 
-The match profiles, driving question variants, and role-to-signal guidance from the summer library apply unchanged — use the **YouTube Studio** and **Game Builder** sections of [summer_project_library.md](../summer-2026/summer_project_library.md), fed by the light intake instead of the full Element Hypothesis.
+The match profiles, driving question variants, and role-to-signal guidance from the summer library apply unchanged — use the **YouTube Studio** and **Game Builder** sections of [Summer-Project-Library.md](../summer-2026/design/Summer-Project-Library.md), fed by the light intake instead of the full Element Hypothesis.
 
 ### Diagnostic Moments — Compressed Mapping
 
@@ -115,7 +115,7 @@ Separate from student observation — one page logging the *model itself*: actua
 
 1. **Same day — Guide debrief (30 min):** Walk the six pilot questions against the operations log while memory is fresh.
 2. **Within 48 hours — written findings:** One page per pilot question: answer, evidence, and the change it forces in the summer design.
-3. **Update the summer documents:** Push confirmed changes into [summer_program_project_arc.md](../summer-2026/summer_program_project_arc.md) and [summer_project_library.md](../summer-2026/summer_project_library.md). The pilot has failed if it produces no edits.
+3. **Update the summer documents:** Push confirmed changes into [Summer-Program-Project-Arc.md](../summer-2026/design/Summer-Program-Project-Arc.md) and [Summer-Project-Library.md](../summer-2026/design/Summer-Project-Library.md). The pilot has failed if it produces no edits.
 4. **Light-intake validation:** Compare each student's in-day signals against their light-intake summary. Where the intake predicted well and where it missed informs the full Element Hypothesis process.
 
 ---
@@ -144,11 +144,11 @@ Separate from student observation — one page logging the *model itself*: actua
 
 **Scope guardrails are load-bearing.** A six-day brief compressed to one day fails by scope, not by concept. The guardrails (one level, one mechanic; one location, locked script) are part of the brief, stated to students at results setting, and enforced by the Guide at the Sprint 2 boundary.
 
-**Light intake is itself under test.** The pilot doubles as a dry run of signal-based project matching with a fraction of the full intake burden. Tier 1 signals only (Aptitude, Passion, flow) plus project preference — see [pilot_intake_light.md](pilot_intake_light.md).
+**Light intake is itself under test.** The pilot doubles as a dry run of signal-based project matching with a fraction of the full intake burden. Tier 1 signals only (Aptitude, Passion, flow) plus project preference — see [Pilot-Intake-Light.md](Pilot-Intake-Light.md).
 
 **Teams of 2 need merged roles, not dropped ones.** With 2–3 members, the 2-member fallback merges adjacent roles rather than removing a function. Every function in the fixed core must still be owned by someone, or the brief being tested is no longer the summer brief.
 
 ---
 
 *Document version 1.0 — theNORMALschool internal use only.*
-*Source: summer_program_project_arc.md v— · summer_project_library.md v2.0 · Element-Intake-10-12.md*
+*Source: Summer-Program-Project-Arc.md v— · Summer-Project-Library.md v2.0 · Element-Intake-10-12.md*

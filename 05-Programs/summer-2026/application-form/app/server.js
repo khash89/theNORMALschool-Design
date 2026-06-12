@@ -4,7 +4,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const ROOT = '/Users/khash/Documents/Claude/Projects/theNORMALschool Design/06-Tools/summer-application';
+const ROOT = '/Users/khash/Documents/Claude/Projects/theNORMALschool Design/05-Programs/summer-2026/application-form/app';
 const PORT = 8123;
 
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json' };
