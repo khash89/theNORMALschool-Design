@@ -116,7 +116,7 @@
     height: 6px; background: var(--border); border-radius: 999px; overflow: hidden;
   }
   .progress-fill {
-    height: 100%; background: var(--orange); width: 12.5%;
+    height: 100%; background: var(--orange); width: 4%;
     border-radius: 999px; transition: width 0.35s ease;
   }
   .progress-meta {
@@ -141,33 +141,42 @@
   .step.active { display: block; animation: fade 0.3s ease; }
   @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
-  .step-head { margin-bottom: 26px; }
+  .step-head { margin-bottom: 24px; }
   .step-head .kicker {
     font-weight: 600; font-size: 11px; text-transform: uppercase;
-    letter-spacing: 0.18em; color: var(--orange); margin-bottom: 8px;
+    letter-spacing: 0.18em; color: var(--orange); margin-bottom: 10px;
   }
   .step-head h2 {
-    font-weight: 850; color: var(--navy); font-size: 26px;
-    letter-spacing: -0.03em; line-height: 1.12; margin-bottom: 8px;
+    font-weight: 850; color: var(--navy); font-size: 24px;
+    letter-spacing: -0.03em; line-height: 1.18; margin-bottom: 8px;
   }
   .step-head p { font-size: 15px; }
+
+  /* ---------- Section break ---------- */
+  .brk { text-align: center; padding: 14px 0 6px; }
+  .brk .badge {
+    width: 56px; height: 56px; border-radius: 999px;
+    background: rgba(255, 117, 31, 0.1); color: var(--orange);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; font-weight: 800; margin: 0 auto 18px;
+  }
+  .brk .kicker {
+    font-weight: 600; font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.18em; color: var(--orange); margin-bottom: 10px;
+  }
+  .brk h2 {
+    font-weight: 850; color: var(--navy); font-size: 26px;
+    letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 12px;
+  }
+  .brk .done { color: var(--ui); font-size: 14px; margin: 0 auto 6px; max-width: 470px; }
+  .brk .done b { color: var(--orange); }
+  .brk .next { color: var(--body); font-size: 15px; margin: 0 auto; max-width: 470px; }
 
   .reassure {
     background: var(--cream); border-radius: 12px; padding: 14px 16px;
     font-size: 14px; margin-bottom: 24px; color: var(--ui);
   }
   .reassure b { color: var(--navy); font-weight: 600; }
-
-  /* ---------- In-step sub-section (Step 6 clusters) ---------- */
-  .substep {
-    display: flex; align-items: center; gap: 9px;
-    font-weight: 800; font-size: 15px; color: var(--navy);
-    letter-spacing: -0.01em; margin: 32px 0 16px;
-  }
-  .substep::before {
-    content: ''; flex: 0 0 16px; width: 16px; height: 3px;
-    border-radius: 2px; background: var(--orange);
-  }
 
   /* ---------- Voice input (dictation) ---------- */
   .ta-wrap { position: relative; }
@@ -192,7 +201,7 @@
   }
 
   /* ---------- Fields ---------- */
-  .field { margin-bottom: 22px; }
+  .field { margin-bottom: 4px; }
   .field > label, .field > .field-label {
     display: block; font-weight: 600; font-size: 11px;
     text-transform: uppercase; letter-spacing: 0.1em;
@@ -212,7 +221,7 @@
     border-radius: 10px; padding: 12px 14px; line-height: 1.5;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
   }
-  textarea { resize: vertical; min-height: 90px; }
+  textarea { resize: vertical; min-height: 110px; }
   input:focus, select:focus, textarea:focus {
     outline: none; border-color: var(--orange);
     box-shadow: 0 0 0 3px rgba(255, 117, 31, 0.12);
@@ -334,62 +343,119 @@
   <div class="progress">
     <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
     <div class="progress-meta">
-      <span class="step-label" id="stepLabel">Your Child</span>
-      <span class="step-count" id="stepCount">Step 1 of 8</span>
+      <span class="step-label" id="stepLabel">Your child</span>
+      <span class="step-count" id="stepCount">Section 1 of 4</span>
     </div>
   </div>
 
   <form id="appForm" novalidate>
     <div class="card">
 
-      <!-- ===== STEP 1: CHILD BASIC INFO (Section A) ===== -->
-      <section class="step active" data-step="1" data-label="Your Child">
-        <div class="step-head">
-          <div class="kicker">About your child</div>
-          <h2>Let's start with the basics</h2>
-          <p>Just a few facts so we know who's joining us.</p>
+      <!-- ===================== SECTION 1 — YOUR CHILD ===================== -->
+      <section class="step active" data-section="1">
+        <div class="brk">
+          <div class="badge">1</div>
+          <div class="kicker">Section 1 of 4</div>
+          <h2>First, the basics</h2>
+          <p class="next">A few quick facts about your child — name, age, school, and which weeks you'd like. Takes about a minute.</p>
         </div>
+      </section>
 
+      <section class="step" data-section="1">
+        <div class="step-head">
+          <div class="kicker">Your child</div>
+          <h2>What's your child's full name?</h2>
+        </div>
         <div class="field">
-          <label>Child's full name <span class="req">*</span></label>
-          <input type="text" name="childName" data-required placeholder="e.g. Ariunaa Batbayar" />
+          <input type="text" name="childName" data-required placeholder="e.g. Emma Nguyen" />
           <div class="err-msg">Please enter your child's name.</div>
         </div>
+      </section>
 
-        <div class="row">
-          <div class="field">
-            <label>Preferred name / nickname</label>
-            <input type="text" name="preferredName" placeholder="What we'll call them" />
-          </div>
-          <div class="field">
-            <label>Date of birth <span class="req">*</span></label>
-            <input type="date" name="dob" id="dob" data-required />
-            <div class="auto-age" id="ageOut"></div>
-            <div class="err-msg">Please enter a date of birth.</div>
-          </div>
+      <section class="step" data-section="1">
+        <div class="step-head">
+          <div class="kicker">Your child</div>
+          <h2>What should we call them?</h2>
+          <p>Their preferred name or nickname — optional.</p>
         </div>
-
-        <div class="row">
-          <div class="field">
-            <label>Gender</label>
-            <input type="text" name="gender" placeholder="Optional — how they describe themselves" />
-          </div>
-          <div class="field">
-            <label>Language(s) at home <span class="req">*</span></label>
-            <input type="text" name="homeLanguage" data-required placeholder="e.g. English, Mongolian" />
-            <div class="err-msg">Please tell us the home language.</div>
-          </div>
-        </div>
-
         <div class="field">
-          <label>Current school &amp; grade <span class="req">*</span></label>
-          <input type="text" name="school" data-required placeholder="School name, grade" />
-          <div class="err-msg">Please enter school and grade.</div>
+          <input type="text" name="preferredName" placeholder="What we'll call them" />
         </div>
+      </section>
 
+      <section class="step" data-section="1">
+        <div class="step-head">
+          <div class="kicker">Your child</div>
+          <h2>When was your child born?</h2>
+        </div>
         <div class="field">
-          <div class="field-label">Which week(s) would you like? <span class="req">*</span></div>
-          <div class="hint">Pick all the weeks that work for you — you can choose more than one.</div>
+          <input type="date" name="dob" id="dob" data-required />
+          <div class="auto-age" id="ageOut"></div>
+          <div class="err-msg">Please enter a date of birth.</div>
+        </div>
+      </section>
+
+      <section class="step" data-section="1">
+        <div class="step-head">
+          <div class="kicker">Your child</div>
+          <h2>How do they describe their gender?</h2>
+          <p>Optional.</p>
+        </div>
+        <div class="field">
+          <input type="text" name="gender" placeholder="How they describe themselves" />
+        </div>
+      </section>
+
+      <section class="step" data-section="1">
+        <div class="step-head">
+          <div class="kicker">Your child</div>
+          <h2>What language(s) do you speak at home?</h2>
+        </div>
+        <div class="field">
+          <input type="text" name="homeLanguage" data-required placeholder="e.g. English, Mandarin" />
+          <div class="err-msg">Please tell us the home language.</div>
+        </div>
+      </section>
+
+      <section class="step" data-section="1">
+        <div class="step-head">
+          <div class="kicker">Your child</div>
+          <h2>Which school does your child go to?</h2>
+          <p>Start typing — pick from the list, or enter your own.</p>
+        </div>
+        <div class="field">
+          <input type="text" name="school" data-required list="schoolList" autocomplete="off" placeholder="Start typing your school…" />
+          <datalist id="schoolList"></datalist>
+          <div class="err-msg">Please enter the school.</div>
+        </div>
+      </section>
+
+      <section class="step" data-section="1">
+        <div class="step-head">
+          <div class="kicker">Your child</div>
+          <h2>What grade are they in?</h2>
+        </div>
+        <div class="field">
+          <select name="grade" data-required>
+            <option value="">Choose…</option>
+            <option>Grade 3</option>
+            <option>Grade 4</option>
+            <option>Grade 5</option>
+            <option>Grade 6</option>
+            <option>Grade 7</option>
+            <option>Grade 8</option>
+          </select>
+          <div class="err-msg">Please choose a grade.</div>
+        </div>
+      </section>
+
+      <section class="step" data-section="1">
+        <div class="step-head">
+          <div class="kicker">Your child</div>
+          <h2>Which week(s) would you like?</h2>
+          <p>Pick all the weeks that work for you — you can choose more than one.</p>
+        </div>
+        <div class="field">
           <div class="chips" data-chips="session" data-required>
             <span class="chip">Week #1 · Jun 29 – Jul 3</span>
             <span class="chip">Week #2 · Jul 7 – Jul 11</span>
@@ -402,130 +468,83 @@
         </div>
       </section>
 
-      <!-- ===== STEP 2: PARENT INFO (Section B) ===== -->
-      <section class="step" data-step="2" data-label="Parent & Contact">
-        <div class="step-head">
-          <div class="kicker">Parent &amp; contact</div>
-          <h2>How we reach you</h2>
-          <p>Your details for everything from confirmation to Saturday's showcase.</p>
-        </div>
-
-        <div class="row">
-          <div class="field">
-            <label>Your full name <span class="req">*</span></label>
-            <input type="text" name="parentName" data-required placeholder="e.g. Sarangerel Dorj" />
-            <div class="err-msg">Please enter your name.</div>
-          </div>
-          <div class="field">
-            <label>Relationship to child <span class="req">*</span></label>
-            <select name="relationship" data-required>
-              <option value="">Choose…</option>
-              <option>Mother</option><option>Father</option>
-              <option>Guardian</option><option>Grandparent</option><option>Other</option>
-            </select>
-            <div class="err-msg">Please choose a relationship.</div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="field">
-            <label>Email <span class="req">*</span></label>
-            <input type="email" name="email" data-required placeholder="you@example.com" />
-            <div class="err-msg">Please enter a valid email.</div>
-          </div>
-          <div class="field">
-            <label>Mobile phone <span class="req">*</span></label>
-            <input type="tel" name="phone" data-required placeholder="e.g. 8811 2233" />
-            <div class="err-msg">Please enter a phone number.</div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="field">
-            <label>Emergency contact name <span class="req">*</span></label>
-            <input type="text" name="emergencyName" data-required placeholder="e.g. Bold Dorj (uncle)" />
-            <div class="err-msg">Please enter an emergency contact.</div>
-          </div>
-          <div class="field">
-            <label>Emergency contact phone <span class="req">*</span></label>
-            <input type="tel" name="emergencyPhone" data-required placeholder="e.g. 9911 4455" />
-            <div class="err-msg">Please enter a phone number.</div>
-          </div>
-        </div>
-
-        <div class="field">
-          <label>Authorized pickup person(s)</label>
-          <input type="text" name="pickup" placeholder="Anyone else allowed to collect your child" />
-        </div>
-
-        <div class="field">
-          <label>How did you hear about us?</label>
-          <select name="referral">
-            <option value="">Choose…</option>
-            <option>Instagram</option><option>A friend / family</option>
-            <option>School / teacher</option><option>Web search</option>
-            <option>Event</option><option>Other</option>
-          </select>
+      <!-- ===================== SECTION 2 — GETTING TO KNOW THEM ===================== -->
+      <section class="step" data-section="2">
+        <div class="brk">
+          <div class="badge">2</div>
+          <div class="kicker">Section 2 of 4</div>
+          <h2>Now — what makes <span class="kid">your child</span> tick</h2>
+          <p class="done"><b>✓</b> Got the basics.</p>
+          <p class="next">In your words: what <span class="kid">your child</span> is drawn to, how they handle a challenge, and how they work. Be specific — real examples beat impressive ones.</p>
         </div>
       </section>
 
-      <!-- ===== STEP 3: ELEMENT LAYER 1 (Section C) ===== -->
-      <section class="step" data-step="3" data-label="What Lights Them Up">
+      <section class="step" data-section="2">
         <div class="step-head">
-          <div class="kicker">What lights <span class="kid">your child</span> up</div>
-          <h2>The things that come easily — and the things <span class="kid">your child</span> loves</h2>
-          <p>Be specific and concrete. Not "good at art" — but "draws machines and how they connect."</p>
+          <div class="kicker">What lights them up</div>
+          <h2>What comes unusually easily?</h2>
+          <p>1–2 specific things <span class="kid">your child</span> picks up faster or does with more ease than you'd expect for their age. What exactly do they do, and how do you know it comes easily?</p>
         </div>
-        <div class="reassure">
-          These two are different on purpose. <b>What comes easily</b> and <b>what they love</b> aren't always the same thing — and both matter. Tell us what you actually see, not what you hope.
-        </div>
-
         <div class="field">
-          <label>What comes unusually easily? <span class="req">*</span></label>
-          <div class="hint">1–2 specific things <span class="kid">your child</span> picks up faster or does with more ease than you'd expect for their age. What exactly do they do, and how do you know it comes easily?</div>
           <textarea name="aptitude" data-required placeholder="e.g. Picks up new card games after one round; rebuilds Lego sets from memory without the instructions"></textarea>
           <div class="err-msg">Please describe at least one thing.</div>
         </div>
+      </section>
 
+      <section class="step" data-section="2">
+        <div class="step-head">
+          <div class="kicker">What lights them up</div>
+          <h2>What does <span class="kid">your child</span> return to without being asked?</h2>
+          <p>What do they do voluntarily, repeatedly, with no reward and no prompting? When did you last see them do it?</p>
+        </div>
         <div class="field">
-          <label>What does <span class="kid">your child</span> return to without being asked? <span class="req">*</span></label>
-          <div class="hint">What does <span class="kid">your child</span> do voluntarily, repeatedly, with no reward and no prompting? When did you last see them do it?</div>
           <textarea name="passion" data-required placeholder="e.g. Draws comics most evenings — did it again last night without anyone suggesting it"></textarea>
           <div class="err-msg">Please describe at least one thing.</div>
         </div>
+      </section>
 
+      <section class="step" data-section="2">
+        <div class="step-head">
+          <div class="kicker">What lights them up</div>
+          <h2>When does <span class="kid">your child</span> lose track of time?</h2>
+          <p>Is there an activity where they resist stopping, forget meals, or have to be called several times?</p>
+        </div>
         <div class="field">
-          <label>When does <span class="kid">your child</span> lose track of time? <span class="req">*</span></label>
-          <div class="hint">Is there an activity where <span class="kid">your child</span> resists stopping, forgets meals, or has to be called several times?</div>
           <textarea name="flow" data-required placeholder="e.g. Building in Minecraft — we call three times before dinner lands"></textarea>
           <div class="err-msg">Please tell us about this.</div>
         </div>
+      </section>
 
+      <section class="step" data-section="2">
+        <div class="step-head">
+          <div class="kicker">What lights them up</div>
+          <h2>The free-afternoon check</h2>
+          <p>On a free afternoon — nothing scheduled, screens not the default — what does <span class="kid">your child</span> actually end up doing?</p>
+        </div>
         <div class="field">
-          <label>The free-afternoon check</label>
-          <div class="hint">On a free afternoon — nothing scheduled, screens not the default — what does <span class="kid">your child</span> actually end up doing?</div>
           <textarea name="freeChoice" placeholder="e.g. Ends up outside building a den, or curled up reading"></textarea>
         </div>
       </section>
 
-      <!-- ===== STEP 4: ELEMENT LAYER 2 (Section D) ===== -->
-      <section class="step" data-step="4" data-label="Reading Your Child">
+      <section class="step" data-section="2">
         <div class="step-head">
-          <div class="kicker">Reading <span class="kid">your child</span></div>
-          <h2>A little more context</h2>
-          <p>This helps us read <span class="kid">your child</span> accurately — and avoid misreading them.</p>
+          <div class="kicker">Reading your child</div>
+          <h2>When something is hard, what does <span class="kid">your child</span> actually do?</h2>
+          <p>When they get a poor result or hit something difficult — what happens? Give a recent example.</p>
         </div>
-
         <div class="field">
-          <label>When something is hard, what does <span class="kid">your child</span> actually do? <span class="req">*</span></label>
-          <div class="hint">When they get a poor result or hit something difficult — what happens? Give a recent example.</div>
           <textarea name="attitude" data-required placeholder="e.g. Gets frustrated and walks away, but comes back and tries a new way after a break"></textarea>
           <div class="err-msg">Please share a recent example.</div>
         </div>
+      </section>
 
+      <section class="step" data-section="2">
+        <div class="step-head">
+          <div class="kicker">Reading your child</div>
+          <h2>What has <span class="kid">your child</span> had real access to?</h2>
+          <p>Tap everything they've had genuine hands-on access to.</p>
+        </div>
         <div class="field">
-          <div class="field-label">What has <span class="kid">your child</span> had real access to?</div>
-          <div class="hint">Tap everything they've had genuine hands-on access to.</div>
           <div class="chips" data-chips="opportunity">
             <span class="chip">Camera / video</span>
             <span class="chip">Computer / coding</span>
@@ -538,15 +557,25 @@
             <span class="chip">Performing / stage</span>
           </div>
         </div>
+      </section>
 
+      <section class="step" data-section="2">
+        <div class="step-head">
+          <div class="kicker">Reading your child</div>
+          <h2>Anything they've wanted to try but never had the chance to?</h2>
+        </div>
         <div class="field">
-          <label>Anything they've wanted to try but never had the chance to?</label>
           <input type="text" name="opportunityGap" placeholder="e.g. Always asks for a real camera — optional" />
         </div>
+      </section>
 
+      <section class="step" data-section="2">
+        <div class="step-head">
+          <div class="kicker">Reading your child</div>
+          <h2>Where do you see real spark?</h2>
+          <p>Tap any area where you see genuine energy — it's fine to pick several.</p>
+        </div>
         <div class="field">
-          <div class="field-label">Where do you see real spark? <span class="req">*</span></div>
-          <div class="hint">Tap any area where you see genuine energy — it's fine to pick several.</div>
           <div class="chips" data-chips="breadth" data-required>
             <span class="chip">Building / mechanical</span>
             <span class="chip">Visual / art</span>
@@ -559,77 +588,108 @@
           </div>
           <div class="err-msg">Please select at least one.</div>
         </div>
+      </section>
 
-        <div class="field">
-          <label>Who does <span class="kid">your child</span> light up around?</label>
-          <div class="hint">Any group or person <span class="kid">your child</span> comes alive with — or an interest they pursue harder with certain people?</div>
-          <textarea name="tribe" placeholder="e.g. Comes alive with the older cousins; talks non-stop about football with one friend"></textarea>
+      <section class="step" data-section="2">
+        <div class="step-head">
+          <div class="kicker">Reading your child</div>
+          <h2>Who does <span class="kid">your child</span> light up around?</h2>
+          <p>Any group or person they come alive with — or an interest they pursue harder with certain people?</p>
         </div>
-
         <div class="field">
-          <label>Anything they've dropped, hidden, or been steered away from?</label>
-          <div class="hint">Something they used to love and stopped, or hide, or were told wasn't for them. What happened?</div>
+          <textarea name="tribe" placeholder="e.g. Comes alive with the older cousins; talks non-stop about soccer with one friend"></textarea>
+        </div>
+      </section>
+
+      <section class="step" data-section="2">
+        <div class="step-head">
+          <div class="kicker">Reading your child</div>
+          <h2>Anything they've dropped, hidden, or been steered away from?</h2>
+          <p>Something they used to love and stopped, or hide, or were told wasn't for them. What happened?</p>
+        </div>
+        <div class="field">
           <textarea name="suppression" placeholder="e.g. Loved singing, went quiet about it after being teased at school"></textarea>
         </div>
+      </section>
 
+      <section class="step" data-section="2">
+        <div class="step-head">
+          <div class="kicker">Reading your child</div>
+          <h2>When is <span class="kid">your child</span> most alert — and most drained?</h2>
+          <p>Roughly when in a normal day are they most engaged, and when do they run flat?</p>
+        </div>
         <div class="field">
-          <label>When is <span class="kid">your child</span> most alert — and most drained?</label>
-          <div class="hint">Roughly when in a normal day is <span class="kid">your child</span> most engaged, and when do they run flat?</div>
           <input type="text" name="energy" placeholder="e.g. Sluggish mornings, comes alive after 4pm" />
         </div>
       </section>
 
-      <!-- ===== STEP 5: MIAP PRE-DIAGNOSIS (Section E) ===== -->
-      <section class="step" data-step="5" data-label="How They Work">
+      <section class="step" data-section="2">
         <div class="step-head">
-          <div class="kicker">How <span class="kid">your child</span> works</div>
-          <h2>A few more about how <span class="kid">your child</span> ticks</h2>
-          <p>There are no right answers here — honest beats impressive every time.</p>
+          <div class="kicker">How they work</div>
+          <h2>Genuinely into it vs. just going along</h2>
+          <p>Can you tell the difference between when <span class="kid">your child</span> is really into something and when they're just complying? Describe a moment of each.</p>
         </div>
-
         <div class="field">
-          <label>Genuinely into it vs. just going along <span class="req">*</span></label>
-          <div class="hint">Can you tell the difference between when <span class="kid">your child</span> is really into something and when they're just complying? Describe a moment of each.</div>
           <textarea name="miapMotivation" data-required placeholder="e.g. Eyes light up and time disappears when drawing; goes through the motions with homework"></textarea>
           <div class="err-msg">Please share an example.</div>
         </div>
+      </section>
 
+      <section class="step" data-section="2">
+        <div class="step-head">
+          <div class="kicker">How they work</div>
+          <h2>How does <span class="kid">your child</span> describe themselves?</h2>
+          <p>In their own words, how do they describe what they're good at or who they are? (If they wouldn't, just say so.)</p>
+        </div>
         <div class="field">
-          <label>How does <span class="kid">your child</span> describe themselves?</label>
-          <div class="hint">In their own words, how does <span class="kid">your child</span> describe what they're good at or who they are? (If they wouldn't, just say so.)</div>
           <textarea name="miapIdentity" placeholder="e.g. &quot;I'm the artist&quot; — or wouldn't really say, gets shy about it"></textarea>
         </div>
+      </section>
 
+      <section class="step" data-section="2">
+        <div class="step-head">
+          <div class="kicker">How they work</div>
+          <h2>When <span class="kid">your child</span> hits an obstacle and you're not there</h2>
+          <p>What happens when they run into a problem and no adult is around to help?</p>
+        </div>
         <div class="field">
-          <label>When <span class="kid">your child</span> hits an obstacle and you're not there <span class="req">*</span></label>
-          <div class="hint">What happens when <span class="kid">your child</span> runs into a problem and no adult is around to help?</div>
           <textarea name="miapAgency" data-required placeholder="e.g. Searches YouTube for how to fix it; or stops and waits until someone helps"></textarea>
           <div class="err-msg">Please tell us what happens.</div>
         </div>
+      </section>
 
+      <section class="step" data-section="2">
+        <div class="step-head">
+          <div class="kicker">How they work</div>
+          <h2>Has <span class="kid">your child</span> ever cared that something was useful to someone else?</h2>
+          <p>Not just fun for them — actually useful to another person. An example, if there is one.</p>
+        </div>
         <div class="field">
-          <label>Has <span class="kid">your child</span> ever cared that something was useful to someone else?</label>
-          <div class="hint">Not just fun for them — actually useful to another person. An example, if there is one.</div>
           <textarea name="miapPurpose" placeholder="e.g. Made a birthday card &quot;so Grandma would feel special&quot;"></textarea>
         </div>
       </section>
 
-      <!-- ===== STEP 6: CHILD'S SECTION — Personalization (F) + child Element cross-check (C-child) + child MIAP cross-read (E-child) ===== -->
-      <section class="step" data-step="6" data-label="Just for You">
-        <div class="step-head">
-          <div class="kicker">Now — over to <span id="childKicker">your child</span></div>
+      <!-- ===================== SECTION 3 — JUST FOR YOU (child) ===================== -->
+      <section class="step" data-section="3">
+        <div class="brk">
+          <div class="badge">3</div>
+          <div class="kicker">Section 3 of 4 · over to <span id="childKicker">your child</span></div>
           <h2>This part is just for <span id="childName1">you</span></h2>
-          <p>Hey! These questions are for you — the kid joining us. There are zero wrong answers. Just say what's true.</p>
+          <p class="done"><b>✓</b> Thanks — that's the grown-up's view.</p>
+          <p class="next">Hey! These next questions are for <strong>you</strong> — the kid joining us. There are zero wrong answers. Just say what's true.</p>
         </div>
-        <div class="reassure">
+        <div class="reassure" style="margin-top:18px;">
           <b>Parents:</b> let your child answer this part in their own words — you can type for them, but the answers should be theirs.
         </div>
+      </section>
 
-        <div class="substep">What you're into</div>
-
+      <section class="step" data-section="3">
+        <div class="step-head">
+          <div class="kicker">What you're into</div>
+          <h2>What are you really into right now?</h2>
+          <p>Tap everything that's you.</p>
+        </div>
         <div class="field">
-          <div class="field-label">What are you really into right now? <span class="req">*</span></div>
-          <div class="hint">Tap everything that's you.</div>
           <div class="chips" data-chips="interests" data-required>
             <span class="chip">Gaming</span><span class="chip">Drawing</span><span class="chip">Sports</span>
             <span class="chip">Music</span><span class="chip">Coding</span><span class="chip">Animals</span>
@@ -639,92 +699,159 @@
           </div>
           <div class="err-msg">Pick at least one!</div>
         </div>
+      </section>
 
-        <div class="field">
-          <label>A new kid sits next to you and asks, "So what are you all about?"</label>
-          <div class="hint">What would you tell them?</div>
-          <textarea name="childDescribe" placeholder="e.g. I'm really into drawing and football, and I love animals"></textarea>
+      <section class="step" data-section="3">
+        <div class="step-head">
+          <div class="kicker">What you're into</div>
+          <h2>A new kid asks, "So what are you all about?"</h2>
+          <p>What would you tell them?</p>
         </div>
-
         <div class="field">
-          <label>Is there something that feels easy for you — but other kids seem to find hard?</label>
-          <div class="hint">What is it?</div>
+          <textarea name="childDescribe" placeholder="e.g. I'm really into drawing and soccer, and I love animals"></textarea>
+        </div>
+      </section>
+
+      <section class="step" data-section="3">
+        <div class="step-head">
+          <div class="kicker">What you're into</div>
+          <h2>Is there something that feels easy for you — but other kids find hard?</h2>
+          <p>What is it?</p>
+        </div>
+        <div class="field">
           <textarea name="childComesEasily" placeholder="e.g. Figuring out how a game works without reading the rules"></textarea>
         </div>
+      </section>
 
-        <div class="field">
-          <label>What do you do just for fun — that nobody tells you to do?</label>
-          <textarea name="childFunFreely" placeholder="e.g. Make up comics, build stuff, mess around with my football skills"></textarea>
+      <section class="step" data-section="3">
+        <div class="step-head">
+          <div class="kicker">What you're into</div>
+          <h2>What do you do just for fun — that nobody tells you to do?</h2>
         </div>
-
         <div class="field">
-          <label>Is there something you do where you look up and a LOT of time has gone by?</label>
+          <textarea name="childFunFreely" placeholder="e.g. Make up comics, build stuff, mess around with my soccer skills"></textarea>
+        </div>
+      </section>
+
+      <section class="step" data-section="3">
+        <div class="step-head">
+          <div class="kicker">What you're into</div>
+          <h2>Is there something you do where you look up and a LOT of time has gone by?</h2>
+        </div>
+        <div class="field">
           <textarea name="childLosesTime" placeholder="e.g. When I'm drawing — suddenly it's dinner time"></textarea>
         </div>
+      </section>
 
-        <div class="substep">When you make stuff</div>
-
+      <section class="step" data-section="3">
+        <div class="step-head">
+          <div class="kicker">When you make stuff</div>
+          <h2>Something you made that you were proud of</h2>
+          <p>A video, a Minecraft build, a comic, a recipe, a fort — anything. What was the best part of making it?</p>
+        </div>
         <div class="field">
-          <label>Something you made that you were proud of <span class="req">*</span></label>
-          <div class="hint">A video, a Minecraft build, a comic, a recipe, a fort — anything. What was the best part of making it?</div>
           <textarea name="proudMaking" data-required placeholder="e.g. A comic book I finished — the best part was drawing the bad guy"></textarea>
           <div class="err-msg">Tell us about one thing you made!</div>
         </div>
+      </section>
 
+      <section class="step" data-section="3">
+        <div class="step-head">
+          <div class="kicker">When you make stuff</div>
+          <h2>Something you started making or doing all on your own — just because you wanted to?</h2>
+        </div>
         <div class="field">
-          <label>Something you started making or doing all on your own — just because you wanted to?</label>
           <textarea name="childStarted" placeholder="e.g. I started a little YouTube channel for my drawings"></textarea>
         </div>
+      </section>
 
+      <section class="step" data-section="3">
+        <div class="step-head">
+          <div class="kicker">When you make stuff</div>
+          <h2>When something you're making stops working, what do you usually do?</h2>
+        </div>
         <div class="field">
-          <label>When something you're making stops working, what do you usually do?</label>
           <textarea name="childStuck" placeholder="e.g. I try a different way, or look it up until I figure it out"></textarea>
         </div>
+      </section>
 
+      <section class="step" data-section="3">
+        <div class="step-head">
+          <div class="kicker">When you make stuff</div>
+          <h2>Have you ever made something to help someone else — or that someone else used?</h2>
+          <p>What was it?</p>
+        </div>
         <div class="field">
-          <label>Have you ever made something to help someone else — or that someone else used?</label>
-          <div class="hint">What was it?</div>
           <textarea name="childHelped" placeholder="e.g. I made a poster for my friend's lemonade stand"></textarea>
         </div>
+      </section>
 
-        <div class="substep">Your favorites</div>
-
-        <div class="row">
-          <div class="field">
-            <label>Favorite YouTube channel(s) or creators</label>
-            <input type="text" name="favYoutube" placeholder="e.g. MrBeast, DanTDM" />
-          </div>
-          <div class="field">
-            <label>Favorite game(s)</label>
-            <input type="text" name="favGame" placeholder="e.g. Minecraft, Roblox" />
-          </div>
+      <section class="step" data-section="3">
+        <div class="step-head">
+          <div class="kicker">Your favorites</div>
+          <h2>Favorite YouTube channel(s) or creators</h2>
         </div>
-
-        <div class="row">
-          <div class="field">
-            <label>Favorite book, comic, or show</label>
-            <input type="text" name="favBook" placeholder="e.g. Dog Man, Bluey" />
-          </div>
-          <div class="field">
-            <label>Someone who's really cool at what they do</label>
-            <input type="text" name="hero" placeholder="A creator, athlete, scientist, anyone" />
-          </div>
-        </div>
-
-        <div class="substep">If it were up to you</div>
-
         <div class="field">
-          <label>If today were totally free — no plans, screens not the default — what would you end up doing?</label>
+          <input type="text" name="favYoutube" placeholder="e.g. MrBeast, DanTDM" />
+        </div>
+      </section>
+
+      <section class="step" data-section="3">
+        <div class="step-head">
+          <div class="kicker">Your favorites</div>
+          <h2>Favorite game(s)</h2>
+        </div>
+        <div class="field">
+          <input type="text" name="favGame" placeholder="e.g. Minecraft, Roblox" />
+        </div>
+      </section>
+
+      <section class="step" data-section="3">
+        <div class="step-head">
+          <div class="kicker">Your favorites</div>
+          <h2>Favorite book, comic, or show</h2>
+        </div>
+        <div class="field">
+          <input type="text" name="favBook" placeholder="e.g. Dog Man, Bluey" />
+        </div>
+      </section>
+
+      <section class="step" data-section="3">
+        <div class="step-head">
+          <div class="kicker">Your favorites</div>
+          <h2>Someone who's really cool at what they do</h2>
+        </div>
+        <div class="field">
+          <input type="text" name="hero" placeholder="A creator, athlete, scientist, anyone" />
+        </div>
+      </section>
+
+      <section class="step" data-section="3">
+        <div class="step-head">
+          <div class="kicker">If it were up to you</div>
+          <h2>If today were totally free — no plans, screens not the default — what would you do?</h2>
+        </div>
+        <div class="field">
           <textarea name="childFreeDay" placeholder="e.g. Build a fort, draw, go ride my bike with friends"></textarea>
         </div>
+      </section>
 
+      <section class="step" data-section="3">
+        <div class="step-head">
+          <div class="kicker">If it were up to you</div>
+          <h2>If you could spend a whole week making ONE thing, what would it be?</h2>
+        </div>
         <div class="field">
-          <label>If you could spend a whole week making ONE thing, what would it be?</label>
           <textarea name="makeAnything" placeholder="e.g. My own video game, or a giant cardboard city"></textarea>
         </div>
+      </section>
 
+      <section class="step" data-section="3">
+        <div class="step-head">
+          <div class="kicker">If it were up to you</div>
+          <h2>Pick the one that sounds most fun</h2>
+        </div>
         <div class="field">
-          <div class="field-label">Pick the one that sounds most fun <span class="req">*</span></div>
           <div class="options" data-radio="dreamProject" data-required>
             <label class="opt"><span class="dot"></span><span class="opt-text">Be on camera, telling a story people actually watch</span></label>
             <label class="opt"><span class="dot"></span><span class="opt-text">Film and edit a video until it's exactly right</span></label>
@@ -736,9 +863,14 @@
           </div>
           <div class="err-msg">Pick the one that sounds most fun!</div>
         </div>
+      </section>
 
+      <section class="step" data-section="3">
+        <div class="step-head">
+          <div class="kicker">If it were up to you</div>
+          <h2>What kind of stuff do you care about?</h2>
+        </div>
         <div class="field">
-          <div class="field-label">What kind of stuff do you care about?</div>
           <div class="chips" data-chips="values">
             <span class="chip">Helping people</span><span class="chip">Animals</span><span class="chip">The planet</span>
             <span class="chip">Fairness</span><span class="chip">Building things that work</span>
@@ -746,9 +878,14 @@
             <span class="chip">How things work</span><span class="chip">Making beautiful things</span>
           </div>
         </div>
+      </section>
 
+      <section class="step" data-section="3">
+        <div class="step-head">
+          <div class="kicker">If it were up to you</div>
+          <h2>Do you like working with a team or on your own?</h2>
+        </div>
         <div class="field">
-          <div class="field-label">Do you like working with a team or on your own? <span class="req">*</span></div>
           <div class="options opt-grid" data-radio="teamSolo" data-required>
             <label class="opt"><span class="dot"></span><span class="opt-text">With a team</span></label>
             <label class="opt"><span class="dot"></span><span class="opt-text">On my own</span></label>
@@ -756,166 +893,341 @@
           </div>
           <div class="err-msg">Pick one!</div>
         </div>
+      </section>
 
+      <section class="step" data-section="3">
+        <div class="step-head">
+          <div class="kicker">If it were up to you</div>
+          <h2>When you work with other people, what part do you grab first?</h2>
+        </div>
         <div class="field">
-          <label>When you work with other people, what part do you grab first?</label>
           <input type="text" name="teamRole" placeholder="e.g. The drawing, the ideas, bossing the plan, the building" />
         </div>
       </section>
 
-      <!-- ===== STEP 7: WELLBEING, SOCIAL & LOGISTICS (Section G) ===== -->
-      <section class="step" data-step="7" data-label="Wellbeing & Logistics">
-        <div class="step-head">
-          <div class="kicker">So we can support <span class="kid">your child</span> well</div>
-          <h2>A few things that help us care for them</h2>
-          <p>This stays with our team. The more specific you are, the better we can show up for <span class="kid">your child</span>.</p>
+      <!-- ===================== SECTION 4 — WELLBEING & SIGN-UP ===================== -->
+      <section class="step" data-section="4">
+        <div class="brk">
+          <div class="badge">4</div>
+          <div class="kicker">Section 4 of 4</div>
+          <h2>Last stretch</h2>
+          <p class="done"><b>✓</b> Love it — that's the fun part done.</p>
+          <p class="next">A few things that help us care for <span class="kid">your child</span> well, your contact details, and a couple of confirmations.</p>
         </div>
+      </section>
 
+      <section class="step" data-section="4">
+        <div class="step-head">
+          <div class="kicker">Wellbeing</div>
+          <h2>How does <span class="kid">your child</span> handle frustration, specifically?</h2>
+          <p>Not challenge in general — what does frustration actually look like for them, and what helps?</p>
+        </div>
         <div class="field">
-          <label>How does <span class="kid">your child</span> handle frustration, specifically? <span class="req">*</span></label>
-          <div class="hint">Not challenge in general — what does frustration actually look like for <span class="kid">your child</span>, and what helps?</div>
           <textarea name="frustration" data-required placeholder="e.g. Goes quiet and gives up; a short break and a calm question helps them restart"></textarea>
           <div class="err-msg">Please tell us about this.</div>
         </div>
+      </section>
 
+      <section class="step" data-section="4">
+        <div class="step-head">
+          <div class="kicker">Wellbeing</div>
+          <h2>Any conditions, sensitivities, or accommodations we should know about?</h2>
+        </div>
         <div class="field">
-          <label>Any conditions, sensitivities, or accommodations we should know about?</label>
           <textarea name="accommodations" placeholder="e.g. Mild ADHD; sensitive to loud rooms; needs instructions written down — or leave blank"></textarea>
         </div>
+      </section>
 
+      <section class="step" data-section="4">
+        <div class="step-head">
+          <div class="kicker">Wellbeing</div>
+          <h2>Any significant recent life events?</h2>
+        </div>
         <div class="field">
-          <label>Any significant recent life events?</label>
           <input type="text" name="lifeEvents" placeholder="e.g. New sibling, moved schools last term — optional" />
         </div>
+      </section>
 
+      <section class="step" data-section="4">
+        <div class="step-head">
+          <div class="kicker">Wellbeing</div>
+          <h2>What does anxiety or feeling overwhelmed look like for them?</h2>
+          <p>If it applies — so we recognize it early and respond well.</p>
+        </div>
         <div class="field">
-          <label>What does anxiety or feeling overwhelmed look like for them?</label>
-          <div class="hint">If it applies — so we recognize it early and respond well.</div>
           <textarea name="anxiety" placeholder="e.g. Gets very quiet, picks at their sleeves, asks to leave the room"></textarea>
         </div>
+      </section>
 
+      <section class="step" data-section="4">
+        <div class="step-head">
+          <div class="kicker">Wellbeing</div>
+          <h2>Allergies, dietary restrictions, or medical notes</h2>
+          <p>Important for our Food Business project and snacks. Write "None" if none apply.</p>
+        </div>
         <div class="field">
-          <label>Allergies, dietary restrictions, or medical notes <span class="req">*</span></label>
-          <div class="hint">Important for our Food Business project and snacks. Write "None" if none apply.</div>
           <textarea name="medical" data-required placeholder="e.g. Peanut allergy (carries an EpiPen); vegetarian — or write &quot;None&quot;"></textarea>
           <div class="err-msg">Please tell us, or write "None".</div>
         </div>
+      </section>
 
-        <div class="field">
-          <label>Does <span class="kid">your child</span> know anyone else enrolling?</label>
-          <input type="text" name="knowsOthers" placeholder="e.g. Best friend Tuya is also applying — names, if any" />
+      <section class="step" data-section="4">
+        <div class="step-head">
+          <div class="kicker">Wellbeing</div>
+          <h2>Does <span class="kid">your child</span> know anyone else enrolling?</h2>
         </div>
-
-        <div class="row">
-          <div class="field">
-            <label>How do they handle disagreement with peers?</label>
-            <input type="text" name="disagreement" placeholder="e.g. Talks it out; or shuts down and walks off" />
-          </div>
-          <div class="field">
-            <label>In a group, are they more comfortable…</label>
-            <select name="groupRole">
-              <option value="">Choose…</option>
-              <option>Leading</option><option>Contributing</option><option>Following</option>
-              <option>It varies</option>
-            </select>
-          </div>
-        </div>
-
         <div class="field">
-          <label>Any peer conflicts we should avoid?</label>
+          <input type="text" name="knowsOthers" placeholder="e.g. Best friend Mia is also applying — names, if any" />
+        </div>
+      </section>
+
+      <section class="step" data-section="4">
+        <div class="step-head">
+          <div class="kicker">Wellbeing</div>
+          <h2>How do they handle disagreement with peers?</h2>
+        </div>
+        <div class="field">
+          <input type="text" name="disagreement" placeholder="e.g. Talks it out; or shuts down and walks off" />
+        </div>
+      </section>
+
+      <section class="step" data-section="4">
+        <div class="step-head">
+          <div class="kicker">Wellbeing</div>
+          <h2>In a group, are they more comfortable…</h2>
+        </div>
+        <div class="field">
+          <select name="groupRole">
+            <option value="">Choose…</option>
+            <option>Leading</option><option>Contributing</option><option>Following</option>
+            <option>It varies</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="step" data-section="4">
+        <div class="step-head">
+          <div class="kicker">Wellbeing</div>
+          <h2>Any peer conflicts we should avoid?</h2>
+        </div>
+        <div class="field">
           <input type="text" name="conflicts" placeholder="e.g. Fell out with a classmate recently — optional" />
         </div>
+      </section>
 
+      <section class="step" data-section="4">
+        <div class="step-head">
+          <div class="kicker">Wellbeing</div>
+          <h2>What do you hope <span class="kid">your child</span> gets from this week?</h2>
+        </div>
         <div class="field">
-          <label>What do you hope <span class="kid">your child</span> gets from this week? <span class="req">*</span></label>
           <textarea name="hopes" data-required placeholder="e.g. To feel proud of something they built, and a bit more confident"></textarea>
           <div class="err-msg">We'd love to hear this.</div>
         </div>
+      </section>
 
+      <section class="step" data-section="4">
+        <div class="step-head">
+          <div class="kicker">Wellbeing</div>
+          <h2>What have well-meaning adults gotten <em>wrong</em> about <span class="kid">your child</span>?</h2>
+          <p>This genuinely helps us see them clearly.</p>
+        </div>
         <div class="field">
-          <label>What have well-meaning adults gotten <em>wrong</em> about <span class="kid">your child</span>?</label>
-          <div class="hint">This genuinely helps us see them clearly.</div>
           <textarea name="adultsWrong" placeholder="e.g. Teachers call them &quot;distracted&quot; — really they're bored when it's too easy"></textarea>
         </div>
+      </section>
 
-        <div class="row">
-          <div class="field">
-            <label>Does <span class="kid">your child</span> plan first, or dive in?</label>
-            <select name="planStyle">
-              <option value="">Choose…</option>
-              <option>Plans before starting</option>
-              <option>Dives in and figures it out</option>
-              <option>A mix of both</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Do they do better with…</label>
-            <select name="structureStyle">
-              <option value="">Choose…</option>
-              <option>Clear structure</option>
-              <option>Open space</option>
-              <option>Somewhere in between</option>
-            </select>
-          </div>
+      <section class="step" data-section="4">
+        <div class="step-head">
+          <div class="kicker">Wellbeing</div>
+          <h2>Does <span class="kid">your child</span> plan first, or dive in?</h2>
         </div>
-
         <div class="field">
-          <label>T-shirt size</label>
+          <select name="planStyle">
+            <option value="">Choose…</option>
+            <option>Plans before starting</option>
+            <option>Dives in and figures it out</option>
+            <option>A mix of both</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="step" data-section="4">
+        <div class="step-head">
+          <div class="kicker">Wellbeing</div>
+          <h2>Do they do better with…</h2>
+        </div>
+        <div class="field">
+          <select name="structureStyle">
+            <option value="">Choose…</option>
+            <option>Clear structure</option>
+            <option>Open space</option>
+            <option>Somewhere in between</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="step" data-section="4">
+        <div class="step-head">
+          <div class="kicker">Wellbeing</div>
+          <h2>T-shirt size</h2>
+        </div>
+        <div class="field">
           <select name="shirt">
             <option value="">Choose…</option>
             <option>Youth S</option><option>Youth M</option><option>Youth L</option>
             <option>Adult S</option><option>Adult M</option>
           </select>
         </div>
+      </section>
 
+      <section class="step" data-section="4">
+        <div class="step-head">
+          <div class="kicker">Wellbeing</div>
+          <h2>Anything else you'd like us to know?</h2>
+        </div>
         <div class="field">
-          <label>Anything else you'd like us to know?</label>
           <textarea name="anythingElse" placeholder="Anything at all that would help us understand and support your child this week"></textarea>
         </div>
       </section>
 
-      <!-- ===== STEP 8: CONSENT (Section H) ===== -->
-      <section class="step" data-step="8" data-label="Consent & Submit">
+      <section class="step" data-section="4">
+        <div class="step-head">
+          <div class="kicker">Parent &amp; contact</div>
+          <h2>Your full name</h2>
+        </div>
+        <div class="field">
+          <input type="text" name="parentName" data-required placeholder="e.g. Jennifer Kim" />
+          <div class="err-msg">Please enter your name.</div>
+        </div>
+      </section>
+
+      <section class="step" data-section="4">
+        <div class="step-head">
+          <div class="kicker">Parent &amp; contact</div>
+          <h2>Your relationship to the child</h2>
+        </div>
+        <div class="field">
+          <select name="relationship" data-required>
+            <option value="">Choose…</option>
+            <option>Mother</option><option>Father</option>
+            <option>Guardian</option><option>Grandparent</option><option>Other</option>
+          </select>
+          <div class="err-msg">Please choose a relationship.</div>
+        </div>
+      </section>
+
+      <section class="step" data-section="4">
+        <div class="step-head">
+          <div class="kicker">Parent &amp; contact</div>
+          <h2>Your email</h2>
+        </div>
+        <div class="field">
+          <input type="email" name="email" data-required placeholder="you@example.com" />
+          <div class="err-msg">Please enter a valid email.</div>
+        </div>
+      </section>
+
+      <section class="step" data-section="4">
+        <div class="step-head">
+          <div class="kicker">Parent &amp; contact</div>
+          <h2>Your mobile phone</h2>
+        </div>
+        <div class="field">
+          <input type="tel" name="phone" data-required placeholder="e.g. (949) 555-0123" />
+          <div class="err-msg">Please enter a phone number.</div>
+        </div>
+      </section>
+
+      <section class="step" data-section="4">
+        <div class="step-head">
+          <div class="kicker">Parent &amp; contact</div>
+          <h2>Emergency contact name</h2>
+        </div>
+        <div class="field">
+          <input type="text" name="emergencyName" data-required placeholder="e.g. Michael Kim (uncle)" />
+          <div class="err-msg">Please enter an emergency contact.</div>
+        </div>
+      </section>
+
+      <section class="step" data-section="4">
+        <div class="step-head">
+          <div class="kicker">Parent &amp; contact</div>
+          <h2>Emergency contact phone</h2>
+        </div>
+        <div class="field">
+          <input type="tel" name="emergencyPhone" data-required placeholder="e.g. (949) 555-0199" />
+          <div class="err-msg">Please enter a phone number.</div>
+        </div>
+      </section>
+
+      <section class="step" data-section="4">
+        <div class="step-head">
+          <div class="kicker">Parent &amp; contact</div>
+          <h2>Authorized pickup person(s)</h2>
+          <p>Optional.</p>
+        </div>
+        <div class="field">
+          <input type="text" name="pickup" placeholder="Anyone else allowed to collect your child" />
+        </div>
+      </section>
+
+      <section class="step" data-section="4">
+        <div class="step-head">
+          <div class="kicker">Parent &amp; contact</div>
+          <h2>How did you hear about us?</h2>
+        </div>
+        <div class="field">
+          <select name="referral">
+            <option value="">Choose…</option>
+            <option>Instagram</option><option>A friend / family</option>
+            <option>School / teacher</option><option>Web search</option>
+            <option>Event</option><option>Other</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="step" data-section="4">
         <div class="step-head">
           <div class="kicker">Almost done</div>
           <h2>A couple of confirmations</h2>
-          <p>Then you're all set.</p>
         </div>
-
         <label class="check">
           <input type="checkbox" name="ownWords" data-required-check />
           <span>I confirm <span class="kidposs">your child's</span> answers above are in their own words.</span>
         </label>
-
         <label class="check">
           <input type="checkbox" name="userTesting" data-required-check />
           <span>I give permission for <span class="kidposs">your child's</span> project to be tested with real users during the week (Wednesday feedback day).</span>
         </label>
-
         <label class="check">
           <input type="checkbox" name="mediaConsent" data-required-check />
           <span>I consent to photos/video of the showcase being used for program records and marketing.</span>
         </label>
-
         <label class="check">
           <input type="checkbox" name="terms" data-required-check />
           <span>I agree to the program terms and liability waiver.</span>
         </label>
-        <div class="err-msg" id="consentErr">Please confirm all four to submit.</div>
+        <div class="err-msg" id="consentErr">Please confirm all four to continue.</div>
+      </section>
 
-        <div class="field" style="margin-top:20px;">
-          <label>Parent signature (type your full name) <span class="req">*</span></label>
+      <section class="step" data-section="4">
+        <div class="step-head">
+          <div class="kicker">Almost done</div>
+          <h2>Sign to submit</h2>
+          <p>Type your full name to confirm.</p>
+        </div>
+        <div class="field">
           <input type="text" name="signature" data-required placeholder="Type your full name" />
           <div class="err-msg">Please type your full name.</div>
         </div>
-
-        <div class="reassure" style="margin-bottom:0;">
-          When you submit, your child's application goes straight to our team — we'll be in touch within a few days. <b>Questions? Email us at apply@thenormal.school.</b>
+        <div class="reassure" style="margin-top:18px; margin-bottom:0;">
+          When you submit, <span class="kidposs">your child's</span> application goes straight to our team — we'll be in touch within a few days. <b>Questions? Email us at apply@thenormal.school.</b>
         </div>
       </section>
 
-      <!-- ===== SUCCESS ===== -->
-      <section class="step" data-step="9" data-label="Submitted">
+      <!-- ===================== SUCCESS ===================== -->
+      <section class="step">
         <div class="success">
           <div class="mark">✓</div>
           <h2 id="successHead">Thank you — all done!</h2>
@@ -958,10 +1270,37 @@
   var SUPABASE_KEY = 'sb_publishable_QN5JVuDz6WBna9l8No8F1g_sExsvEg0';
   var SUPABASE_TABLE = 'applications';
 
+  // ---------- School type-ahead suggestions ----------
+  // Sample list of Irvine, CA schools serving ages 10–12 — replace/extend with your real list.
+  // These are only suggestions; a parent can still type any school that isn't here.
+  var SCHOOLS = [
+    'Sierra Vista Middle School',
+    'Lakeside Middle School',
+    'Rancho San Joaquin Middle School',
+    'Venado Middle School',
+    'South Lake Middle School',
+    'Jeffrey Trail Middle School',
+    'Plaza Vista School',
+    'Vista Verde School',
+    'Turtle Rock Elementary',
+    'Northwood Elementary',
+    'Stonegate Elementary',
+    'TVT Community Day School'
+  ];
+
   var form = document.getElementById('appForm');
   var steps = Array.prototype.slice.call(form.querySelectorAll('.step'));
-  var TOTAL = 8; // input steps (9 = success)
+  // Assign sequential step numbers by DOM order, so screens can be reordered freely.
+  steps.forEach(function (s, i) { s.dataset.step = i + 1; });
+  var TOTAL = steps.length - 1; // the last .step is the success screen
   var current = 1;
+
+  var SECTIONS = [
+    { n: 1, title: 'Your child' },
+    { n: 2, title: 'Getting to know them' },
+    { n: 3, title: 'Just for you' },
+    { n: 4, title: 'Wellbeing & sign-up' }
+  ];
 
   var fill = document.getElementById('progressFill');
   var stepLabel = document.getElementById('stepLabel');
@@ -970,29 +1309,39 @@
   var nextBtn = document.getElementById('nextBtn');
   var navBtns = document.getElementById('navBtns');
 
-  // ---------- Sidebar section navigation ----------
+  // ---------- Sidebar (4 sections) ----------
   var sideNav = document.getElementById('sideNav');
-  var maxReached = 1;            // furthest step the user has validly reached
-  var sideItems = [];
+  var maxReached = 1;            // furthest step number validly reached
+  var sectionFirstStep = {};     // first screen of each section
   steps.forEach(function (s) {
-    var idx = +s.dataset.step;
-    if (idx > TOTAL) return;     // skip the success screen
+    var sec = +s.dataset.section;
+    if (sec && sectionFirstStep[sec] === undefined) sectionFirstStep[sec] = +s.dataset.step;
+  });
+  var sideItems = [];
+  SECTIONS.forEach(function (sec) {
     var li = document.createElement('li');
     var btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'side-item';
-    btn.dataset.target = idx;
-    btn.innerHTML = '<span class="num">' + idx + '</span><span class="side-label"></span>';
-    btn.querySelector('.side-label').textContent = s.dataset.label;
-    btn.addEventListener('click', function () { goTo(idx); });
+    btn.dataset.section = sec.n;
+    btn.innerHTML = '<span class="num">' + sec.n + '</span><span class="side-label"></span>';
+    btn.querySelector('.side-label').textContent = sec.title;
+    btn.addEventListener('click', function () { goToSection(sec.n); });
     li.appendChild(btn);
     sideNav.appendChild(li);
     sideItems.push(btn);
   });
 
-  function goTo(target) {
-    if (target === current || target > maxReached) return; // can't jump to a section you haven't reached
-    if (target > current) {                                // jumping forward — current step must still be valid
+  function currentSection() {
+    var el = steps.find(function (s) { return +s.dataset.step === current; });
+    return el ? (+el.dataset.section || 4) : 4;
+  }
+
+  function goToSection(n) {
+    var target = sectionFirstStep[n];
+    if (target === undefined || target === current) return;
+    if (target > maxReached) return;           // not unlocked yet
+    if (target > current) {                    // jumping forward — current must validate
       var el = steps.find(function (s) { return +s.dataset.step === current; });
       if (el && !validateStep(el)) {
         var firstErr = el.querySelector('.invalid, .err-msg.show');
@@ -1004,15 +1353,21 @@
   }
 
   function updateSidebar() {
+    var success = current > TOTAL;
+    var curSec = success ? 5 : currentSection();
+    var maxSec = 1;
+    SECTIONS.forEach(function (sec) {
+      if (sectionFirstStep[sec.n] !== undefined && sectionFirstStep[sec.n] <= maxReached) maxSec = sec.n;
+    });
     sideItems.forEach(function (btn) {
-      var idx = +btn.dataset.target;
-      var isCurrent = idx === current;
-      var done = idx < current || current > TOTAL;
-      var locked = idx > maxReached;
+      var n = +btn.dataset.section;
+      var isCurrent = !success && n === curSec;
+      var done = success || n < curSec;
+      var locked = n > maxSec;
       btn.classList.toggle('current', isCurrent);
       btn.classList.toggle('done', done && !isCurrent);
       btn.disabled = locked && !isCurrent;
-      btn.querySelector('.num').textContent = (done && !isCurrent) ? '✓' : idx;
+      btn.querySelector('.num').textContent = (done && !isCurrent) ? '✓' : n;
     });
   }
 
@@ -1058,6 +1413,7 @@
   }
 
   // ---------- Personalize the child's name throughout ----------
+  function setText(id, val) { var el = document.getElementById(id); if (el) el.textContent = val; }
   function kidDisplayName() {
     var n = (form.childName.value || '').trim();
     var preferred = (form.preferredName.value || '').trim();
@@ -1065,17 +1421,16 @@
   }
   function syncChildName() {
     var display = kidDisplayName();
-    // Step 6 — child-facing, second person
-    document.getElementById('childName1').textContent = display || 'you';
-    document.getElementById('childKicker').textContent = display || 'your child';
-    document.getElementById('childName2').textContent = display || 'your child';
-    // Parent-facing copy — the nickname (or a graceful fallback) everywhere else
+    // child-facing, second person (section 3 break + success)
+    setText('childName1', display || 'you');
+    setText('childKicker', display || 'your child');
+    setText('childName2', display || 'your child');
+    // parent-facing copy — the nickname (or a graceful fallback) everywhere else
     var nm = display || 'your child';
     var poss = display ? display + '’s' : 'your child’s';
     form.querySelectorAll('.kid').forEach(function (el) { el.textContent = nm; });
     form.querySelectorAll('.kidposs').forEach(function (el) { el.textContent = poss; });
   }
-  // Keep names live if the parent edits them and comes back
   ['childName', 'preferredName'].forEach(function (nm) {
     if (form.elements[nm]) form.elements[nm].addEventListener('input', syncChildName);
   });
@@ -1158,9 +1513,9 @@
 
     navBtns.style.display = 'flex';
     fill.style.width = (step / TOTAL * 100) + '%';
-    var el = steps.find(function (s) { return +s.dataset.step === step; });
-    stepLabel.textContent = el.dataset.label;
-    stepCount.textContent = 'Step ' + step + ' of ' + TOTAL;
+    var sec = currentSection();
+    stepLabel.textContent = (SECTIONS[sec - 1] && SECTIONS[sec - 1].title) || '';
+    stepCount.textContent = 'Section ' + sec + ' of 4';
 
     backBtn.classList.toggle('hidden', step === 1);
     nextBtn.textContent = (step === TOTAL) ? 'Submit application →' : 'Continue →';
@@ -1225,6 +1580,7 @@
         gender: v('gender'),
         homeLanguage: v('homeLanguage'),
         school: v('school'),
+        grade: v('grade'),
         session: chipValues('session')
       },
       B_parentInfo: {
@@ -1329,7 +1685,8 @@
     L.push('CHILD: ' + p.A_childBasicInfo.childName + ' (' + name + ')');
     line('DOB', p.A_childBasicInfo.dob);
     line('Home language', p.A_childBasicInfo.homeLanguage);
-    line('School/grade', p.A_childBasicInfo.school);
+    line('School', p.A_childBasicInfo.school);
+    line('Grade', p.A_childBasicInfo.grade);
     line('Weeks requested', arr(p.A_childBasicInfo.session));
     L.push('');
     L.push('PARENT: ' + p.B_parentInfo.parentName + ' (' + p.B_parentInfo.relationship + ')');
@@ -1560,6 +1917,17 @@
         }
         start(ta, btn);
       });
+    });
+  })();
+
+  // ---------- Populate school suggestions ----------
+  (function () {
+    var dl = document.getElementById('schoolList');
+    if (!dl) return;
+    SCHOOLS.forEach(function (name) {
+      var opt = document.createElement('option');
+      opt.value = name;
+      dl.appendChild(opt);
     });
   })();
 

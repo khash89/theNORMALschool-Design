@@ -24,7 +24,7 @@ This data is sensitive (minors' medical, wellbeing, and safeguarding details). S
 
 ### 1. Create the project
 1. Sign up at [supabase.com](https://supabase.com) and create a new project (free tier is enough).
-2. Choose the **region** closest to your families and mindful of data-residency expectations (e.g. an Asia-Pacific region such as Singapore or Tokyo for Mongolia). You can't change region later without recreating the project.
+2. Choose the **region** closest to your families and mindful of data-residency expectations (e.g. a US West region such as `West US (North California)` or `West US (Oregon)` for Irvine, CA). You can't change region later without recreating the project.
 
 ### 2. Create the table + lock it down
 Open **SQL Editor** in the Supabase dashboard, paste this, and run it:

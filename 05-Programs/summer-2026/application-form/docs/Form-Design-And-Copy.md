@@ -54,7 +54,7 @@ Focus ring: `0 0 0 3px rgba(255,117,31,0.12)` with `border-color: orange`.
 | **Option card** (single-select) | white, 12px radius, hollow radio dot | orange-tinted bg, orange border, filled dot | group message if none picked |
 | **Checkbox** | native, `accent-color` orange | checked | shared message under the group |
 | **Reassurance box** | cream bg, 12px radius, 14px UI-gray text | — | — |
-| **Sub-section header** (`.substep`, Step 6 clusters) | navy 800 15px label preceded by a short orange accent bar | — | — |
+| **Sub-section header** (`.substep`, Step 5 clusters) | navy 800 15px label preceded by a short orange accent bar | — | — |
 | **Mic / voice button** (`.mic`, every textarea) | 34px circle, top-right inside the textarea, muted outline + mic glyph | orange fill, white glyph, pulsing ring while dictating | — |
 | **Progress bar** | gray track, orange fill, animates width 0.35s | — | — |
 
@@ -73,14 +73,14 @@ Focus ring: `0 0 0 3px rgba(255,117,31,0.12)` with `border-color: orange`.
 - Subhead: *"Tell us about your child so we can match them to a project they'll love — and a week where they'll surprise themselves. Takes about 12 minutes."*
 
 ### Sidebar (left, desktop only)
-- A sticky left column (`.sidebar`, 232px) titled **`Your application`**, listing all 8 sections by name (built from each step's `data-label`).
+- A sticky left column (`.sidebar`, 232px) titled **`Your application`**, listing the **4 sections** by name: *Your child · Getting to know them · Just for you · Wellbeing & sign-up*.
 - Each item shows a status pill: **done** = orange filled circle with a ✓, **current** = orange-ringed number on a soft orange highlight, **upcoming** = muted number, disabled.
-- **Clickable only up to the furthest section reached.** Tapping a completed/earlier section jumps straight to it; jumping *forward* to an already-reached section first re-validates the current step (same gate as `Continue`); upcoming sections are non-interactive until unlocked.
+- **Clickable only up to the furthest section reached.** Tapping a completed/earlier section jumps to that section's break screen; jumping *forward* to an already-reached section first re-validates the current screen (same gate as `Continue`); upcoming sections are non-interactive until unlocked.
 - **Hidden below 920px** — the layout collapses to the single 720px column and the progress bar becomes the sole indicator.
 
 ### Progress (between hero and card)
-- Orange fill bar = `currentStep / 8 × 100%`.
-- Left label = the current step's name; Right = **`Step N of 8`** (becomes `Complete` on the success screen).
+- Orange fill bar = `currentScreen / total screens × 100%` (fine-grained — it advances with every question).
+- Left label = the current **section** name; Right = **`Section N of 4`** (becomes `Complete` on the success screen).
 - Shown at all widths; it's the primary progress indicator on mobile (where the sidebar is hidden) and complements the sidebar on desktop.
 
 ### Footer
@@ -89,14 +89,16 @@ Focus ring: `0 0 0 3px rgba(255,117,31,0.12)` with `border-color: orange`.
 ### Navigation buttons (bottom of card)
 | Button | Label | Visibility |
 |---|---|---|
-| Back (ghost) | **`← Back`** | Hidden on step 1 |
-| Next (primary) | **`Continue →`** | Steps 1–7 |
-| Submit (primary) | **`Submit application →`** | Step 8 only |
+| Back (ghost) | **`← Back`** | Hidden on the first screen |
+| Next (primary) | **`Continue →`** | Every screen except the last |
+| Submit (primary) | **`Submit application →`** | Last screen (signature) only |
 | (nav row) | hidden entirely | Success screen |
 
 ---
 
 ## 3. Layout & responsive
+- **One question per screen.** Each screen (`.step`) holds a single question — a heading (the question), an optional one-line hint, and one input. Navigation moves one question at a time. Step numbers are assigned by DOM order in JS, so screens can be reordered freely.
+- **Four sections**, each opened by a **section-break screen** (`.brk`): *Your child · Getting to know them · Just for you · Wellbeing & sign-up*. Screens carry a `data-section` (1–4); the sidebar and progress derive from it.
 - Two-column on desktop: a sticky **232px sidebar** + the **720px content column** (hero, progress, form card), centered as a group within a 1040px `.page`. The sticky header aligns to the same 1040px width.
 - **Below 920px** the sidebar is hidden and the content column reverts to a single centered 720px column.
 - Within the content column, 28px horizontal padding.
@@ -111,11 +113,12 @@ Focus ring: `0 0 0 3px rgba(255,117,31,0.12)` with `border-color: orange`.
 
 | Behavior | Detail |
 |---|---|
-| **Multi-step** | 8 input steps + 1 success screen. Only one `.step` visible at a time; entry fades/slides in (0.3s). |
-| **Per-step validation** | `Continue` validates the current step only. If it fails, you stay on the step, fields/groups show errors, and the view scrolls to the first error. |
+| **One question per screen** | ~67 question screens + 4 section-break screens + 1 success screen. Only one `.step` visible at a time; entry fades/slides in (0.3s). `Continue` advances one screen. |
+| **Section breaks** | Each of the 4 sections opens with a `.brk` interstitial: a numbered badge, *Section N of 4*, a heading, a **✓ recap** of what's done, and a preview of what's next. No inputs — it just orients the user. |
+| **Per-screen validation** | `Continue` validates only the current screen's one field (break screens have nothing to validate, so they always pass). On failure you stay put, the error shows, and the view scrolls to it. |
 | **Inline recovery** | Typing in an invalid field clears its error immediately; tapping a chip/option clears that group's error. |
 | **Age auto-calc** | On DOB change, computes age at the program reference date (2026-06-01) and prints **"Age at program start: N"** in orange. Outside 10–12 appends *"— note: program is designed for ages 10–12"** (a soft note, not a block). |
-| **Child-name personalization** | The child's **preferred name** (or first name from "full name") is injected **throughout** the form, not just Step 6. Parent-facing copy uses `.kid` spans (the name as subject/object) and `.kidposs` spans (the possessive, e.g. *Aru's*); Step 6 uses the second-person id-spans (`childName1` / `childKicker` / `childName2`). The name is recomputed on **every** step change and live as the parent types the name fields. Graceful fallback to "your child" / "your child's" / "you" when empty, so verbs around a `.kid` span are written singular and read correctly either way. |
+| **Child-name personalization** | The child's **preferred name** (or first name from "full name") is injected **throughout** the form, not just the child step. Parent-facing copy uses `.kid` spans (the name as subject/object) and `.kidposs` spans (the possessive, e.g. *Aru's*); Step 5 ("Just for You") uses the second-person id-spans (`childName1` / `childKicker` / `childName2`). The name is recomputed on **every** step change and live as the parent types the name fields. Graceful fallback to "your child" / "your child's" / "you" when empty, so verbs around a `.kid` span are written singular and read correctly either way. |
 | **Voice input (dictation)** | Every `textarea` gets a mic button (injected by JS). Tapping it starts Web Speech API dictation (`SpeechRecognition` / `webkitSpeechRecognition`); recognized text is **appended** to whatever is already typed, and the field's validation error clears as it fills. Tapping again (or tapping another field's mic) stops/switches. If the browser lacks the API, no button is shown and typing works as normal. Recognition language defaults to the browser's `navigator.language`. |
 | **Submit** | Builds a structured payload + readable summary and triggers two downloads, then shows the success screen. |
 | **Downloads** | `summer-application_<child-name>.json` (grouped by spec sections A–H; sections C and E each nest `parent` + `child` sub-objects with a cross-read `note`) and `summer-application_<child-name>_summary.txt` (human-readable, parent and child reports printed side by side under each of Element Layer 1 and MIAP). "Download again →" re-triggers both. |
@@ -125,18 +128,35 @@ Focus ring: `0 0 0 3px rgba(255,117,31,0.12)` with `border-color: orange`.
 
 ## 5. Voice & microcopy rules
 Carried from the brand guideline and applied throughout:
-- **Use the child's name, not a category.** Once the name is entered (Step 1), parent-facing copy says **"Aru"** (the nickname), not "your child," "student," "learner," or "applicant." "your child" is only the fallback before a name exists. Pronouns (they/them/their) are kept where a second name mention would read repetitively.
-- Add a concrete **example placeholder** to every free-text field — `e.g. …` for parent fields, first-person kid examples in Step 6 — so parents/children see the kind of answer we want without it reading as a required format.
+- **Use the child's name, not a category.** Once the name is entered (Section 1), parent-facing copy says **"Aru"** (the nickname), not "your child," "student," "learner," or "applicant." "your child" is only the fallback before a name exists. Pronouns (they/them/their) are kept where a second name mention would read repetitively.
+- Add a concrete **example placeholder** to every free-text field — `e.g. …` for parent fields, first-person kid examples in the child section (Section 3) — so parents/children see the kind of answer we want without it reading as a required format.
 - **No edu-jargon** (no "holistic," "21st-century skills," "personalized learning," "Element," "MIAP," "aptitude"). Framework language never appears on screen.
 - Empathetic and direct, never legal-heavy or preachy. Reassurances are short and warm.
 - Primary CTAs end with **`→`**.
-- **Parent steps** (1–5, 7, 8) speak *about* the child. **Step 6** speaks *to* the child — second person, playful, "zero wrong answers."
+- **Sections 1, 2 and 4** speak *about* the child (to the parent). **Section 3** ("Just for you") speaks *to* the child — second person, playful, "zero wrong answers."
 - Questions ask for **behavior, not labels** ("what do they actually do?" not "are they resilient?").
 - Required fields marked with an orange **`*`**. Error messages are specific and friendly, never scolding.
 
 ---
 
 ## 6. Full content inventory
+
+> **Structure note (v1.8):** the form now shows **one question per screen**. Each field listed below is its own screen, and the old "Step 1–8" groupings below now map to the **4 sections** (each opened by a section break):
+> - **Section 1 · Your child** — the *Step 1* fields.
+> - **Section 2 · Getting to know them** — *Step 3 (What Lights Them Up)* + *Step 4 (Reading Your Child)* + *Step 5 (How They Work)*.
+> - **Section 3 · Just for you** — *Step 6* fields (child's voice).
+> - **Section 4 · Wellbeing & sign-up** — *Step 7 (Wellbeing)* + *Step 2 (Parent & Contact)* + *Step 8 (Consent)*; consent's 4 checkboxes share one screen, signature is the final screen.
+> The field copy, hints, placeholders, and error strings below are unchanged by the one-per-screen layout. **Section-break copy** is in §6a.
+
+### 6a. Section-break screens
+Each break has a numbered badge, a `Section N of 4` kicker, a heading, a ✓ recap of what's done, and a preview of what's next.
+
+| # | Heading | Recap (done) | Preview (next) |
+|---|---|---|---|
+| 1 | First, the basics | — | A few quick facts about your child — name, age, school, and which weeks you'd like. |
+| 2 | Now — what makes `[name]` tick | ✓ Got the basics. | What `[name]` is drawn to, how they handle a challenge, and how they work — in your words. |
+| 3 | This part is just for `[name]` | ✓ Thanks — that's the grown-up's view. | These next questions are for the child, in their own words. *(+ "Parents: let your child answer…" reassurance.)* |
+| 4 | Last stretch | ✓ Love it — that's the fun part done. | Wellbeing, your contact details, and a couple of confirmations. |
 
 Legend: **R** = required · type in *italics* · `err:` = message shown when invalid.
 
@@ -153,25 +173,12 @@ Legend: **R** = required · type in *italics* · `err:` = message shown when inv
 | Preferred name / nickname | *text* | — | ph: What we'll call them |
 | Date of birth | *date* | ✅ | shows computed age line · `err:` Please enter a date of birth. |
 | Gender | *text* | — | ph: Optional — how they describe themselves |
-| Language(s) at home | *text* | ✅ | ph: e.g. English, Mongolian · `err:` Please tell us the home language. |
-| Current school & grade | *text* | ✅ | ph: School name, grade · `err:` Please enter school and grade. |
+| Language(s) at home | *text* | ✅ | ph: e.g. English, Mandarin · `err:` Please tell us the home language. |
+| Current school | *text + datalist* | ✅ | type-ahead suggestions from an editable `SCHOOLS` list (top of the script); free text still allowed · ph: Start typing your school… · `err:` Please enter the school. |
+| Current grade | *select* | ✅ | Choose… / Grade 3 / Grade 4 / Grade 5 / Grade 6 / Grade 7 / Grade 8 · `err:` Please choose a grade. |
 | Which week(s) would you like? | *chips (multi-select)* | ✅ | hint: Pick all the weeks that work for you — you can choose more than one. — Week #1 · Jun 29 – Jul 3 / Week #2 · Jul 7 – Jul 11 / Week #3 · Jul 14 – Jul 18 / Week #4 · Jul 21 – Jul 25 / Week #5 · Jul 28 – Aug 1 / Week #6 · Aug 4 – Aug 7 · `err:` Please pick at least one week. |
 
-### Step 2 — "Parent & Contact"
-- Kicker: **Parent & contact** · H2: **How we reach you** · Sub: *Your details for everything from confirmation to Saturday's showcase.*
-
-| Label | Type | R | Options / ph · `err` |
-|---|---|---|---|
-| Your full name | *text* | ✅ | `err:` Please enter your name. |
-| Relationship to child | *select* | ✅ | Choose… / Mother / Father / Guardian / Grandparent / Other · `err:` Please choose a relationship. |
-| Email | *email* | ✅ | `err:` Please enter a valid email. |
-| Mobile phone | *tel* | ✅ | `err:` Please enter a phone number. |
-| Emergency contact name | *text* | ✅ | `err:` Please enter an emergency contact. |
-| Emergency contact phone | *tel* | ✅ | `err:` Please enter a phone number. |
-| Authorized pickup person(s) | *text* | — | ph: Anyone else allowed to collect your child |
-| How did you hear about us? | *select* | — | Choose… / Instagram / A friend / family / School / teacher / Web search / Event / Other |
-
-### Step 3 — "What Lights Them Up"  *(Element Layer 1 — parent)*
+### Step 2 — "What Lights Them Up"  *(Element Layer 1 — parent)*
 - Kicker: **What lights your child up** · H2: **The things that come easily — and the things they love** · Sub: *Be specific and concrete. Not "good at art" — but "draws machines and how they connect."*
 - Reassurance: *These two are different on purpose. **What comes easily** and **what they love** aren't always the same thing — and both matter. Tell us what you actually see, not what you hope.*
 
@@ -182,7 +189,7 @@ Legend: **R** = required · type in *italics* · `err:` = message shown when inv
 | When do they lose track of time? | *textarea* | ✅ | Is there an activity where they resist stopping, forget meals, or have to be called several times? · `err:` Please tell us about this. |
 | The free-afternoon check | *textarea* | — | On a free afternoon — nothing scheduled, screens not the default — what does your child actually end up doing? |
 
-### Step 4 — "Reading Your Child"  *(Element Layer 2 — parent)*
+### Step 3 — "Reading Your Child"  *(Element Layer 2 — parent)*
 - Kicker: **Reading your child** · H2: **A little more context** · Sub: *This helps us read your child accurately — and avoid misreading them.*
 
 | Label | Type | R | Hint / options · `err` |
@@ -195,7 +202,7 @@ Legend: **R** = required · type in *italics* · `err:` = message shown when inv
 | Anything they've dropped, hidden, or been steered away from? | *textarea* | — | Something they used to love and stopped, or hide, or were told wasn't for them. What happened? |
 | When are they most alert — and most drained? | *text* | — | hint: Roughly when in a normal day is your child most engaged, and when do they run flat? · ph: e.g. Sluggish mornings, comes alive after 4pm |
 
-### Step 5 — "How They Work"  *(MIAP pre-diagnosis — parent)*
+### Step 4 — "How They Work"  *(MIAP pre-diagnosis — parent)*
 - Kicker: **How they work** · H2: **A few more about how they tick** · Sub: *There are no right answers here — honest beats impressive every time.*
 
 | Label | Type | R | Hint · `err` |
@@ -205,7 +212,7 @@ Legend: **R** = required · type in *italics* · `err:` = message shown when inv
 | When they hit an obstacle and you're not there | *textarea* | ✅ | What happens when your child runs into a problem and no adult is around to help? · `err:` Please tell us what happens. |
 | Have they ever cared that something was useful to someone else? | *textarea* | — | Not just fun for them — actually useful to another person. An example, if there is one. |
 
-### Step 6 — "Just for You"  *(the child's voice — Personalization F + child Element cross-check C(child) + child MIAP cross-read E(child))*
+### Step 5 — "Just for You"  *(the child's voice — Personalization F + child Element cross-check C(child) + child MIAP cross-read E(child))*
 - Kicker: **Now — over to `[child's name]`** · H2: **This part is just for `[child's name]`** · Sub: *Hey! These questions are for you — the kid joining us. There are zero wrong answers. Just say what's true.*
 - Reassurance: ***Parents:** let your child answer this part in their own words — you can type for them, but the answers should be theirs.*
 - This is the **only child-facing step**, so the spec's child versions of Section C (Element) and Section E (MIAP) live here too — framed purely as preference and experience, never as a test, never using framework words. The step is broken into four `.substep` clusters: **What you're into · When you make stuff · Your favorites · If it were up to you.**
@@ -251,7 +258,7 @@ Legend: **R** = required · type in *italics* · `err:` = message shown when inv
 | Do you like working with a team or on your own? | *radio (2-up grid)* | ✅ | With a team · On my own · Depends on the day · `err:` Pick one! | F.4 |
 | When you work with other people, what part do you grab first? | *text* | — | | F.4 |
 
-### Step 7 — "Wellbeing & Logistics"
+### Step 6 — "Wellbeing & Logistics"
 - Kicker: **So we can support your child well** · H2: **A few things that help us care for them** · Sub: *This stays with our team. The more specific you are, the better we can show up for your child.*
 
 | Label | Type | R | Hint / options · `err` |
@@ -271,6 +278,21 @@ Legend: **R** = required · type in *italics* · `err:` = message shown when inv
 | Do they do better with… | *select* | — | Choose… / Clear structure / Open space / Somewhere in between |
 | T-shirt size | *select* | — | Choose… / Youth S / Youth M / Youth L / Adult S / Adult M |
 | Anything else you'd like us to know? | *textarea* | — | |
+
+### Step 7 — "Parent & Contact"
+- Kicker: **Parent & contact** · H2: **How we reach you** · Sub: *Your details for everything from confirmation to Saturday's showcase.*
+- Placed late (just before consent) so families flow through the child-focused questions first; the parent's own contact details come right before they sign.
+
+| Label | Type | R | Options / ph · `err` |
+|---|---|---|---|
+| Your full name | *text* | ✅ | `err:` Please enter your name. |
+| Relationship to child | *select* | ✅ | Choose… / Mother / Father / Guardian / Grandparent / Other · `err:` Please choose a relationship. |
+| Email | *email* | ✅ | `err:` Please enter a valid email. |
+| Mobile phone | *tel* | ✅ | `err:` Please enter a phone number. |
+| Emergency contact name | *text* | ✅ | `err:` Please enter an emergency contact. |
+| Emergency contact phone | *tel* | ✅ | `err:` Please enter a phone number. |
+| Authorized pickup person(s) | *text* | — | ph: Anyone else allowed to collect your child |
+| How did you hear about us? | *select* | — | Choose… / Instagram / A friend / family / School / teacher / Web search / Event / Other |
 
 ### Step 8 — "Consent & Submit"
 - Kicker: **Almost done** · H2: **A couple of confirmations** · Sub: *Then you're all set.*
@@ -304,7 +326,7 @@ Quick reference of every error string, in encounter order:
 | 1 | Child's full name | Please enter your child's name. |
 | 2 | Date of birth | Please enter a date of birth. |
 | 3 | Language(s) at home | Please tell us the home language. |
-| 4 | School & grade | Please enter school and grade. |
+| 4 | School / Grade | Please enter the school. / Please choose a grade. |
 | 5 | Weeks (chips) | Please pick at least one week. |
 | 6 | Parent name | Please enter your name. |
 | 7 | Relationship | Please choose a relationship. |
@@ -335,12 +357,15 @@ Email validity (field 8) is checked with `^[^\s@]+@[^\s@]+\.[^\s@]+$`.
 - **Intake email** is `apply@thenormal.school` (Step 8 reassurance + fallback success copy).
 - **Sessions** (Step 1 week chips) are the six 2026 weeks: Jun 29–Jul 3, Jul 7–11, Jul 14–18, Jul 21–25, Jul 28–Aug 1, Aug 4–7. Parents may pick more than one.
 - **Supabase not yet configured:** the `SUPABASE_URL` / `SUPABASE_ANON_KEY` in `index.html` are placeholders, so the form currently uses the local-download fallback. Fill them in per [`Submission-Storage-Supabase.md`](Submission-Storage-Supabase.md) to store submissions online.
-- **Dictation language:** voice input defaults to the browser's `navigator.language`. For Mongolian-speaking families on a browser set to English this will mis-transcribe — consider deriving the recognizer language from the "language(s) at home" field, or adding an explicit language toggle.
+- **Dictation language:** voice input defaults to the browser's `navigator.language`. For a family whose spoken language differs from their browser's setting this will mis-transcribe — consider deriving the recognizer language from the "language(s) at home" field, or adding an explicit language toggle.
 - **Voice input is best-effort:** the Web Speech API is unavailable in some browsers (notably Firefox) and requires a one-time mic permission; the mic button is simply hidden where unsupported.
 
 ---
 
-*Document version 1.5 — theNORMALschool internal use only.*
+*Document version 1.8 — theNORMALschool internal use only.*
+*v1.8 — Redesigned to **one question per screen** (Typeform-style): ~67 question screens + 1 success, grouped into **4 sections** each opened by a **section-break** interstitial (badge, recap of what's done, preview of what's next). Sidebar and progress are now section-based; step numbers are assigned by DOM order in JS. All field content, validation, nickname injection, voice input, and Supabase saving preserved.*
+*v1.7 — Step 1: split "Current school & grade" into **Current school** (text with type-ahead `<datalist>` suggestions from an editable `SCHOOLS` list; free text allowed) and **Current grade** (required dropdown, Grades 3–8). JSON `A_childBasicInfo` gains a `grade` field.*
+*v1.6 — Reordered steps: **Parent & Contact moved from Step 2 to Step 7** (just before Consent), so families go through the child-focused questions first. New order: Your Child · What Lights Them Up · Reading Your Child · How They Work · Just for You · Wellbeing & Logistics · Parent & Contact · Consent. The child-facing step is now Step 5.*
 *v1.5 — Step 1 "session" is now a **multi-select week picker** (six 2026 weeks, chips, ≥1 required); JSON `A_childBasicInfo.session` is an array (joined to a string for the Supabase `session` column). Intake email set to `apply@thenormal.school`; Step 8 + success copy updated to reflect online submission.*
 *v1.4 — Submissions now POST to **Supabase** (insert-only RLS) with a local-download fallback; success copy reflects sending/received/fallback state. Setup in [`Submission-Storage-Supabase.md`](Submission-Storage-Supabase.md).*
 *v1.3 — Added a sticky left **sidebar** (desktop) for section navigation: jump back to any completed section, forward only to reached sections; hidden below 920px. Two-column layout introduced.*
