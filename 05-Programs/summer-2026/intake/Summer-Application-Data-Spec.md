@@ -61,7 +61,8 @@ These are non-negotiable and are the reason the form is structured the way it is
 | Age at program start | auto (from DOB) | ✅ | Confirms 10–12 eligibility |
 | Gender (optional, self-described) | text | — | Team balance awareness only |
 | Primary language(s) at home | text | ✅ | Communication, scribing support |
-| School & current grade | text | ✅ | Agency pre-diagnosis (years of traditional schooling) |
+| Current school | text (type-ahead suggestions) | ✅ | Records; cohort context |
+| Current grade | select | ✅ | Age/stage; Agency pre-diagnosis (years of traditional schooling) |
 | Session / cohort applying for | select | ✅ | Enrollment |
 
 ---
